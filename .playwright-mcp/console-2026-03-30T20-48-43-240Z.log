@@ -1,0 +1,17 @@
+[ 1238156ms] [WARNING] Google Maps JavaScript API has been loaded directly without loading=async. This can result in suboptimal performance. For best-practice loading patterns please see https://goo.gle/js-api-loading @ https://maps.googleapis.com/maps/api/js?key=AIzaSyCLRF1U1vrDAqVmIdwMKTcnAEMylbvnkhY&language=pt&callback=Function.prototype&ver=e41033149493fedfc0da5c559e5e9cc1:337
+[ 1238344ms] [WARNING] google.maps.event.addDomListener() is deprecated, use the standard
+addEventListener() method instead:
+https://developer.mozilla.org/docs/Web/API/EventTarget/addEventListener
+The feature will continue to work and there is no plan to decommission
+it. @ https://maps.googleapis.com/maps/api/js?key=AIzaSyCLRF1U1vrDAqVmIdwMKTcnAEMylbvnkhY&language=pt&callback=Function.prototype&ver=e41033149493fedfc0da5c559e5e9cc1:214
+[ 1246964ms] [WARNING] [TikTok Pixel] - Missing 'content_id' paramter
+Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information. @ https://analytics.tiktok.com/i18n/pixel/static/main.MTJlMjhkNzMyOQ.js:0
+[ 1249722ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://institucional.condor.com.br'). @ https://www.youtube.com/s/player/f85ea353/www-widgetapi.vflset/www-widgetapi.js:209
+[ 1249972ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://institucional.condor.com.br'). @ https://www.youtube.com/s/player/f85ea353/www-widgetapi.vflset/www-widgetapi.js:209
+[ 1260564ms] [WARNING] Google Maps JavaScript API has been loaded directly without loading=async. This can result in suboptimal performance. For best-practice loading patterns please see https://goo.gle/js-api-loading @ https://maps.googleapis.com/maps/api/js?key=AIzaSyCLRF1U1vrDAqVmIdwMKTcnAEMylbvnkhY&language=pt&callback=Function.prototype&ver=e41033149493fedfc0da5c559e5e9cc1:337
+[ 1260727ms] [WARNING] google.maps.event.addDomListener() is deprecated, use the standard
+addEventListener() method instead:
+https://developer.mozilla.org/docs/Web/API/EventTarget/addEventListener
+The feature will continue to work and there is no plan to decommission
+it. @ https://maps.googleapis.com/maps/api/js?key=AIzaSyCLRF1U1vrDAqVmIdwMKTcnAEMylbvnkhY&language=pt&callback=Function.prototype&ver=e41033149493fedfc0da5c559e5e9cc1:214

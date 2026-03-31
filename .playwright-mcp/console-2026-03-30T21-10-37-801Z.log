@@ -1,0 +1,5 @@
+[    2317ms] [WARNING] [TikTok Pixel] - Missing 'content_id' paramter
+Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information. @ https://analytics.tiktok.com/i18n/pixel/static/main.MTJlMjhkNzMyOQ.js:0
+[    5058ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://institucional.condor.com.br'). @ https://www.youtube.com/s/player/f85ea353/www-widgetapi.vflset/www-widgetapi.js:209
+[    5309ms] [WARNING] Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://www.youtube.com') does not match the recipient window's origin ('https://institucional.condor.com.br'). @ https://www.youtube.com/s/player/f85ea353/www-widgetapi.vflset/www-widgetapi.js:209

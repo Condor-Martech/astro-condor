@@ -1,0 +1,6 @@
+[    2987ms] [WARNING] Google Maps JavaScript API has been loaded directly without loading=async. This can result in suboptimal performance. For best-practice loading patterns please see https://goo.gle/js-api-loading @ https://maps.googleapis.com/maps/api/js?key=AIzaSyCLRF1U1vrDAqVmIdwMKTcnAEMylbvnkhY&language=pt&callback=Function.prototype&ver=e41033149493fedfc0da5c559e5e9cc1:337
+[    3106ms] [WARNING] google.maps.event.addDomListener() is deprecated, use the standard
+addEventListener() method instead:
+https://developer.mozilla.org/docs/Web/API/EventTarget/addEventListener
+The feature will continue to work and there is no plan to decommission
+it. @ https://maps.googleapis.com/maps/api/js?key=AIzaSyCLRF1U1vrDAqVmIdwMKTcnAEMylbvnkhY&language=pt&callback=Function.prototype&ver=e41033149493fedfc0da5c559e5e9cc1:214
