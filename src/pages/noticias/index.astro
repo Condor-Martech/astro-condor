@@ -1,0 +1,504 @@
+---
+export const prerender = false;
+
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import '../../styles/global.css';
+
+const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+const PAGE_SIZE = 12;
+
+const res = await fetch(
+	`${DIRECTUS_URL}/items/noticias?filter[status][_eq]=published&fields=id,titulo,slug,resumo,image,data_publicacao&sort=-data_publicacao&limit=${PAGE_SIZE}&meta=filter_count`
+);
+const json = await res.json();
+const noticias = json.data || [];
+const totalCount = json.meta?.filter_count || 0;
+const hasMore = totalCount > PAGE_SIZE;
+---
+
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content="Notícias e comunicação oficial da Rede Condor. Novidades, inaugurações, campanhas e ações sociais." />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<title>Notícias — Condor</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Breadcrumb -->
+			<nav class="breadcrumb" aria-label="Breadcrumb">
+				<div class="breadcrumb-container">
+					<a href="/">Início</a>
+					<span class="breadcrumb-sep" aria-hidden="true">/</span>
+					<span aria-current="page">Notícias</span>
+				</div>
+			</nav>
+
+			<!-- Header -->
+			<section class="news-header">
+				<div class="news-header-content">
+					<h1 class="news-header-title">Notícias</h1>
+					<p class="news-header-sub">Comunicação oficial da Rede Condor</p>
+				</div>
+			</section>
+
+			<!-- Grid -->
+			<section class="news-grid-section">
+				<div class="news-grid" id="news-grid">
+					{noticias && noticias.map((noticia: any) => {
+						const thumb = noticia.image
+							? `${DIRECTUS_URL}/assets/${noticia.image}?width=600&height=400&fit=cover`
+							: null;
+						const dataStr = noticia.data_publicacao
+							? new Date(noticia.data_publicacao).toLocaleDateString('pt-BR', {
+									day: '2-digit',
+									month: 'short',
+									year: 'numeric',
+								})
+							: null;
+						return (
+							<a href={`/noticias/${noticia.slug}`} class="news-card">
+								<div class="news-card-img-wrap">
+									{thumb ? (
+										<img src={thumb} alt={noticia.titulo} class="news-card-img" width="600" height="400" loading="lazy" decoding="async" />
+									) : (
+										<div class="news-card-img-placeholder">
+											<span>C</span>
+										</div>
+									)}
+								</div>
+								<div class="news-card-body">
+									{dataStr && <time class="news-card-date">{dataStr}</time>}
+									<h2 class="news-card-title">{noticia.titulo}</h2>
+									{noticia.resumo && <p class="news-card-excerpt">{noticia.resumo}</p>}
+								</div>
+							</a>
+						);
+					})}
+				</div>
+
+				<!-- Load more -->
+				{hasMore && (
+					<div class="news-load-more" id="load-more-wrap">
+						<button class="news-load-more-btn" id="load-more-btn" type="button">
+							Ver mais notícias
+						</button>
+						<div class="news-load-more-spinner" id="load-more-spinner" hidden>
+							<span class="spinner"></span>
+						</div>
+					</div>
+				)}
+
+				<!-- Sentinel for infinite scroll on mobile -->
+				{hasMore && <div id="scroll-sentinel" aria-hidden="true"></div>}
+			</section>
+		</main>
+		<Footer />
+
+		<!-- Client-side pagination script -->
+		<script define:vars={{ DIRECTUS_URL, PAGE_SIZE, totalCount }}>
+			(function () {
+				const grid = document.getElementById('news-grid');
+				const btn = document.getElementById('load-more-btn');
+				const spinner = document.getElementById('load-more-spinner');
+				const sentinel = document.getElementById('scroll-sentinel');
+				const loadMoreWrap = document.getElementById('load-more-wrap');
+
+				if (!grid || !btn) return;
+
+				let offset = PAGE_SIZE;
+				let loading = false;
+				const total = totalCount;
+
+				function formatDate(dateStr) {
+					if (!dateStr) return null;
+					return new Date(dateStr).toLocaleDateString('pt-BR', {
+						day: '2-digit',
+						month: 'short',
+						year: 'numeric',
+					});
+				}
+
+				function createCard(noticia) {
+					const thumb = noticia.image
+						? `${DIRECTUS_URL}/assets/${noticia.image}?width=600&height=400&fit=cover`
+						: null;
+					const dataStr = formatDate(noticia.data_publicacao);
+
+					const card = document.createElement('a');
+					card.href = `/noticias/${noticia.slug}`;
+					card.className = 'news-card';
+
+					card.innerHTML = `
+						<div class="news-card-img-wrap">
+							${thumb
+								? `<img src="${thumb}" alt="${noticia.titulo}" class="news-card-img" width="600" height="400" loading="lazy" decoding="async" />`
+								: `<div class="news-card-img-placeholder"><span>C</span></div>`
+							}
+						</div>
+						<div class="news-card-body">
+							${dataStr ? `<time class="news-card-date">${dataStr}</time>` : ''}
+							<h2 class="news-card-title">${noticia.titulo}</h2>
+							${noticia.resumo ? `<p class="news-card-excerpt">${noticia.resumo}</p>` : ''}
+						</div>
+					`;
+
+					return card;
+				}
+
+				async function loadMore() {
+					if (loading || offset >= total) return;
+					loading = true;
+
+					btn.hidden = true;
+					spinner.hidden = false;
+
+					try {
+						const url = `${DIRECTUS_URL}/items/noticias?filter[status][_eq]=published&fields=id,titulo,slug,resumo,image,data_publicacao&sort=-data_publicacao&limit=${PAGE_SIZE}&offset=${offset}`;
+						const res = await fetch(url);
+						const json = await res.json();
+						const items = json.data || [];
+
+						for (const item of items) {
+							grid.appendChild(createCard(item));
+						}
+
+						offset += items.length;
+
+						if (offset >= total || items.length < PAGE_SIZE) {
+							// No more items
+							if (loadMoreWrap) loadMoreWrap.hidden = true;
+							if (sentinel) sentinel.remove();
+						} else {
+							btn.hidden = false;
+						}
+					} catch (err) {
+						console.error('Error loading more news:', err);
+						btn.hidden = false;
+					} finally {
+						spinner.hidden = true;
+						loading = false;
+					}
+				}
+
+				// Button click
+				btn.addEventListener('click', loadMore);
+
+				// Infinite scroll on mobile via IntersectionObserver
+				if (sentinel && 'IntersectionObserver' in window) {
+					const isMobile = () => window.innerWidth < 768;
+
+					const observer = new IntersectionObserver(
+						(entries) => {
+							if (entries[0].isIntersecting && isMobile()) {
+								loadMore();
+							}
+						},
+						{ rootMargin: '200px' }
+					);
+
+					observer.observe(sentinel);
+				}
+			})();
+		</script>
+	</body>
+</html>
+
+<style>
+	:root {
+		--bg-primary: #FFFFFF;
+		--bg-surface: #F7F9FC;
+		--border-subtle: #E2E8F0;
+		--accent-red: #E31937;
+		--accent-red-glow: #FF2D4B;
+		--text-primary: #1A1A2E;
+		--text-secondary: #4A5568;
+		--text-muted: #718096;
+	}
+
+	/* === Breadcrumb === */
+	.breadcrumb {
+		background: var(--bg-surface);
+		border-bottom: 1px solid var(--border-subtle);
+		padding: 0.75rem 0;
+	}
+
+	.breadcrumb-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.breadcrumb-container a {
+		color: var(--text-muted);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.breadcrumb-container a:hover {
+		color: var(--accent-red);
+	}
+
+	.breadcrumb-sep { color: var(--border-subtle); }
+
+	.breadcrumb-container [aria-current="page"] {
+		color: var(--text-primary);
+		font-weight: 500;
+	}
+
+	/* === Header === */
+	.news-header {
+		background: var(--bg-primary);
+		padding: 2.5rem 0 2rem;
+	}
+
+	.news-header-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.news-header-content {
+			padding: 0 2rem;
+		}
+	}
+
+	.news-header-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 800;
+		font-size: clamp(2rem, 5vw, 3rem);
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		line-height: 1;
+		color: var(--text-primary);
+		margin: 0 0 0.5rem;
+	}
+
+	.news-header-title::after {
+		content: '';
+		display: block;
+		width: 48px;
+		height: 3px;
+		background: var(--accent-red);
+		margin-top: 0.75rem;
+		border-radius: 2px;
+	}
+
+	.news-header-sub {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 1rem;
+		color: var(--text-muted);
+		margin: 1rem 0 0;
+	}
+
+	/* === Grid === */
+	.news-grid-section {
+		background: var(--bg-primary);
+		padding: 0 0 4rem;
+	}
+
+	.news-grid {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
+	@media (min-width: 640px) {
+		.news-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.news-grid {
+			grid-template-columns: repeat(3, 1fr);
+			padding: 0 2rem;
+		}
+	}
+
+	/* === Card === */
+	.news-card {
+		display: flex;
+		flex-direction: column;
+		border: 1px solid var(--border-subtle);
+		border-radius: 6px;
+		overflow: hidden;
+		text-decoration: none;
+		color: inherit;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.news-card:hover {
+		border-color: var(--accent-red);
+		box-shadow: 0 4px 20px rgba(227, 25, 55, 0.08);
+	}
+
+	.news-card-img-wrap {
+		position: relative;
+		aspect-ratio: 3 / 2;
+		background: var(--bg-surface);
+		overflow: hidden;
+	}
+
+	.news-card-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.3s ease;
+	}
+
+	.news-card:hover .news-card-img {
+		transform: scale(1.03);
+	}
+
+	.news-card-img-placeholder {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--bg-surface);
+	}
+
+	.news-card-img-placeholder span {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 800;
+		font-size: 3rem;
+		color: var(--border-subtle);
+	}
+
+	.news-card-body {
+		padding: 1.25rem;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.news-card-date {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: var(--accent-red);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin-bottom: 0.5rem;
+	}
+
+	.news-card-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1.1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.01em;
+		line-height: 1.25;
+		color: var(--text-primary);
+		margin: 0 0 0.5rem;
+	}
+
+	.news-card-excerpt {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		line-height: 1.6;
+		margin: 0;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	/* === Load More === */
+	.news-load-more {
+		max-width: 1200px;
+		margin: 2.5rem auto 0;
+		padding: 0 1.5rem;
+		display: flex;
+		justify-content: center;
+	}
+
+	.news-load-more-btn {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 0.95rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--accent-red);
+		background: transparent;
+		border: 2px solid var(--accent-red);
+		border-radius: 4px;
+		padding: 0.85rem 2.5rem;
+		cursor: pointer;
+		transition: background 0.2s ease, color 0.2s ease;
+	}
+
+	.news-load-more-btn:hover {
+		background: var(--accent-red);
+		color: #FFFFFF;
+	}
+
+	.news-load-more-spinner {
+		display: flex;
+		justify-content: center;
+		padding: 1rem;
+	}
+
+	.spinner {
+		width: 28px;
+		height: 28px;
+		border: 3px solid var(--border-subtle);
+		border-top-color: var(--accent-red);
+		border-radius: 50%;
+		animation: spin 0.7s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	#scroll-sentinel {
+		height: 1px;
+		width: 100%;
+	}
+
+	/* Hide button on mobile (infinite scroll takes over) */
+	@media (max-width: 767px) {
+		.news-load-more-btn {
+			display: none;
+		}
+	}
+
+	/* === Reduced motion === */
+	@media (prefers-reduced-motion: reduce) {
+		.news-card,
+		.news-card-img,
+		.breadcrumb-container a,
+		.news-load-more-btn,
+		.spinner {
+			transition: none;
+			animation: none;
+		}
+	}
+</style>

@@ -1,0 +1,164 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e5]:
+      - link "Hipermais - Página inicial" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Logo Hipermais" [ref=e7]
+      - generic [ref=e8]:
+        - link "Facebook" [ref=e9] [cursor=pointer]:
+          - /url: https://www.facebook.com/hipermaisatacadoevarejo
+          - img [ref=e10]
+        - link "Instagram" [ref=e12] [cursor=pointer]:
+          - /url: https://www.instagram.com/hipermaisatacadoevarejo
+          - img [ref=e13]
+        - link "YouTube" [ref=e16] [cursor=pointer]:
+          - /url: https://www.youtube.com/@hipermaisatacadoevarejo
+          - img [ref=e17]
+    - navigation [ref=e24]:
+      - link "Home" [ref=e25] [cursor=pointer]:
+        - /url: /
+      - link "Quem Somos" [ref=e26] [cursor=pointer]:
+        - /url: /quem-somos
+      - link "Radar de Ofertas" [ref=e27] [cursor=pointer]:
+        - /url: https://radardeofertas.hipermaisatacadoevarejo.com.br/
+      - link "Nossas Lojas" [ref=e28] [cursor=pointer]:
+        - /url: /nossas-lojas
+      - link "Tabloide" [ref=e29] [cursor=pointer]:
+        - /url: /tabloides
+  - main [ref=e30]:
+    - img "Banner" [ref=e36]
+    - generic [ref=e37]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - heading "Tudo que você precisa no atacado" [level=2] [ref=e44]
+          - paragraph [ref=e45]: Economia, variedade e conveniência para o seu negócio
+        - generic [ref=e46]:
+          - article [ref=e47]:
+            - generic: "01"
+            - img [ref=e49]
+            - heading "Preço de atacado" [level=3] [ref=e54]
+            - paragraph [ref=e55]: Preços competitivos para o seu negócio crescer sem comprometer a margem.
+          - article [ref=e56]:
+            - generic: "02"
+            - img [ref=e58]
+            - heading "Grande variedade" [level=3] [ref=e63]
+            - paragraph [ref=e64]: Produtos para revendas, restaurantes, mercadinhos e muito mais.
+          - article [ref=e65]:
+            - generic: "03"
+            - img [ref=e67]
+            - heading "Lojas acessíveis" [level=3] [ref=e73]
+            - paragraph [ref=e74]: Unidades próximas para você comprar com facilidade e sem perder tempo.
+          - article [ref=e75]:
+            - generic: "04"
+            - img [ref=e77]
+            - heading "Ofertas semanais" [level=3] [ref=e82]
+            - paragraph [ref=e83]: Tabloides com promoções toda semana para você aproveitar o melhor preço.
+      - link "Radar de Ofertas – Receba as melhores promoções" [ref=e88] [cursor=pointer]:
+        - /url: https://radardeofertas.hipermaisatacadoevarejo.com.br/
+        - generic [ref=e102]:
+          - paragraph [ref=e103]: Fique por dentro das promoções
+          - paragraph [ref=e104]: Radar de Ofertas
+        - generic [ref=e106]:
+          - text: Acessar agora
+          - img [ref=e107]
+      - generic [ref=e114]:
+        - generic [ref=e117]:
+          - img "Loja Shopping Estação" [ref=e119]
+          - generic [ref=e121]:
+            - paragraph [ref=e122]: Loja Shopping Estação
+            - generic [ref=e123]:
+              - button "Ver loja 1" [ref=e124]
+              - button "Ver loja 2" [ref=e125]
+              - button "Ver loja 3" [ref=e126]
+              - button "Ver loja 4" [ref=e127]
+              - button "Ver loja 5" [ref=e128]
+              - button "Ver loja 6" [ref=e129]
+              - button "Ver loja 7" [ref=e130]
+              - button "Ver loja 8" [ref=e131]
+              - button "Ver loja 9" [ref=e132]
+              - button "Ver loja 10" [ref=e133]
+        - generic [ref=e134]:
+          - paragraph [ref=e135]: Nossa rede
+          - generic [ref=e136]: "10"
+          - heading "Lojas para te atender" [level=2] [ref=e137]
+          - paragraph [ref=e138]: Encontre a unidade mais próxima e aproveite os nossos preços de atacado.
+          - link "Encontrar loja mais próxima" [ref=e139] [cursor=pointer]:
+            - /url: /nossas-lojas
+            - text: Encontrar loja mais próxima
+            - img [ref=e140]
+      - generic [ref=e147]:
+        - heading "Pronto para comprar no atacado?" [level=2] [ref=e148]
+        - paragraph [ref=e149]: Aproveite os melhores preços e condições especiais para o seu negócio. Consulte nossas ofertas ou entre em contato.
+        - link "Ver tabloides de ofertas" [ref=e151] [cursor=pointer]:
+          - /url: /tabloides
+          - text: Ver tabloides de ofertas
+          - img [ref=e152]
+      - link "Trabalhe Conosco – Faça parte do nosso time" [ref=e158] [cursor=pointer]:
+        - /url: /trabalhe-conosco
+        - generic [ref=e159]:
+          - img "Hipermais Varejo e Atacado" [ref=e161]
+          - generic [ref=e162]:
+            - generic [ref=e163]:
+              - paragraph [ref=e164]: Trabalhe Conosco
+              - paragraph [ref=e165]: Faça parte do nosso time!
+              - generic [ref=e167]: Cadastre-se
+            - img [ref=e169]
+  - contentinfo [ref=e178]:
+    - generic [ref=e179]:
+      - generic [ref=e180]:
+        - generic [ref=e181]:
+          - img "Logo Hipermais" [ref=e182]
+          - paragraph [ref=e183]: Atacado e varejo com qualidade e preços imbatíveis em Joinville e região.
+          - generic [ref=e184]:
+            - link "Facebook" [ref=e185] [cursor=pointer]:
+              - /url: https://www.facebook.com/hipermaisatacadoevarejo
+              - img [ref=e186]
+            - link "Instagram" [ref=e188] [cursor=pointer]:
+              - /url: https://www.instagram.com/hipermaisatacadoevarejo
+              - img [ref=e189]
+            - link "YouTube" [ref=e192] [cursor=pointer]:
+              - /url: https://www.youtube.com/@hipermaisatacadoevarejo
+              - img [ref=e193]
+        - generic [ref=e196]:
+          - heading "Institucional" [level=3] [ref=e197]
+          - list [ref=e198]:
+            - listitem [ref=e199]:
+              - link "Quem Somos" [ref=e200] [cursor=pointer]:
+                - /url: /quem-somos
+            - listitem [ref=e201]:
+              - link "Radar de Ofertas" [ref=e202] [cursor=pointer]:
+                - /url: https://radardeofertas.hipermaisatacadoevarejo.com.br/
+            - listitem [ref=e203]:
+              - link "Transparência" [ref=e204] [cursor=pointer]:
+                - /url: /transparencia
+        - generic [ref=e205]:
+          - heading "Políticas" [level=3] [ref=e206]
+          - list [ref=e207]:
+            - listitem [ref=e208]:
+              - link "Política de Trocas e Devoluções" [ref=e209] [cursor=pointer]:
+                - /url: /politica-de-trocas-e-devolucoes
+            - listitem [ref=e210]:
+              - link "Formas de Entrega" [ref=e211] [cursor=pointer]:
+                - /url: /formas-de-entrega
+            - listitem [ref=e212]:
+              - link "Política de Privacidade" [ref=e213] [cursor=pointer]:
+                - /url: /politica-de-privacidade
+            - listitem [ref=e214]:
+              - link "Formas de Pagamento" [ref=e215] [cursor=pointer]:
+                - /url: /formas-de-pagamento
+        - generic [ref=e216]:
+          - heading "Serviços" [level=3] [ref=e217]
+          - list [ref=e218]:
+            - listitem [ref=e219]:
+              - link "Nossas Lojas" [ref=e220] [cursor=pointer]:
+                - /url: /nossas-lojas
+            - listitem [ref=e221]:
+              - link "Tabloide" [ref=e222] [cursor=pointer]:
+                - /url: /tabloides
+            - listitem [ref=e223]:
+              - link "Trabalhe Conosco" [ref=e224] [cursor=pointer]:
+                - /url: /trabalhe-conosco
+            - listitem [ref=e225]:
+              - link "Fale Conosco" [ref=e226] [cursor=pointer]:
+                - /url: /fale-conosco
+      - paragraph [ref=e228]: © 2026 Hipermais Atacado e Varejo. Todos os direitos reservados.

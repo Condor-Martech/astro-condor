@@ -1,0 +1,476 @@
+---
+interface Benefit {
+  icon: string;
+  label: string;
+}
+
+const benefits: Benefit[] = [
+  { icon: 'M12 2a10 10 0 100 20 10 10 0 000-20zm1 14.93V18h-2v-1.07A8 8 0 014 9h2a6 6 0 005 5.92v-1.2l-2.7-2.7 1.4-1.42L12 11.9l2.3-2.3 1.4 1.42L13 13.72v1.2A6 6 0 0018 9h2a8 8 0 01-7 7.93z', label: 'Dinheiro de volta' },
+  { icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4', label: 'Descontos exclusivos' },
+  { icon: 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z', label: 'Benefícios especiais' },
+  { icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z', label: 'Participação em campanhas promocionais' },
+];
+---
+
+<section class="clube" id="clube-condor" aria-labelledby="clube-heading">
+  <!-- Background video -->
+  <div class="clube-video-wrap" aria-hidden="true">
+    <video
+      class="clube-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E"
+    >
+      <source src="https://premia.condor.com.br/videos/section-six-bg-phone.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <!-- Content wrapper -->
+  <div class="clube-wrapper">
+    <div class="clube-content">
+
+      <!-- Left column -->
+      <div class="clube-left">
+        <span class="clube-chip">
+          <img src="https://premia.condor.com.br/images/smile.svg" alt="" class="clube-chip-icon" width="16" height="16" aria-hidden="true" />
+          Clube Condor
+        </span>
+
+        <h2 class="clube-title" id="clube-heading">
+          Clube Condor: ainda não faz parte?
+        </h2>
+        <p class="clube-desc">Com o Clube Condor, você aproveita:</p>
+
+        <ul class="clube-list" role="list">
+          {benefits.map((b) => (
+            <li class="clube-item">
+              <span class="clube-item-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d={b.icon} />
+                </svg>
+              </span>
+              <span class="clube-item-text">{b.label}</span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Clients + Selo -->
+        <div class="clube-images">
+          <img
+            src="https://premia.condor.com.br/images/section-six-clients.webp"
+            alt="Mais de 5 mil clientes já economizam todos os dias"
+            class="clube-clients-img"
+            width="193"
+            height="100"
+            loading="lazy"
+          />
+          <img
+            src="https://premia.condor.com.br/images/section-six-selo.webp"
+            alt="Selo Clube Condor"
+            class="clube-selo-img"
+            width="120"
+            height="80"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="clube-right">
+        <div class="clube-qr-card">
+          <div class="clube-qr-img-wrap">
+            <img
+              src="https://premia.condor.com.br/images/section-six-qrcode.webp"
+              alt="QR Code para download do aplicativo Clube Condor"
+              class="clube-qr-img"
+              width="120"
+              height="120"
+              loading="lazy"
+            />
+          </div>
+          <div class="clube-qr-caption">
+            <p class="clube-qr-text">Baixe agora o aplicativo do Clube Condor</p>
+          </div>
+        </div>
+
+        <div class="clube-badges">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.bankeiro.zon&hl=pt_BR"
+            target="_blank"
+            rel="noopener"
+            class="clube-badge-link"
+            aria-label="Baixar na Google Play"
+          >
+            <img
+              src="https://premia.condor.com.br/images/google-play.svg"
+              alt="Google Play"
+              class="clube-badge-img"
+              width="89"
+              height="26"
+              loading="lazy"
+            />
+          </a>
+          <a
+            href="https://apps.apple.com/br/app/novo-app-clube-condor/id6446367529"
+            target="_blank"
+            rel="noopener"
+            class="clube-badge-link"
+            aria-label="Baixar na App Store"
+          >
+            <img
+              src="https://premia.condor.com.br/images/app-store.svg"
+              alt="App Store"
+              class="clube-badge-img"
+              width="89"
+              height="26"
+              loading="lazy"
+            />
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* =========================================================
+     Clube Condor — Adapted from premia.condor.com.br pattern
+     Layout: flex row (desktop) → column (mobile)
+     Aligned to project tokens (Barlow Condensed + DM Sans)
+     ========================================================= */
+
+  .clube {
+    --clube-bg: #030e32;
+    --clube-glass: hsla(0, 0%, 100%, 0.15);
+    --clube-caption-from: #13318e;
+    --clube-caption-to: #3566b6;
+    --text-primary: #FFFFFF;
+    --text-secondary: #c1d9ed;
+
+    position: relative;
+    background: var(--clube-bg);
+    overflow: hidden;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  /* ---- Background video ---- */
+  .clube-video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .clube-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+  }
+
+  /* ---- Wrapper ---- */
+  .clube-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .clube-wrapper {
+      padding: 5rem 2.5rem 4rem;
+    }
+  }
+
+  /* ---- Two-column flex layout ----
+     Desktop: row, items anchored to bottom (flex-end)
+     Mobile:  column, natural stacking */
+  .clube-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .clube-content {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 4rem;
+    }
+  }
+
+  /* ---- Left column ---- */
+  .clube-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
+
+  /* ---- Right column ---- */
+  .clube-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .clube-right {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: auto;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ---- Chip ---- */
+  .clube-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    background: hsla(0, 0%, 100%, 0.08);
+    border: 1px solid hsla(0, 0%, 100%, 0.12);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+  }
+
+  .clube-chip-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    stroke: var(--text-secondary);
+  }
+
+  /* ---- Title — gradient text (3-layer blend from Premia) ---- */
+  .clube-title {
+    margin: 1.5rem 0 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.03rem;
+    background:
+      radial-gradient(97.84% 92.24% at 0 -8.66%, #fff 0, transparent 100%),
+      linear-gradient(74deg, #c1d9ed 13%, #fff 27%, #d5efff 47%, #c1d6ed 54%, #c0d5f6 78%, #d6ecff 87%, #aec7e9 96%),
+      linear-gradient(180deg, #ffe572 16%, #ffd13c 58%, #ffe572);
+    background-blend-mode: overlay, normal, normal;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ---- Description ---- */
+  .clube-desc {
+    margin: 1rem 0 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    max-width: 440px;
+  }
+
+  @media (max-width: 767px) {
+    .clube-desc {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  }
+
+  /* ---- Benefits list (vertical flex, like Premia) ---- */
+  .clube-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .clube-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .clube-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    aspect-ratio: 1;
+  }
+
+  .clube-item-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--text-secondary);
+  }
+
+  .clube-item-text {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 767px) {
+    .clube-item-text {
+      font-size: 0.875rem;
+    }
+  }
+
+  /* ---- Clients + Selo images ----
+     Desktop: flex row inline with left content
+     Mobile:  selo only, absolutely pinned top-right of section */
+  .clube-images {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .clube-clients-img {
+    max-width: 193px;
+    height: auto;
+    aspect-ratio: 193 / 100;
+  }
+
+  .clube-selo-img {
+    max-width: 100px;
+    height: auto;
+    aspect-ratio: 120 / 80;
+  }
+
+  @media (min-width: 768px) {
+    .clube-selo-img {
+      max-width: 120px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .clube-images {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 0;
+    }
+
+    .clube-clients-img {
+      display: none;
+    }
+
+    .clube-selo-img {
+      max-width: 72px;
+    }
+  }
+
+  /* ---- QR Code card (glassmorphism, desktop only) ---- */
+  .clube-qr-card {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    background: var(--clube-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    overflow: hidden;
+    max-width: 160px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (min-width: 768px) {
+    .clube-qr-card {
+      display: flex;
+    }
+  }
+
+  .clube-qr-img-wrap {
+    padding: 1.5rem 1.5rem 0.75rem;
+  }
+
+  .clube-qr-img {
+    width: 108px;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .clube-qr-caption {
+    background: linear-gradient(82deg, var(--clube-caption-from) 27%, var(--clube-caption-to) 132%);
+    padding: 0.6rem 1rem 0.75rem;
+    width: 100%;
+  }
+
+  .clube-qr-text {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  /* ---- App store badges (stacked vertical) ---- */
+  .clube-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .clube-badge-link {
+    display: block;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .clube-badge-link:hover {
+    opacity: 0.8;
+  }
+
+  .clube-badge-link:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  .clube-badge-img {
+    width: 110px;
+    height: auto;
+  }
+
+  @media (max-width: 767px) {
+    .clube-badge-img {
+      width: 100px;
+    }
+  }
+
+  /* ---- Reduced motion ---- */
+  @media (prefers-reduced-motion: reduce) {
+    .clube-video {
+      display: none;
+    }
+
+    .clube-badge-link {
+      transition: none;
+    }
+  }
+</style>

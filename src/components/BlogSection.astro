@@ -1,0 +1,435 @@
+---
+const BLOG_URL = 'https://blog.condor.com.br';
+const WP_API = `${BLOG_URL}/wp-json/wp/v2`;
+
+interface WPPost {
+  id: number;
+  slug: string;
+  title: string;
+  content: string;
+  date: string;
+  link: string;
+  featured_media: number;
+  thumbnail: string;
+  medium: string;
+  large: string;
+  full: string;
+}
+
+interface BlogPost {
+  title: string;
+  excerpt: string;
+  image: string;
+  url: string;
+  date: string;
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/&[^;]+;/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function extractExcerpt(content: string, maxLen = 120): string {
+  const text = stripHtml(content);
+  if (text.length <= maxLen) return text;
+  return text.slice(0, maxLen).replace(/\s\S*$/, '') + '...';
+}
+
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+let posts: BlogPost[] = [];
+
+try {
+  const res = await fetch(
+    `${WP_API}/posts?per_page=4&orderby=date&order=desc`
+  );
+
+  if (res.ok) {
+    const wpPosts: WPPost[] = await res.json();
+
+    posts = wpPosts.map((p) => ({
+      title: p.title,
+      excerpt: extractExcerpt(p.content),
+      image: p.large || p.full || p.medium || p.thumbnail,
+      url: p.link,
+      date: p.date,
+    }));
+  }
+} catch (e) {
+  console.error('Failed to fetch blog posts:', e);
+}
+---
+
+{posts.length > 0 && (
+  <section class="blog-section" aria-label="Blog Condor">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+    <div class="blog-container">
+      <!-- Section Header -->
+      <div class="blog-header">
+        <div class="blog-header-label">
+          <span class="blog-header-line"></span>
+          <span class="blog-header-tag">Blog</span>
+        </div>
+        <h2 class="blog-header-title">Últimas novidades</h2>
+        <p class="blog-header-subtitle">
+          Dicas, tendências e novidades do mundo Condor
+        </p>
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="blog-grid">
+        {posts.map((post, i) => (
+          <a
+            href={post.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="blog-card"
+            style={`--delay: ${i * 0.08}s`}
+          >
+            <div class="blog-card-image-wrap">
+              <img
+                src={post.image}
+                alt={post.title}
+                class="blog-card-image"
+                loading="lazy"
+                width="800"
+                height="500"
+              />
+            </div>
+
+            <div class="blog-card-body">
+              <time class="blog-card-date" datetime={post.date}>
+                {formatDate(post.date)}
+              </time>
+              <h3 class="blog-card-title">{post.title}</h3>
+              <span class="blog-card-link">
+                Leia mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="blog-card-arrow">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA to blog -->
+      <div class="blog-cta-wrap">
+        <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" class="blog-cta">
+          Ver todas as postagens
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="blog-cta-icon">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .blog-section {
+    --condor-blue: #003B8E;
+    --condor-blue-deep: #002456;
+    --condor-red: #E31937;
+    --condor-red-glow: #FF2D4B;
+    --condor-slate: #64748B;
+    --condor-surface: #F7F9FC;
+
+    font-family: 'DM Sans', system-ui, sans-serif;
+    padding: 4rem 0 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle diagonal texture */
+  .blog-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 40px,
+        rgba(0, 59, 142, 0.015) 40px,
+        rgba(0, 59, 142, 0.015) 41px
+      );
+    pointer-events: none;
+  }
+
+  .blog-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .blog-container {
+      padding: 0 2rem;
+    }
+  }
+
+  /* === Header === */
+  .blog-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .blog-header-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-header-line {
+    width: 32px;
+    height: 3px;
+    background: var(--condor-red);
+    border-radius: 2px;
+  }
+
+  .blog-header-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--condor-red);
+  }
+
+  .blog-header-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3rem);
+    text-transform: uppercase;
+    color: var(--condor-blue-deep);
+    line-height: 0.95;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .blog-header-subtitle {
+    color: var(--condor-slate);
+    font-size: 0.95rem;
+    margin: 0;
+    max-width: 400px;
+  }
+
+  /* === Grid === */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  /* === Card === */
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 2px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: card-in 0.5s ease both;
+    animation-delay: var(--delay);
+    position: relative;
+  }
+
+  .blog-card:focus-visible {
+    outline: 2px solid var(--condor-blue);
+    outline-offset: 2px;
+  }
+
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 12px 40px rgba(0, 36, 86, 0.12),
+      0 2px 8px rgba(0, 36, 86, 0.06);
+  }
+
+  /* Bottom accent line on hover */
+  .blog-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--condor-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .blog-card:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* === Image === */
+  .blog-card-image-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+  }
+
+  .blog-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .blog-card:hover .blog-card-image {
+    transform: scale(1.06);
+  }
+
+  .blog-card-category {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--condor-red);
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  }
+
+  /* === Body === */
+  .blog-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .blog-card-date {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--condor-slate);
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    color: var(--condor-blue-deep);
+    margin: 0 0 0.5rem;
+    transition: color 0.2s ease;
+  }
+
+  .blog-card:hover .blog-card-title {
+    color: var(--condor-blue);
+  }
+
+  .blog-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--condor-red);
+    transition: gap 0.3s ease;
+  }
+
+  .blog-card:hover .blog-card-link {
+    gap: 0.7rem;
+  }
+
+  .blog-card-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card:hover .blog-card-arrow {
+    transform: translateX(2px);
+  }
+
+  /* === CTA wrap === */
+  .blog-cta-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+
+  .blog-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 2rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    color: var(--condor-blue-deep);
+    border: 2px solid var(--condor-blue-deep);
+    background: transparent;
+    transition: all 0.3s ease;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%);
+    padding-right: 2.5rem;
+  }
+
+  .blog-cta:hover {
+    background: var(--condor-blue-deep);
+    color: white;
+  }
+
+  .blog-cta-icon {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-cta:hover .blog-cta-icon {
+    transform: translate(2px, -2px);
+  }
+</style>

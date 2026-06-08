@@ -1,0 +1,321 @@
+---
+
+---
+
+<a
+  href="https://radardeofertas.condor.com.br/"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="rdo"
+  aria-label="Radar de Ofertas – Receba as melhores promoções"
+>
+  <!-- Radar graphic -->
+  <div class="rdo-radar-col">
+    <div class="rdo-radar">
+      <div class="rdo-ring" style="--i:0"></div>
+      <div class="rdo-ring" style="--i:1"></div>
+      <div class="rdo-ring" style="--i:2"></div>
+      <div class="rdo-outer-ring"></div>
+      <div class="rdo-sweep"></div>
+      <div class="rdo-cross rdo-cross-h"></div>
+      <div class="rdo-cross rdo-cross-v"></div>
+      <div class="rdo-center"></div>
+      <div class="rdo-blip" style="--bx:62%;--by:28%;--bd:0.3s"></div>
+      <div class="rdo-blip" style="--bx:26%;--by:58%;--bd:1.1s"></div>
+      <div class="rdo-blip" style="--bx:72%;--by:66%;--bd:2s"></div>
+    </div>
+  </div>
+
+  <!-- Text -->
+  <div class="rdo-text">
+    <p class="rdo-eyebrow">Fique por dentro das promoções</p>
+    <p class="rdo-title">Radar de Ofertas</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="rdo-cta-col">
+    <span class="rdo-cta">
+      Acessar agora
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+        <path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </span>
+  </div>
+</a>
+
+<style>
+  .rdo {
+    --condor-blue-deep: #002456;
+    --condor-red: #E31937;
+    --condor-red-glow: #FF2D4B;
+    --rdo-bg: #efeae2;
+    --rdo-ink: #111827;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 2px;
+    overflow: hidden;
+    background-color: var(--rdo-bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' fill='none'%3E%3Cg opacity='.06' stroke='%23111827' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Cpath d='M25 30h10M30 25v10'/%3E%3Crect x='70' y='20' width='16' height='12' rx='2'/%3E%3Cpath d='M73 26h10'/%3E%3Cpath d='M130 25l8 10h-16z'/%3E%3Ccircle cx='180' cy='30' r='6'/%3E%3Cpath d='M177 30l2 2 4-4'/%3E%3Crect x='220' y='22' width='14' height='14' rx='7'/%3E%3Cpath d='M227 22v7h-7'/%3E%3Ccircle cx='50' cy='100' r='8'/%3E%3Cpath d='M46 100h8'/%3E%3Crect x='100' y='90' width='20' height='16' rx='3'/%3E%3Cpath d='M100 96l10 7 10-7'/%3E%3Cpath d='M170 92h12v16h-12zM173 92v16M179 92v16'/%3E%3Ccircle cx='230' cy='100' r='9'/%3E%3Cpath d='M226 97l4 4 5-6'/%3E%3Cpath d='M20 170l12-8v16z'/%3E%3Crect x='80' y='162' width='16' height='16' rx='2'/%3E%3Cpath d='M84 170h8M88 166v8'/%3E%3Ccircle cx='150' cy='170' r='10'/%3E%3Cpath d='M145 170h10M150 165v10'/%3E%3Crect x='200' y='164' width='18' height='12' rx='2'/%3E%3Cpath d='M204 170h10'/%3E%3Ccircle cx='40' cy='230' r='7'/%3E%3Cpath d='M37 230l3 3 4-5'/%3E%3Cpath d='M110 224h14v12h-14z'/%3E%3Cpath d='M114 230h6'/%3E%3Ccircle cx='180' cy='230' r='8'/%3E%3Cpath d='M176 227l4 4M184 227l-4 4'/%3E%3Crect x='230' y='224' width='12' height='12' rx='6'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 260px;
+    background-repeat: repeat;
+    text-decoration: none;
+    color: var(--rdo-ink);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .rdo:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  .rdo:focus-visible {
+    outline: 2px solid var(--condor-red);
+    outline-offset: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .rdo {
+      flex-direction: row;
+    }
+  }
+
+  /* === Radar column === */
+  .rdo-radar-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.75rem 0 1rem;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .rdo-radar-col {
+      padding: 1rem 0;
+      width: 176px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rdo-radar-col {
+      width: 208px;
+    }
+  }
+
+  /* === Radar graphic === */
+  .rdo-radar {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
+  @media (min-width: 768px) {
+    .rdo-radar { width: 114px; height: 114px; }
+  }
+
+  @media (min-width: 1024px) {
+    .rdo-radar { width: 130px; height: 130px; }
+  }
+
+  /* Pulsing rings */
+  .rdo-ring {
+    position: absolute;
+    inset: 0;
+    border: 3px solid rgba(17, 24, 39, 0.55);
+    border-radius: 50%;
+    animation: rdo-pulse 2.7s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.9s);
+  }
+
+  @keyframes rdo-pulse {
+    0%   { transform: scale(0.25); opacity: 0.8; }
+    100% { transform: scale(1.15); opacity: 0; }
+  }
+
+  /* Static outer ring */
+  .rdo-outer-ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(17, 24, 39, 0.15);
+    border-radius: 50%;
+  }
+
+  /* Rotating sweep */
+  .rdo-sweep {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(transparent 250deg, rgba(17, 24, 39, 0.08) 300deg, rgba(17, 24, 39, 0.35) 360deg);
+    animation: rdo-spin 2.8s linear infinite;
+  }
+
+  @keyframes rdo-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Crosshairs */
+  .rdo-cross {
+    position: absolute;
+    background: rgba(17, 24, 39, 0.2);
+  }
+
+  .rdo-cross-h {
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    transform: translateY(-50%);
+  }
+
+  .rdo-cross-v {
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    transform: translateX(-50%);
+  }
+
+  /* Center dot */
+  .rdo-center {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--rdo-ink);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(17, 24, 39, 0.4);
+    z-index: 2;
+  }
+
+  /* Blips */
+  .rdo-blip {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    left: var(--bx);
+    top: var(--by);
+    background: var(--rdo-ink);
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(17, 24, 39, 0.5);
+    animation: rdo-blip 3s ease-in-out infinite;
+    animation-delay: var(--bd);
+    z-index: 2;
+  }
+
+  @keyframes rdo-blip {
+    0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.7); }
+    50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.3); }
+  }
+
+  /* === Text column === */
+  .rdo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0 1rem 1rem;
+    text-align: center;
+    gap: 0.125rem;
+  }
+
+  @media (min-width: 768px) {
+    .rdo-text {
+      align-items: flex-start;
+      text-align: left;
+      padding: 0;
+    }
+  }
+
+  .rdo-eyebrow {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--rdo-ink);
+    margin: 0;
+  }
+
+  .rdo-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.5rem, 4.2vw, 2.75rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    color: var(--rdo-ink);
+    margin: 0;
+  }
+
+  /* === CTA column === */
+  .rdo-cta-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1.75rem;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .rdo-cta-col {
+      padding: 0 2rem 0 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rdo-cta-col {
+      padding-right: 3rem;
+    }
+  }
+
+  .rdo-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.4rem 0.9rem;
+    background: white;
+    color: var(--rdo-ink);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    transition: background 0.2s ease, gap 0.2s ease;
+  }
+
+  .rdo:hover .rdo-cta {
+    background: rgba(255, 255, 255, 0.88);
+    gap: 0.55rem;
+  }
+
+  /* === Reduced motion === */
+  @media (prefers-reduced-motion: reduce) {
+    .rdo-ring,
+    .rdo-sweep,
+    .rdo-blip {
+      animation: none;
+    }
+
+    .rdo-ring {
+      opacity: 0.15;
+      transform: scale(0.7);
+    }
+
+    .rdo-blip {
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .rdo,
+    .rdo-cta {
+      transition: none;
+    }
+  }
+</style>

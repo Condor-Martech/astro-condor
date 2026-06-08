@@ -1,0 +1,365 @@
+---
+export const prerender = false;
+
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import '../../styles/global.css';
+
+const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+const { categoria, slug } = Astro.params;
+
+const res = await fetch(
+	`${DIRECTUS_URL}/items/pages?filter[slug][_eq]=${slug}&filter[categoria][_eq]=${categoria}&filter[status][_eq]=published&fields=id,titulo,slug,categoria,content,image&limit=1`
+);
+const { data } = await res.json();
+
+if (!data || data.length === 0) {
+	return Astro.redirect('/404');
+}
+
+const page = data[0];
+const heroImage = page.image
+	? `${DIRECTUS_URL}/assets/${page.image}?width=1200&height=480&fit=cover`
+	: null;
+---
+
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<title>{page.titulo} — Condor</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Breadcrumb -->
+			<nav class="breadcrumb" aria-label="Breadcrumb">
+				<div class="breadcrumb-container">
+					<a href="/">Início</a>
+					<span class="breadcrumb-sep" aria-hidden="true">/</span>
+					<a href={`/${categoria}`}>{categoria.charAt(0).toUpperCase() + categoria.slice(1)}</a>
+					<span class="breadcrumb-sep" aria-hidden="true">/</span>
+					<span aria-current="page">{page.titulo}</span>
+				</div>
+			</nav>
+
+			<!-- Banner -->
+			{heroImage && (
+				<div class="page-banner">
+					<img
+						src={heroImage}
+						alt={page.titulo}
+						class="page-banner-img"
+						width="1200"
+						height="480"
+						loading="eager"
+					/>
+				</div>
+			)}
+
+			<!-- Title -->
+			<header class="page-title-section">
+				<div class="page-title-content">
+					<h1 class="page-title">{page.titulo}</h1>
+				</div>
+			</header>
+
+			<!-- Content -->
+			<article class="page-body">
+				<div class="page-container" set:html={page.content} />
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	/* === Tokens (light theme) === */
+	:root {
+		--bg-primary: #FFFFFF;
+		--bg-surface: #F7F9FC;
+		--border-subtle: #E2E8F0;
+		--accent-red: #E31937;
+		--accent-red-glow: #FF2D4B;
+		--text-primary: #1A1A2E;
+		--text-secondary: #4A5568;
+		--text-muted: #718096;
+	}
+
+	/* === Breadcrumb === */
+	.breadcrumb {
+		background: var(--bg-surface);
+		border-bottom: 1px solid var(--border-subtle);
+		padding: 0.75rem 0;
+	}
+
+	.breadcrumb-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.breadcrumb-container a {
+		color: var(--text-muted);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.breadcrumb-container a:hover {
+		color: var(--accent-red);
+	}
+
+	.breadcrumb-sep {
+		color: var(--border-subtle);
+	}
+
+	.breadcrumb-container [aria-current="page"] {
+		color: var(--text-primary);
+		font-weight: 500;
+	}
+
+	/* === Banner === */
+	.page-banner {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 1.5rem 1.5rem 0;
+	}
+
+	@media (min-width: 768px) {
+		.page-banner {
+			padding: 2rem 2rem 0;
+		}
+	}
+
+	.page-banner-img {
+		width: 100%;
+		height: auto;
+		max-height: 480px;
+		object-fit: cover;
+		border-radius: 6px;
+		display: block;
+	}
+
+	/* === Title === */
+	.page-title-section {
+		background: var(--bg-primary);
+		padding: 2rem 0 0;
+	}
+
+	.page-title-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.page-title-content {
+			padding: 0 2rem;
+		}
+	}
+
+	.page-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 800;
+		font-size: clamp(2rem, 5vw, 3.5rem);
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		line-height: 1;
+		color: var(--text-primary);
+		margin: 0;
+	}
+
+	.page-title::after {
+		content: '';
+		display: block;
+		width: 48px;
+		height: 3px;
+		background: var(--accent-red);
+		margin-top: 1rem;
+		border-radius: 2px;
+	}
+
+	/* === Content Body === */
+	.page-body {
+		background: var(--bg-primary);
+		padding: 3rem 0 4rem;
+	}
+
+	.page-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		color: var(--text-secondary);
+		line-height: 1.75;
+		font-size: 1rem;
+	}
+
+	@media (min-width: 768px) {
+		.page-container {
+			padding: 0 2rem;
+		}
+	}
+
+	/* === Typography from Directus content === */
+	.page-container :global(h2) {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: clamp(1.5rem, 3vw, 2rem);
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+		color: var(--text-primary);
+		margin: 3rem 0 1.25rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	.page-container :global(h3) {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 600;
+		font-size: 1.15rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--accent-red);
+		margin: 2rem 0 0.5rem;
+	}
+
+	.page-container :global(p) {
+		margin: 0 0 1.25rem;
+		max-width: 72ch;
+	}
+
+	.page-container :global(strong) {
+		color: var(--text-primary);
+		font-weight: 500;
+	}
+
+	.page-container :global(a) {
+		color: var(--accent-red);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.page-container :global(a:hover) {
+		color: var(--accent-red-glow);
+	}
+
+	/* === Blockquote === */
+	.page-container :global(blockquote) {
+		margin: 3rem 0;
+		padding: 2rem 2.5rem;
+		border-left: 4px solid var(--accent-red);
+		background: var(--bg-surface);
+		border-radius: 0 4px 4px 0;
+	}
+
+	.page-container :global(blockquote p) {
+		font-size: 1.15rem;
+		font-style: italic;
+		color: var(--text-primary);
+		line-height: 1.7;
+		margin-bottom: 1rem;
+		max-width: none;
+	}
+
+	.page-container :global(blockquote footer) {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 600;
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--text-muted);
+	}
+
+	/* === Lists (nav hub pages) === */
+	.page-container :global(ul) {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 2rem;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.5rem;
+	}
+
+	@media (min-width: 640px) {
+		.page-container :global(ul) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.page-container :global(ul) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.page-container :global(li) {
+		margin: 0;
+	}
+
+	.page-container :global(li a) {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 1rem 1.25rem;
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: 4px;
+		color: var(--text-primary);
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.9rem;
+		font-weight: 500;
+		transition: border-color 0.2s ease, background 0.2s ease;
+	}
+
+	.page-container :global(li a::before) {
+		content: '';
+		display: block;
+		width: 3px;
+		height: 16px;
+		background: var(--accent-red);
+		border-radius: 2px;
+		flex-shrink: 0;
+		transition: height 0.2s ease;
+	}
+
+	.page-container :global(li a:hover) {
+		border-color: var(--accent-red);
+		background: #FFFFFF;
+		color: var(--text-primary);
+	}
+
+	.page-container :global(li a:hover::before) {
+		height: 24px;
+	}
+
+	.page-container :global(li a strong) {
+		color: var(--text-primary);
+	}
+
+	/* === Reduced motion === */
+	@media (prefers-reduced-motion: reduce) {
+		.page-container :global(li a),
+		.page-container :global(li a::before),
+		.breadcrumb-container a {
+			transition: none;
+		}
+	}
+</style>

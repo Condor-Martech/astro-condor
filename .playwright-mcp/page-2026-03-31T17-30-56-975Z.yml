@@ -1,0 +1,373 @@
+- generic [active] [ref=e1]:
+  - 'link "\"Modo Acessível: Use Tab para navegar.\""':
+    - /url: "#clube-condor"
+    - generic [ref=e3] [cursor=pointer]: "\"Modo Acessível: Use Tab para navegar.\""
+  - main [ref=e4]:
+    - 'heading "Condor Premia: Meio Milhão Mensal, R$ 1 Milhão e Supermercado Grátis" [level=1]'
+    - generic [ref=e7]:
+      - link "Logo do Condor" [ref=e8] [cursor=pointer]:
+        - /url: "#campanha-condor-premia"
+        - img "Logo do Condor" [ref=e10]
+      - generic [ref=e12]:
+        - link "Ganhadores" [ref=e13] [cursor=pointer]:
+          - /url: https://campanha.condor.com.br/ganhadores-condor-premia/
+          - generic [ref=e14]: Ganhadores
+        - link "Sobre a campanha" [ref=e15] [cursor=pointer]:
+          - /url: "#sobre-a-campanha"
+          - generic [ref=e16]: Sobre a campanha
+        - link "Prêmios" [ref=e17] [cursor=pointer]:
+          - /url: "#premios"
+          - generic [ref=e18]: Prêmios
+        - link "Como funciona" [ref=e19] [cursor=pointer]:
+          - /url: "#como-funciona"
+          - generic [ref=e20]: Como funciona
+        - link "Clube Condor" [ref=e21] [cursor=pointer]:
+          - /url: "#clube-condor"
+          - generic [ref=e22]: Clube Condor
+        - link "FAQ" [ref=e23] [cursor=pointer]:
+          - /url: "#faq"
+          - generic [ref=e24]: FAQ
+        - link "Regulamento" [ref=e25] [cursor=pointer]:
+          - /url: https://s3.cndr.me/lp-content/regulamento-premia.pdf
+          - generic [ref=e26]: Regulamento
+        - link "Baixar Clube Condor" [ref=e27] [cursor=pointer]:
+          - /url: "#clube-condor"
+          - img [ref=e29]
+          - generic [ref=e30]: Baixar Clube Condor
+    - generic [ref=e32]:
+      - figure [ref=e33]:
+        - img "Scroll down" [ref=e34]
+      - img "Celular mostra ofertas do app Clube Condor com descontos. QR Code e links para baixar no Google Play e App Store." [ref=e37]
+    - generic [ref=e40]:
+      - generic [ref=e42]:
+        - figure [ref=e43]:
+          - img "Ícone de sorriso" [ref=e44]
+        - generic [ref=e45]: Sobre a campanha
+      - heading "Cada visita ao Condor é uma nova chance de ganhar mais prêmios!" [level=2] [ref=e46]
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e54]:
+          - figure [ref=e55]:
+            - img "Ícone de sorriso" [ref=e56]
+          - generic [ref=e57]: Prêmios
+        - heading "A campanha Condor Premia foi criada para valorizar quem faz parte do dia a dia da Rede Condor" [level=2] [ref=e58]
+        - paragraph [ref=e59]: A cada R$ 50,00 em compras, você recebe 1 cupom para participar dos sorteios e concorrer a prêmios que podem mudar a sua vida.
+        - paragraph [ref=e60]: Os prêmios do Condor Premia são entregues de forma prática e segura, por meio da conta digital Z-ON.
+      - generic [ref=e62]:
+        - generic [ref=e64]:
+          - generic [ref=e66]:
+            - figure [ref=e68]:
+              - img "1 ano de supermercado" [ref=e70]
+            - generic [ref=e71]:
+              - heading "1 ano de supermercado grátis" [level=3] [ref=e72]
+              - paragraph [ref=e74]: Com o Condor, você tem 1 ano de compras grátis! Não perca a chance de abastecer sua casa sem gastar nada. Participe agora e concorra!
+          - generic:
+            - generic:
+              - generic:
+                - figure:
+                  - generic:
+                    - img "Vales-compra todos os dias"
+              - generic:
+                - heading "Vales-compra todos os dias" [level=3]
+                - generic:
+                  - paragraph: No Condor Premia, todo dia é dia de ganhar. Os clientes concorrem a vales-compra diários, aumentando ainda mais as chances de ganhar ao longo da campanha. Comprou, ganhou cupom, concorreu. Simples assim.
+          - generic:
+            - generic:
+              - generic:
+                - figure:
+                  - generic:
+                    - img "R$ 500 mil em prêmios todos os meses"
+              - generic:
+                - heading "R$ 500 mil em prêmios todos os meses" [level=3]
+                - generic:
+                  - paragraph: Todos os meses, o Condor Premia realizará um sorteio de R$ 500 mil.
+          - generic:
+            - generic:
+              - generic:
+                - figure:
+                  - generic:
+                    - img "R$ 1 milhão na última semana"
+              - generic:
+                - heading "R$ 1 milhão na última semana" [level=3]
+                - generic:
+                  - paragraph: Na grande reta final, o Condor Premia realiza o sorteio de R$ 1 milhão, um prêmio especial que marca o encerramento da campanha e pode transformar a vida do ganhador.
+          - generic:
+            - generic:
+              - generic:
+                - figure:
+                  - generic:
+                    - img "Conta digital Z-ON"
+              - generic:
+                - heading "Conta digital Z-ON" [level=3]
+                - generic:
+                  - paragraph: Os valores serão entregues via conta digital Z-ON, garantindo agilidade, segurança e facilidade no uso do prêmio.
+        - generic [ref=e75]:
+          - generic:
+            - button "Slide anterior" [disabled]
+            - button "Proximo slide" [ref=e76] [cursor=pointer]
+          - generic [ref=e79]: 1 de 5
+    - generic [ref=e81]:
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - figure [ref=e84]:
+            - img "Ícone de sorriso" [ref=e85]
+          - generic [ref=e86]: Passo a passo
+        - heading "Como funciona?" [level=2] [ref=e87]
+      - generic [ref=e91]:
+        - generic [ref=e93]:
+          - link "QR Code para baixar o app Clube Condor no Google Play e Apple Store." [ref=e94] [cursor=pointer]:
+            - /url: https://cndr.me/novoapp
+            - img "QR Code para baixar o app Clube Condor no Google Play e Apple Store." [ref=e97]
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - generic [ref=e101]: "1"
+              - heading "Cadastre-se no Clube Condor" [level=3] [ref=e103]
+            - paragraph [ref=e105]: Tenha seu cadastro ativo no Clube Condor, com CPF e número de celular válidos.
+            - link "Baixar aplicativo arrow-right" [ref=e106] [cursor=pointer]:
+              - /url: https://cndr.me/novoapp
+              - generic [ref=e107]: Baixar aplicativo
+              - img "arrow-right" [ref=e109]
+        - generic [ref=e111]:
+          - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e114]
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - generic [ref=e118]: "2"
+              - heading "Faça compras no Condor" [level=3] [ref=e120]
+            - paragraph [ref=e122]: Realize compras em qualquer loja da Rede Condor e informe seu CPF no caixa.
+        - generic [ref=e124]:
+          - img "Carteira roxa com moedas e cartão exibindo logo do Clube Condor." [ref=e127]
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - generic [ref=e131]: "3"
+              - heading "Ganhe cupons a cada R$ 50,00" [level=3] [ref=e133]
+            - paragraph [ref=e135]: A cada R$ 50,00 em compras, você recebe 1 cupom para participar da campanha Condor Premia.
+        - generic [ref=e137]:
+          - img "Tela do app Clube Condor com promoções como 50% OFF e Leve 2 Pague 1." [ref=e140]
+          - generic [ref=e141]:
+            - generic [ref=e142]:
+              - generic [ref=e144]: "4"
+              - heading "Você está participando!" [level=3] [ref=e146]
+            - paragraph [ref=e148]: "Após a confirmação, você passa a concorrer automaticamente:"
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - img "smile" [ref=e155]
+              - paragraph [ref=e156]: Aos vales-compra diários
+            - generic [ref=e157]:
+              - img "smile" [ref=e161]
+              - paragraph [ref=e162]: Ao sorteio mensal no valor de R$ 500 mil
+            - generic [ref=e163]:
+              - img "smile" [ref=e167]
+              - paragraph [ref=e168]: Ao prêmio final de R$ 1 milhão
+            - generic [ref=e169]:
+              - img "smile" [ref=e173]
+              - paragraph [ref=e174]: Ao 1 ano de supermercado grátis
+            - generic [ref=e175]:
+              - img "smile" [ref=e179]
+              - paragraph [ref=e180]: Aos vales-compra diários
+            - generic [ref=e181]:
+              - img "smile" [ref=e185]
+              - paragraph [ref=e186]: Ao sorteio mensal no valor de R$ 500 mil
+            - generic [ref=e187]:
+              - img "smile" [ref=e191]
+              - paragraph [ref=e192]: Ao prêmio final de R$ 1 milhão
+            - generic [ref=e193]:
+              - img "smile" [ref=e197]
+              - paragraph [ref=e198]: Ao 1 ano de supermercado grátis
+      - paragraph [ref=e199]: "* Consulte o regulamento completo para todas as regras, datas e critérios de participação."
+    - generic [ref=e201]:
+      - generic [ref=e202]:
+        - generic [ref=e204]:
+          - figure [ref=e205]:
+            - img "Ícone de sorriso" [ref=e206]
+          - generic [ref=e207]: Condor premia
+        - heading "Cada visita ao Condor é uma nova oportunidade de concorrer a prêmios." [level=2] [ref=e208]
+        - generic [ref=e209]:
+          - paragraph [ref=e210]: Na campanha Condor Premia, a cada R$ 50,00 em compras, o cliente recebe 1 cupom para participar dos sorteios diários, mensais e do grande prêmio final.
+          - paragraph [ref=e211]: A campanha acontece durante todo o período promocional e é exclusiva para clientes cadastrados no Clube Condor.
+          - paragraph [ref=e212]: O Condor gosta de surpreender — e de premiar. O Condor premia você hoje, amanhã e durante toda a campanha.
+      - generic [ref=e213]:
+        - generic [ref=e217]:
+          - figure [ref=e219]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e222]
+          - figure [ref=e224]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e227]
+          - figure [ref=e229]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e232]
+          - figure [ref=e234]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e237]
+          - figure [ref=e239]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e242]
+        - generic [ref=e246]:
+          - figure [ref=e248]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e251]
+          - figure [ref=e253]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e256]
+          - figure [ref=e258]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e261]
+          - figure [ref=e263]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e266]
+          - figure [ref=e268]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e271]
+          - figure [ref=e273]:
+            - img "Pessoa segurando celular mostrando tela de cadastro no Clube Condor." [ref=e276]
+    - generic [ref=e282]:
+      - generic [ref=e283]:
+        - generic [ref=e285]:
+          - figure [ref=e286]:
+            - img "Ícone de sorriso" [ref=e287]
+          - generic [ref=e288]: Clube Condor
+        - generic [ref=e289]:
+          - 'heading "Clube Condor: ainda não faz parte?" [level=2] [ref=e290]'
+          - paragraph [ref=e291]: "Com o Clube Condor, você aproveita:"
+        - list [ref=e293]:
+          - listitem [ref=e294]:
+            - figure [ref=e295]:
+              - img "Ícone representando dinheiro de volta" [ref=e298]
+            - paragraph [ref=e299]: Dinheiro de volta
+          - listitem [ref=e300]:
+            - figure [ref=e301]:
+              - img "Ícone representando descontos exclusivos" [ref=e304]
+            - paragraph [ref=e305]: Descontos exclusivos
+          - listitem [ref=e306]:
+            - figure [ref=e307]:
+              - img "Ícone representando benefícios especiais" [ref=e310]
+            - paragraph [ref=e311]: Benefícios especiais
+          - listitem [ref=e312]:
+            - figure [ref=e313]:
+              - img "Ícone representando campanhas promocionais" [ref=e316]
+            - paragraph [ref=e317]: Participação em campanhas promocionais como o Condor Premia
+        - generic [ref=e318]:
+          - figure [ref=e319]:
+            - img "+5000 clientes já economizam todos os dias" [ref=e322]
+          - figure [ref=e323]:
+            - img "Selo Clube Condor" [ref=e326]
+      - generic [ref=e327]:
+        - generic [ref=e328]:
+          - link "Baixe na Google Play" [ref=e329] [cursor=pointer]:
+            - /url: https://play.google.com/store/apps/details?id=com.bankeiro.zon&hl=pt_BR
+            - img "Baixe na Google Play" [ref=e332]
+          - link "Baixe na App Store" [ref=e333] [cursor=pointer]:
+            - /url: https://apps.apple.com/br/app/novo-app-clube-condor/id6446367529
+            - img "Baixe na App Store" [ref=e336]
+        - generic [ref=e337]:
+          - img "QR Code para download do aplicativo Clube Condor" [ref=e341]
+          - paragraph [ref=e343]: Baixe agora o aplicativo do Clube Condor
+    - generic [ref=e345]:
+      - generic [ref=e346]:
+        - generic [ref=e347]:
+          - figure [ref=e348]:
+            - img "Ícone de sorriso" [ref=e349]
+          - generic [ref=e350]: Futuro Condor
+        - heading "Veja tudo que está acontecendo no Condor" [level=2] [ref=e351]:
+          - generic [ref=e352]: Veja tudo que está acontecendo no Condor
+      - generic [ref=e354]:
+        - generic [ref=e356]:
+          - img "Nova loja Tarumã" [ref=e360]
+          - generic [ref=e361]:
+            - heading "Nova loja Tarumã" [level=3] [ref=e362]
+            - paragraph [ref=e363]: Em breve uma loja nova pensada para você.
+        - generic [ref=e365]:
+          - img "Ganhadores de Prêmios" [ref=e369]
+          - generic [ref=e370]:
+            - heading "Ganhadores de Prêmios" [level=3] [ref=e371]
+            - paragraph [ref=e372]: Histórias reais de clientes que transformaram suas compras do dia a dia em grandes conquistas. Confira quem já foi premiado em campanhas da Rede Condor e veja como participar dos próximos sorteios.
+            - link "Saiba mais" [ref=e373] [cursor=pointer]:
+              - /url: https://ganhadores.condor.com.br/
+              - generic [ref=e374]: Saiba mais
+    - generic [ref=e376]:
+      - generic [ref=e377]:
+        - generic [ref=e378]:
+          - figure [ref=e379]:
+            - img "Ícone de sorriso" [ref=e380]
+          - generic [ref=e381]: FAQ
+        - heading "Perguntas frequentes" [level=2] [ref=e383]
+      - generic [ref=e384]:
+        - img "Mulher pensativa com cesta de compras no supermercado, usando camiseta laranja. Logo do Clube Condor aparece acima dela." [ref=e387]
+        - generic [ref=e388]:
+          - generic [ref=e389]:
+            - button "1 Quem pode participar da promoção?" [ref=e391] [cursor=pointer]:
+              - generic [ref=e392]:
+                - generic [ref=e394]: "1"
+                - generic [ref=e395]:
+                  - generic: Quem pode participar da promoção?
+              - paragraph [ref=e398]: Qualquer pessoa física, maior de 18 anos, residente no Brasil, com CPF válido e cadastro completo e atualizado no Clube Condor.
+            - button "2 Quem não pode participar da promoção?" [ref=e400] [cursor=pointer]:
+              - generic [ref=e401]:
+                - generic [ref=e403]: "2"
+                - generic [ref=e404]:
+                  - generic: Quem não pode participar da promoção?
+              - paragraph [ref=e407]: "Não poderão participar: menores de idade, pessoas não residentes no Brasil, pessoas físicas com cadastro incompleto no Clube Condor e pessoas jurídicas. Também estão excluídos os diretores e funcionários das empresas promotoras, filiais participantes (mesmo que desligados durante a promoção) e prestadoras de serviços envolvidas diretamente na elaboração, divulgação ou execução da campanha."
+            - button "3 Como faço para participar?" [ref=e409] [cursor=pointer]:
+              - generic [ref=e410]:
+                - generic [ref=e412]: "3"
+                - generic [ref=e413]:
+                  - generic: Como faço para participar?
+              - paragraph [ref=e416]: Realize compras de, no mínimo, R$ 50,00 em uma das lojas Condor participantes, informe seu CPF no momento da compra e confira se seu cadastro no Clube Condor está atualizado.
+            - button "4 Se eu comprar mais que R$ 50,00, ganho mais números da sorte?" [ref=e418] [cursor=pointer]:
+              - generic [ref=e419]:
+                - generic [ref=e421]: "4"
+                - generic [ref=e422]:
+                  - generic: Se eu comprar mais que R$ 50,00, ganho mais números da sorte?
+              - paragraph [ref=e425]: Para gerar números da sorte, o valor da compra precisa ser de R$ 50,00 ou seus múltiplos. Caso o valor da compra não complete os múltiplos de R$ 50,00, este não será acumulado e/ou somado ao saldo de outra compra.
+            - button "5 Eu não tenho cadastro no Clube Condor e agora?" [ref=e427] [cursor=pointer]:
+              - generic [ref=e428]:
+                - generic [ref=e430]: "5"
+                - generic [ref=e431]:
+                  - generic: Eu não tenho cadastro no Clube Condor e agora?
+              - paragraph [ref=e434]: Baixe o aplicativo Clube Condor na loja de aplicativos do seu celular ou acesse o site www.clubecondor.com.
+          - generic [ref=e435]:
+            - button "Anterior" [disabled]:
+              - generic:
+                - img
+              - generic: Anterior
+            - generic [ref=e436]:
+              - strong [ref=e437]: "1"
+              - text: de
+              - strong [ref=e438]: "6"
+            - button "Próxima arrow-right-white" [ref=e439] [cursor=pointer]:
+              - generic [ref=e440]: Próxima
+              - img "arrow-right-white" [ref=e442]
+    - generic [ref=e444]:
+      - generic [ref=e445]:
+        - generic [ref=e446]:
+          - img "Logo do Condor" [ref=e449]
+          - generic [ref=e450]:
+            - link "facebook" [ref=e451] [cursor=pointer]:
+              - /url: https://www.facebook.com/RedeCondor?locale=pt_BR
+              - img "facebook" [ref=e453]
+            - link "instagram" [ref=e454] [cursor=pointer]:
+              - /url: https://www.instagram.com/redecondor/?hl=pt
+              - img "instagram" [ref=e456]
+            - link "youtube" [ref=e457] [cursor=pointer]:
+              - /url: https://www.youtube.com/user/redecondor/
+              - img "youtube" [ref=e459]
+            - link "tiktok" [ref=e460] [cursor=pointer]:
+              - /url: https://www.tiktok.com/@redecondor?lang=pt-BR
+              - img "tiktok" [ref=e462]
+            - link "linkedin" [ref=e463] [cursor=pointer]:
+              - /url: https://br.linkedin.com/company/redecondor
+              - img "linkedin" [ref=e465]
+        - generic [ref=e466]:
+          - generic [ref=e467]:
+            - generic [ref=e468]:
+              - img "Ícone de cadeado" [ref=e471]
+              - link "Política de privacidade" [ref=e472] [cursor=pointer]:
+                - /url: https://institucional.condor.com.br/acoes-condor/politica-de-privacidade/
+                - generic [ref=e473]: Política de privacidade
+            - generic [ref=e474]:
+              - img "Ícone de troféu" [ref=e477]
+              - link "Ganhadores" [ref=e478] [cursor=pointer]:
+                - /url: https://campanha.condor.com.br/ganhadores-condor-premia/
+                - generic [ref=e479]: Ganhadores
+            - generic [ref=e480]:
+              - img "Ícone de telefone" [ref=e483]
+              - link "Fale conosco" [ref=e484] [cursor=pointer]:
+                - /url: https://institucional.condor.com.br/sac/
+                - generic [ref=e485]: Fale conosco
+          - paragraph [ref=e486]: Poderá participar desta campanha promocional qualquer consumidor que efetuar uma compra de R$50,00 nas lojas Condor no período de 23/02/2026 a 22/02/2027, pessoa física, maior de 18 anos, que possua cadastro atualizado no Clube Condor, com CPF e número de celular válidos, e que tenha confirmado sua participação por meio de SMS, WhatsApp, site, aplicativo ou e-mail. Promoção autorizada pela SPA/ME N° 04.047913/2026.
+      - generic [ref=e487]:
+        - generic [ref=e488]: Copyright © 2026 Condor, todos os direitos reservados.
+        - link "Logo do Grupo Jobs" [ref=e489] [cursor=pointer]:
+          - /url: https://www.grupojobs.com.br/
+          - img "Logo do Grupo Jobs" [ref=e492]
+  - alert [ref=e493]

@@ -1,0 +1,257 @@
+- generic [active] [ref=e1]:
+  - link "Ir para o conteúdo" [ref=e2] [cursor=pointer]:
+    - /url: "#content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "Condor em Casa" [ref=e9] [cursor=pointer]:
+            - /url: https://www.condoremcasa.com.br/
+            - generic [ref=e10]: Condor em Casa
+      - list [ref=e12]:
+        - listitem [ref=e13]:
+          - generic [ref=e14]: Institucional
+    - generic [ref=e16]:
+      - text:     
+      - link [ref=e18] [cursor=pointer]:
+        - /url: https://institucional.condor.com.br
+    - navigation "Menu" [ref=e22]:
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - link "Home" [ref=e25] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/
+        - listitem [ref=e26]:
+          - link "Empresa" [ref=e27] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/institucional/
+            - text: Empresa
+        - listitem [ref=e29]:
+          - link "Trabalhe Conosco" [ref=e30] [cursor=pointer]:
+            - /url: https://grupozonta.portaldetalentos.senior.com.br/
+        - listitem [ref=e31]:
+          - link "Fale Conosco" [ref=e32] [cursor=pointer]:
+            - /url: "#"
+            - text: Fale Conosco
+        - listitem [ref=e34]:
+          - link "Lojas" [ref=e35] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/lojas/
+        - listitem [ref=e36]:
+          - link "Ofertas" [ref=e37] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/ofertas/
+        - listitem [ref=e38]:
+          - link "Informações" [ref=e39] [cursor=pointer]:
+            - /url: "#"
+            - text: Informações
+        - listitem [ref=e41]:
+          - link "Auto Posto" [ref=e42] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/institucional/autoposto/
+        - listitem [ref=e43]:
+          - link "Z-ON" [ref=e44] [cursor=pointer]:
+            - /url: https://www.zonsuperapp.com.br/
+  - main [ref=e45]:
+    - generic [ref=e47]:
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e52]:
+            - button "INSTITUCIONAL" [ref=e54] [cursor=pointer]:
+              - generic [ref=e56]: INSTITUCIONAL
+            - list [ref=e58]:
+              - listitem [ref=e59]:
+                - link "Nossa história" [ref=e60] [cursor=pointer]:
+                  - /url: /institucional/nossa-historia/
+                  - generic [ref=e62]: 
+                  - generic [ref=e63]: Nossa história
+              - listitem [ref=e64]:
+                - link "Nossa estrutura" [ref=e65] [cursor=pointer]:
+                  - /url: /institucional/nossa-estrutura/
+                  - generic [ref=e67]: 
+                  - generic [ref=e68]: Nossa estrutura
+              - listitem [ref=e69]:
+                - link "Condor e seu fundador" [ref=e70] [cursor=pointer]:
+                  - /url: /institucional/o-condor-e-seu-fundador/
+                  - generic [ref=e72]: 
+                  - generic [ref=e73]: Condor e seu fundador
+              - listitem [ref=e74]:
+                - link "Prêmios" [ref=e75] [cursor=pointer]:
+                  - /url: /institucional/premios
+                  - generic [ref=e77]: 
+                  - generic [ref=e78]: Prêmios
+              - listitem [ref=e79]:
+                - link "ESG" [ref=e80] [cursor=pointer]:
+                  - /url: /institucional/esg
+                  - generic [ref=e82]: 
+                  - generic [ref=e83]: ESG
+              - listitem [ref=e84]:
+                - link "Notícias" [ref=e85] [cursor=pointer]:
+                  - /url: /institucional/noticias
+                  - generic [ref=e87]: 
+                  - generic [ref=e88]: Notícias
+              - listitem [ref=e89]:
+                - link "Condor Auto Posto" [ref=e90] [cursor=pointer]:
+                  - /url: https://www.condor.com.br/autoposto/
+                  - generic [ref=e92]: 
+                  - generic [ref=e93]: Condor Auto Posto
+              - listitem [ref=e94]:
+                - link "Regulamento Dinheiro de Volta" [ref=e95] [cursor=pointer]:
+                  - /url: https://institucional.condor.com.br/wp-content/uploads/2024/08/regulamento-clube-condor.pdf
+                  - generic [ref=e97]: 
+                  - generic [ref=e98]: Regulamento Dinheiro de Volta
+          - generic [ref=e100]:
+            - button "SERVIÇOS FINANCEIROS" [ref=e102] [cursor=pointer]:
+              - generic [ref=e104]: SERVIÇOS FINANCEIROS
+            - list [ref=e106]:
+              - listitem [ref=e107]:
+                - link "Megafacilidades Condor" [ref=e108] [cursor=pointer]:
+                  - /url: /servicos-financeiros/megafacilidades-condor/
+                  - generic [ref=e110]: 
+                  - generic [ref=e111]: Megafacilidades Condor
+              - listitem [ref=e112]:
+                - link "Formas de pagamento" [ref=e113] [cursor=pointer]:
+                  - /url: /servicos-financeiros/formas-de-pagamento
+                  - generic [ref=e115]: 
+                  - generic [ref=e116]: Formas de pagamento
+              - listitem [ref=e117]:
+                - link "CPF na Nota" [ref=e118] [cursor=pointer]:
+                  - /url: /servicos-financeiros/cpf-na-nota
+                  - generic [ref=e120]: 
+                  - generic [ref=e121]: CPF na Nota
+              - listitem [ref=e122]:
+                - link "Cata moeda" [ref=e123] [cursor=pointer]:
+                  - /url: /servicos-financeiros/cata-moeda
+                  - generic [ref=e125]: 
+                  - generic [ref=e126]: Cata moeda
+              - listitem [ref=e127]:
+                - link "Z-ON card" [ref=e128] [cursor=pointer]:
+                  - /url: https://www.zonsuperapp.com.br/
+                  - generic [ref=e130]: 
+                  - generic [ref=e131]: Z-ON card
+        - generic [ref=e132]:
+          - generic [ref=e134]:
+            - button "AÇÕES CONDOR" [ref=e136] [cursor=pointer]:
+              - generic [ref=e138]: AÇÕES CONDOR
+            - list [ref=e140]:
+              - listitem [ref=e141]:
+                - link "Universidade Corporativa Condor" [ref=e142] [cursor=pointer]:
+                  - /url: /acoes-condor/universidade-corporativa-condor/
+                  - generic [ref=e144]: 
+                  - generic [ref=e145]: Universidade Corporativa Condor
+              - listitem [ref=e146]:
+                - link "Sustentabilidade" [ref=e147] [cursor=pointer]:
+                  - /url: /acoes-condor/sustentabilidade
+                  - generic [ref=e149]: 
+                  - generic [ref=e150]: Sustentabilidade
+              - listitem [ref=e151]:
+                - link "Cultura, Esporte e Lazer" [ref=e152] [cursor=pointer]:
+                  - /url: /acoes-condor/cultura-e-lazer
+                  - generic [ref=e154]: 
+                  - generic [ref=e155]: Cultura, Esporte e Lazer
+              - listitem [ref=e156]:
+                - link "Instituto Joanir Zonta" [ref=e157] [cursor=pointer]:
+                  - /url: /acoes-condor/instituto-joanir-zonta
+                  - generic [ref=e159]: 
+                  - generic [ref=e160]: Instituto Joanir Zonta
+              - listitem [ref=e161]:
+                - link "Campanha Solidária Condor" [ref=e162] [cursor=pointer]:
+                  - /url: https://www.campanhasolidariacondor.com.br/
+                  - generic [ref=e164]: 
+                  - generic [ref=e165]: Campanha Solidária Condor
+          - generic [ref=e167]:
+            - button "PARA SUA EMPRESA" [ref=e169] [cursor=pointer]:
+              - generic [ref=e171]: PARA SUA EMPRESA
+            - list [ref=e173]:
+              - listitem [ref=e174]:
+                - link "Cartão Condor Card Mais Alimentação" [ref=e175] [cursor=pointer]:
+                  - /url: /para-sua-empresa/cartao-condor-card-mais-alimentacao/
+                  - generic [ref=e177]: 
+                  - generic [ref=e178]: Cartão Condor Card Mais Alimentação
+              - listitem [ref=e179]:
+                - link "Cartão Condor Card Mais Convênio" [ref=e180] [cursor=pointer]:
+                  - /url: /para-sua-empresa/cartao-condor-card-mais-convenio/
+                  - generic [ref=e182]: 
+                  - generic [ref=e183]: Cartão Condor Card Mais Convênio
+              - listitem [ref=e184]:
+                - link "Cartão Condor Card Mais Empresa" [ref=e185] [cursor=pointer]:
+                  - /url: /para-sua-empresa/cartao-condor-card-mais-empresa/
+                  - generic [ref=e187]: 
+                  - generic [ref=e188]: Cartão Condor Card Mais Empresa
+              - listitem [ref=e189]:
+                - link "Cartão-presente Condor" [ref=e190] [cursor=pointer]:
+                  - /url: /para-sua-empresa/cartao-presente-condor/
+                  - generic [ref=e192]: 
+                  - generic [ref=e193]: Cartão-presente Condor
+          - link "DEMONSTRATIVOS FINANCEIROS" [ref=e195] [cursor=pointer]:
+            - /url: /demonstrativo-financeiro
+            - generic [ref=e197]: DEMONSTRATIVOS FINANCEIROS
+          - link "Relatório de Transparência" [ref=e199] [cursor=pointer]:
+            - /url: /relatorio-de-transparencia
+            - generic [ref=e201]: Relatório de Transparência
+      - generic [ref=e203]:
+        - generic [ref=e205]:
+          - heading "Um Paranaense" [level=2] [ref=e208]
+          - heading "Baixe Aqui" [level=2] [ref=e212]:
+            - link "Baixe Aqui" [ref=e213] [cursor=pointer]:
+              - /url: https://institucional.condor.com.br/wp-content/uploads/2024/03/Livro_Um_Paranaense.pdf
+        - generic [ref=e215]:
+          - heading "Na Intimidade do Sucesso" [level=2] [ref=e218]
+          - heading "Baixe Aqui" [level=2] [ref=e222]:
+            - link "Baixe Aqui" [ref=e223] [cursor=pointer]:
+              - /url: https://institucional.condor.com.br/wp-content/uploads/2024/03/Livro_Um_Paranaense.pdf
+  - contentinfo [ref=e226]:
+    - generic [ref=e228]:
+      - list [ref=e230]:
+        - listitem [ref=e231]:
+          - link "Facebook" [ref=e232] [cursor=pointer]:
+            - /url: https://www.facebook.com/RedeCondor/
+            - generic [ref=e233]: Facebook
+            - generic [ref=e234]: 
+        - listitem [ref=e235]:
+          - link "Instagram" [ref=e236] [cursor=pointer]:
+            - /url: https://www.instagram.com/redecondor/
+            - generic [ref=e237]: Instagram
+            - generic [ref=e238]: 
+        - listitem [ref=e239]:
+          - link [ref=e240] [cursor=pointer]:
+            - /url: https://twitter.com/RedeCondor
+            - img [ref=e242]
+        - listitem [ref=e244]:
+          - link "Youtube" [ref=e245] [cursor=pointer]:
+            - /url: https://www.youtube.com/user/redecondor
+            - generic [ref=e246]: Youtube
+            - generic [ref=e247]: 
+        - listitem [ref=e248]:
+          - link "Linkedin-in" [ref=e249] [cursor=pointer]:
+            - /url: https://br.linkedin.com/company/redecondor
+            - generic [ref=e250]: Linkedin-in
+            - generic [ref=e251]: 
+        - listitem [ref=e252]:
+          - link "Tiktok" [ref=e253] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@redecondor
+            - generic [ref=e254]: Tiktok
+            - generic [ref=e255]: 
+      - list [ref=e258]:
+        - listitem [ref=e259]:
+          - link "Fale Conosco 0800 416655" [ref=e260] [cursor=pointer]:
+            - /url: tel:0800416655
+            - img [ref=e262]
+            - generic [ref=e265]: Fale Conosco 0800 416655
+        - listitem [ref=e266]:
+          - link "Trabalhe Conosco" [ref=e267] [cursor=pointer]:
+            - /url: https://grupozonta.portaldetalentos.senior.com.br
+            - img [ref=e269]
+            - generic [ref=e271]: Trabalhe Conosco
+        - listitem [ref=e272]:
+          - link "Contato" [ref=e273] [cursor=pointer]:
+            - /url: /sac
+            - img [ref=e275]
+            - generic [ref=e277]: Contato
+        - listitem [ref=e278]:
+          - link "Política de Privacidade" [ref=e279] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/acoes-condor/politica-de-privacidade/
+            - generic [ref=e281]: 
+            - generic [ref=e282]: Política de Privacidade
+    - heading "Condor© 2024 - Todos os direitos reservados" [level=2] [ref=e286]
+  - generic [ref=e287]: desktop
+  - dialog "cookieconsent" [ref=e288]:
+    - generic [ref=e289]:
+      - text: Nós usamos cookies para melhorar sua experiência de navegação no site. Ao utilizá-lo, você concorda com a nossa política de monitoramento de cookies.
+      - button "cookies - Saiba mais" [ref=e290] [cursor=pointer]: Saiba mais
+    - button "Aceito cookie" [ref=e292] [cursor=pointer]: Aceito

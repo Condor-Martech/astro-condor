@@ -1,0 +1,256 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e5]:
+      - link "Hipermais - Página inicial" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Logo Hipermais" [ref=e7]
+      - generic [ref=e8]:
+        - link "Facebook" [ref=e9] [cursor=pointer]:
+          - /url: https://www.facebook.com/hipermaisatacadoevarejo
+          - img [ref=e10]
+        - link "Instagram" [ref=e12] [cursor=pointer]:
+          - /url: https://www.instagram.com/hipermaisatacadoevarejo
+          - img [ref=e13]
+        - link "YouTube" [ref=e16] [cursor=pointer]:
+          - /url: https://www.youtube.com/@hipermaisatacadoevarejo
+          - img [ref=e17]
+    - navigation [ref=e24]:
+      - link "Home" [ref=e25] [cursor=pointer]:
+        - /url: /
+      - link "Quem Somos" [ref=e26] [cursor=pointer]:
+        - /url: /quem-somos
+      - link "Radar de Ofertas" [ref=e27] [cursor=pointer]:
+        - /url: https://radardeofertas.hipermaisatacadoevarejo.com.br/
+      - link "Nossas Lojas" [ref=e28] [cursor=pointer]:
+        - /url: /nossas-lojas
+      - link "Tabloide" [ref=e29] [cursor=pointer]:
+        - /url: /tabloides
+  - main [ref=e30]:
+    - generic [ref=e32]:
+      - paragraph [ref=e33]: Hipermais Atacado e Varejo
+      - heading "Nossas Lojas" [level=1] [ref=e34]
+      - paragraph [ref=e35]: Encontre a loja mais próxima de você — endereços, telefones e horários de funcionamento.
+    - generic [ref=e37]:
+      - generic [ref=e40]:
+        - region "Mapa" [ref=e41]
+        - iframe [ref=e46]:
+          
+      - generic [ref=e48]:
+        - heading "Todas as Lojas" [level=2] [ref=e49]
+        - paragraph [ref=e50]: 10 lojas disponíveis
+      - generic [ref=e52]:
+        - generic [ref=e54]:
+          - img "Loja Colonial São Bento" [ref=e56]
+          - generic [ref=e57]:
+            - heading "Colonial São Bento" [level=3] [ref=e58]
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - img [ref=e61]
+                - generic [ref=e64]: R. Antônio Kaesemodel, 1173 - Colonial, São Bento do Sul - SC, 89287-615
+              - generic [ref=e65]:
+                - img [ref=e66]
+                - link "08007802525" [ref=e68] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e69] [cursor=pointer]:
+              - img [ref=e70]
+              - text: Como Chegar
+        - generic [ref=e73]:
+          - img "Loja Loja Araquari" [ref=e75]
+          - generic [ref=e76]:
+            - heading "Loja Araquari" [level=3] [ref=e77]
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - img [ref=e80]
+                - generic [ref=e83]: Rodovia 280, Itinga, Araquari, Joinville
+              - generic [ref=e84]:
+                - img [ref=e85]
+                - link "0800 780 2525" [ref=e87] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e88] [cursor=pointer]:
+              - img [ref=e89]
+              - text: Como Chegar
+        - generic [ref=e92]:
+          - img "Loja Loja Fátima" [ref=e94]
+          - generic [ref=e95]:
+            - heading "Loja Fátima" [level=3] [ref=e96]
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - img [ref=e99]
+                - generic [ref=e102]: Rua Marechal Luz, 1100, joinville
+              - generic [ref=e103]:
+                - img [ref=e104]
+                - link "08007802525" [ref=e106] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e107] [cursor=pointer]:
+              - img [ref=e108]
+              - text: Como Chegar
+        - generic [ref=e111]:
+          - img "Loja Loja Jaraguá do Sul" [ref=e113]
+          - generic [ref=e114]:
+            - heading "Loja Jaraguá do Sul" [level=3] [ref=e115]
+            - generic [ref=e116]:
+              - generic [ref=e117]:
+                - img [ref=e118]
+                - generic [ref=e121]: Rua Manoel Francisco da Costa, 550, Vieiras, Jaraguá do Sul
+              - generic [ref=e122]:
+                - img [ref=e123]
+                - link "0800 780 2525" [ref=e125] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e126] [cursor=pointer]:
+              - img [ref=e127]
+              - text: Como Chegar
+        - generic [ref=e130]:
+          - img "Loja Loja João Costa" [ref=e132]
+          - generic [ref=e133]:
+            - heading "Loja João Costa" [level=3] [ref=e134]
+            - generic [ref=e135]:
+              - generic [ref=e136]:
+                - img [ref=e137]
+                - generic [ref=e140]: R Monsenhor Gercino, 4248, João Costa, Joinville.
+              - generic [ref=e141]:
+                - img [ref=e142]
+                - link "0800 780 2525" [ref=e144] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e145] [cursor=pointer]:
+              - img [ref=e146]
+              - text: Como Chegar
+        - generic [ref=e149]:
+          - img "Loja Loja Mafra Baixada" [ref=e151]
+          - generic [ref=e152]:
+            - heading "Loja Mafra Baixada" [level=3] [ref=e153]
+            - generic [ref=e155]:
+              - img [ref=e156]
+              - generic [ref=e159]: R. Pereira Oliveira, 692 - Centro I Baixada, Mafra - SC, 89300-160
+            - button "Como Chegar" [ref=e160] [cursor=pointer]:
+              - img [ref=e161]
+              - text: Como Chegar
+        - generic [ref=e164]:
+          - img "Loja Loja Paranaguamirim" [ref=e166]
+          - generic [ref=e167]:
+            - heading "Loja Paranaguamirim" [level=3] [ref=e168]
+            - generic [ref=e169]:
+              - generic [ref=e170]:
+                - img [ref=e171]
+                - generic [ref=e174]: R. João Luiz de Miranda Coutinho, 190 - Paranaguamirim, Joinville - SC, 89231-720
+              - generic [ref=e175]:
+                - img [ref=e176]
+                - link "08007802525" [ref=e178] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e179] [cursor=pointer]:
+              - img [ref=e180]
+              - text: Como Chegar
+        - generic [ref=e183]:
+          - img "Loja Loja Profipo" [ref=e185]
+          - generic [ref=e186]:
+            - heading "Loja Profipo" [level=3] [ref=e187]
+            - generic [ref=e188]:
+              - generic [ref=e189]:
+                - img [ref=e190]
+                - generic [ref=e193]: R. Waldemiro José Borges, 740 - Profipo, Joinville - SC, 89233-048
+              - generic [ref=e194]:
+                - img [ref=e195]
+                - link "08007802525" [ref=e197] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e198] [cursor=pointer]:
+              - img [ref=e199]
+              - text: Como Chegar
+        - generic [ref=e202]:
+          - img "Loja Loja Shopping Estação" [ref=e204]
+          - generic [ref=e205]:
+            - heading "Loja Shopping Estação" [level=3] [ref=e206]
+            - generic [ref=e207]:
+              - generic [ref=e208]:
+                - img [ref=e209]
+                - generic [ref=e212]: Av. Getúlio Vargas, 1446 - Bucarein, Joinville - SC, 89202-002
+              - generic [ref=e213]:
+                - img [ref=e214]
+                - link "0800 780 2525" [ref=e216] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e217] [cursor=pointer]:
+              - img [ref=e218]
+              - text: Como Chegar
+        - generic [ref=e221]:
+          - img "Loja Loja Vila Nova" [ref=e223]
+          - generic [ref=e224]:
+            - heading "Loja Vila Nova" [level=3] [ref=e225]
+            - generic [ref=e226]:
+              - generic [ref=e227]:
+                - img [ref=e228]
+                - generic [ref=e231]: R Quinze de Novembro, 8507, Joinville
+              - generic [ref=e232]:
+                - img [ref=e233]
+                - link "08007802525" [ref=e235] [cursor=pointer]:
+                  - /url: tel:08007802525
+            - button "Como Chegar" [ref=e236] [cursor=pointer]:
+              - img [ref=e237]
+              - text: Como Chegar
+  - contentinfo [ref=e239]:
+    - generic [ref=e240]:
+      - generic [ref=e241]:
+        - generic [ref=e242]:
+          - img "Logo Hipermais" [ref=e243]
+          - paragraph [ref=e244]: Atacado e varejo com qualidade e preços imbatíveis em Joinville e região.
+          - generic [ref=e245]:
+            - link "Facebook" [ref=e246] [cursor=pointer]:
+              - /url: https://www.facebook.com/hipermaisatacadoevarejo
+              - img [ref=e247]
+            - link "Instagram" [ref=e249] [cursor=pointer]:
+              - /url: https://www.instagram.com/hipermaisatacadoevarejo
+              - img [ref=e250]
+            - link "YouTube" [ref=e253] [cursor=pointer]:
+              - /url: https://www.youtube.com/@hipermaisatacadoevarejo
+              - img [ref=e254]
+        - generic [ref=e257]:
+          - heading "Institucional" [level=3] [ref=e258]
+          - list [ref=e259]:
+            - listitem [ref=e260]:
+              - link "Quem Somos" [ref=e261] [cursor=pointer]:
+                - /url: /quem-somos
+            - listitem [ref=e262]:
+              - link "Radar de Ofertas" [ref=e263] [cursor=pointer]:
+                - /url: https://radardeofertas.hipermaisatacadoevarejo.com.br/
+            - listitem [ref=e264]:
+              - link "Transparência" [ref=e265] [cursor=pointer]:
+                - /url: /transparencia
+        - generic [ref=e266]:
+          - heading "Políticas" [level=3] [ref=e267]
+          - list [ref=e268]:
+            - listitem [ref=e269]:
+              - link "Política de Trocas e Devoluções" [ref=e270] [cursor=pointer]:
+                - /url: /politica-de-trocas-e-devolucoes
+            - listitem [ref=e271]:
+              - link "Formas de Entrega" [ref=e272] [cursor=pointer]:
+                - /url: /formas-de-entrega
+            - listitem [ref=e273]:
+              - link "Política de Privacidade" [ref=e274] [cursor=pointer]:
+                - /url: /politica-de-privacidade
+            - listitem [ref=e275]:
+              - link "Formas de Pagamento" [ref=e276] [cursor=pointer]:
+                - /url: /formas-de-pagamento
+        - generic [ref=e277]:
+          - heading "Serviços" [level=3] [ref=e278]
+          - list [ref=e279]:
+            - listitem [ref=e280]:
+              - link "Nossas Lojas" [ref=e281] [cursor=pointer]:
+                - /url: /nossas-lojas
+            - listitem [ref=e282]:
+              - link "Tabloide" [ref=e283] [cursor=pointer]:
+                - /url: /tabloides
+            - listitem [ref=e284]:
+              - link "Trabalhe Conosco" [ref=e285] [cursor=pointer]:
+                - /url: /trabalhe-conosco
+            - listitem [ref=e286]:
+              - link "Fale Conosco" [ref=e287] [cursor=pointer]:
+                - /url: /fale-conosco
+      - paragraph [ref=e289]: © 2026 Hipermais Atacado e Varejo. Todos os direitos reservados.
+  - region "Aviso de cookies" [ref=e290]:
+    - generic [ref=e291]:
+      - paragraph [ref=e293]:
+        - strong [ref=e294]: Utilizamos cookies
+        - text: para melhorar sua experiência, analisar o tráfego e personalizar conteúdos. Ao aceitar, você concorda com nossa
+        - link "Política de Privacidade" [ref=e295] [cursor=pointer]:
+          - /url: /politica-de-privacidade
+        - text: .
+      - generic [ref=e296]:
+        - button "Recusar" [ref=e297] [cursor=pointer]
+        - button "Aceitar cookies" [ref=e298] [cursor=pointer]

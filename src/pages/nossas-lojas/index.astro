@@ -1,0 +1,901 @@
+---
+export const prerender = false;
+
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import '../../styles/global.css';
+
+const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+
+const res = await fetch(
+	`${DIRECTUS_URL}/items/lojas?filter[status][_eq]=published&fields=id,nome,slug,cidade,telefone,horarios,link_maps,latitude,longitude&sort=cidade,nome&limit=-1`
+);
+const { data: lojas } = await res.json();
+
+// Extract closing time from horarios HTML
+function extractFechamento(html: string | null): string {
+	if (!html) return '';
+	// Match the last time in the first weekday line (e.g., "08:00–22:00" → "22:00")
+	const match = html.match(/Segunda.*?\d{2}:\d{2}[–-](\d{2}:\d{2})/);
+	return match ? match[1] : '';
+}
+
+// Get unique cities for filter
+const allCities = [...new Set(lojas.map((l: any) => l.cidade).filter(Boolean))].sort() as string[];
+---
+
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<title>Nossas Lojas — Condor</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+		<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+		<script is:inline src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Hero -->
+			<section class="lojas-hero">
+				<div class="lojas-hero-content">
+					<span class="lojas-hero-label">Nossa Rede</span>
+					<h1 class="lojas-hero-title">Lojas</h1>
+					<p class="lojas-hero-count">{lojas.length} lojas no Paraná e Santa Catarina</p>
+				</div>
+			</section>
+
+			<!-- Map -->
+			<section class="lojas-map-section">
+				<div id="lojas-map" class="lojas-map"></div>
+			</section>
+
+			<!-- Filters bar -->
+			<section class="lojas-filters">
+				<div class="lojas-container">
+					<div class="lojas-filters-row">
+						<div class="lojas-search-bar">
+							<svg class="lojas-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+							</svg>
+							<input
+								type="search"
+								id="lojas-search"
+								class="lojas-search-input"
+								placeholder="Buscar loja..."
+								autocomplete="off"
+							/>
+						</div>
+						<div class="lojas-select-wrap">
+							<select id="lojas-city-filter" class="lojas-select">
+								<option value="">Todas as cidades</option>
+								{allCities.map((city) => (
+									<option value={city}>{city}</option>
+								))}
+							</select>
+							<svg class="lojas-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="m6 9 6 6 6-6" />
+							</svg>
+						</div>
+						<span class="lojas-result-count" id="lojas-result-count">{lojas.length} lojas</span>
+					</div>
+				</div>
+			</section>
+
+			<!-- Store grid -->
+			<section class="lojas-listing">
+				<div class="lojas-container">
+					<div class="lojas-grid" id="lojas-grid">
+						{lojas.map((loja: any) => {
+							const fechamento = extractFechamento(loja.horarios);
+							return (
+								<article
+									class="loja-card"
+									data-nome={loja.nome.toLowerCase()}
+									data-cidade={loja.cidade?.toLowerCase() || ''}
+								>
+									<div class="loja-card-header">
+										<h2 class="loja-card-name">
+											<a href={`/nossas-lojas/${loja.slug}`}>{loja.nome}</a>
+										</h2>
+										<span class="loja-card-status">
+											<span class="loja-card-status-dot" aria-hidden="true"></span>
+											Aberto
+										</span>
+									</div>
+
+									<div class="loja-card-info">
+										<p class="loja-card-city">
+											<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+												<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+												<circle cx="12" cy="10" r="3" />
+											</svg>
+											{loja.cidade}
+										</p>
+
+										{fechamento && (
+											<p class="loja-card-hours">
+												<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+													<circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+												</svg>
+												Fecha às {fechamento}
+											</p>
+										)}
+
+										{loja.telefone && (
+											<p class="loja-card-phone">
+												<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+													<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+												</svg>
+												{loja.telefone}
+											</p>
+										)}
+									</div>
+
+									<div class="loja-card-footer">
+										<a href={`/nossas-lojas/${loja.slug}`} class="loja-card-link">
+											Ver detalhes
+											<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+												<path d="M5 12h14M12 5l7 7-7 7" />
+											</svg>
+										</a>
+										{loja.link_maps && (
+											<a href={loja.link_maps} target="_blank" rel="noopener noreferrer" class="loja-card-maps">
+												<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+													<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+													<circle cx="12" cy="10" r="3" />
+												</svg>
+												Como chegar
+											</a>
+										)}
+									</div>
+								</article>
+							);
+						})}
+					</div>
+
+					<!-- Load more (desktop) / infinite scroll sentinel (mobile) -->
+					<div class="lojas-load-more-wrap" id="lojas-load-more-wrap">
+						<button type="button" class="lojas-load-more" id="lojas-load-more">
+							Ver mais lojas
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="m6 9 6 6 6-6" />
+							</svg>
+						</button>
+					</div>
+					<div id="lojas-scroll-sentinel" class="lojas-scroll-sentinel" aria-hidden="true"></div>
+
+					<p class="lojas-no-results" id="lojas-no-results" hidden>
+						Nenhuma loja encontrada para sua busca.
+					</p>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:root {
+		--bg-primary: #FFFFFF;
+		--bg-surface: #F7F9FC;
+		--border-subtle: #E2E8F0;
+		--accent-red: #E31937;
+		--accent-red-glow: #FF2D4B;
+		--condor-blue: #01417A;
+		--condor-blue-light: #015A9E;
+		--text-primary: #1A1A2E;
+		--text-secondary: #4A5568;
+		--text-muted: #718096;
+		--status-green: #16A34A;
+	}
+
+	/* === Hero === */
+	.lojas-hero {
+		background: var(--condor-blue);
+		padding: 2.5rem 1.5rem 2rem;
+		text-align: center;
+	}
+
+	@media (min-width: 768px) {
+		.lojas-hero {
+			padding: 3.5rem 2rem 2.5rem;
+		}
+	}
+
+	.lojas-hero-content {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.lojas-hero-label {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 600;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.2em;
+		color: rgba(255, 255, 255, 0.6);
+		display: block;
+		margin-bottom: 0.35rem;
+	}
+
+	.lojas-hero-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 800;
+		font-size: clamp(2.5rem, 6vw, 4rem);
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		line-height: 1;
+		color: #FFFFFF;
+		margin: 0;
+	}
+
+	.lojas-hero-count {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.95rem;
+		color: rgba(255, 255, 255, 0.7);
+		margin: 0.75rem 0 0;
+	}
+
+	/* === Container === */
+	.lojas-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.lojas-container {
+			padding: 0 2rem;
+		}
+	}
+
+	/* === Filters === */
+	.lojas-filters {
+		background: var(--bg-primary);
+		padding: 1.25rem 0;
+		border-bottom: 1px solid var(--border-subtle);
+		position: sticky;
+		top: 74px;
+		z-index: 10;
+	}
+
+	@media (min-width: 768px) {
+		.lojas-filters {
+			top: 82px;
+		}
+	}
+
+	.lojas-filters-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		align-items: center;
+	}
+
+	.lojas-search-bar {
+		position: relative;
+		flex: 1;
+		min-width: 200px;
+	}
+
+	.lojas-search-icon {
+		position: absolute;
+		left: 0.85rem;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 16px;
+		height: 16px;
+		color: var(--text-muted);
+		pointer-events: none;
+	}
+
+	.lojas-search-input {
+		width: 100%;
+		padding: 0.7rem 1rem 0.7rem 2.5rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-primary);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: 4px;
+		outline: none;
+		transition: border-color 0.2s ease;
+	}
+
+	.lojas-search-input::placeholder {
+		color: var(--text-muted);
+	}
+
+	.lojas-search-input:focus {
+		border-color: var(--condor-blue);
+	}
+
+	.lojas-select-wrap {
+		position: relative;
+	}
+
+	.lojas-select {
+		appearance: none;
+		padding: 0.7rem 2.25rem 0.7rem 1rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-primary);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: 4px;
+		outline: none;
+		cursor: pointer;
+		transition: border-color 0.2s ease;
+	}
+
+	.lojas-select:focus {
+		border-color: var(--condor-blue);
+	}
+
+	.lojas-select-chevron {
+		position: absolute;
+		right: 0.7rem;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 16px;
+		height: 16px;
+		color: var(--text-muted);
+		pointer-events: none;
+	}
+
+	.lojas-result-count {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 600;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-muted);
+		white-space: nowrap;
+		margin-left: auto;
+	}
+
+	/* === Map === */
+	.lojas-map-section {
+		background: var(--bg-primary);
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	.lojas-map {
+		width: 100%;
+		height: 350px;
+	}
+
+	@media (min-width: 768px) {
+		.lojas-map {
+			height: 450px;
+		}
+	}
+
+	/* Leaflet marker override */
+	:global(.condor-marker),
+	:global(.condor-cluster-icon) {
+		background: none !important;
+		border: none !important;
+	}
+
+	:global(.condor-cluster) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 1;
+		box-shadow: 0 2px 8px rgba(227, 25, 55, 0.35);
+	}
+
+	:global(.condor-cluster--small) {
+		width: 36px;
+		height: 36px;
+		font-size: 0.8rem;
+		background: #E31937;
+	}
+
+	:global(.condor-cluster--medium) {
+		width: 44px;
+		height: 44px;
+		font-size: 0.95rem;
+		background: #C41530;
+	}
+
+	:global(.condor-cluster--large) {
+		width: 52px;
+		height: 52px;
+		font-size: 1.1rem;
+		background: #01417A;
+	}
+
+	/* Leaflet popup overrides */
+	:global(.leaflet-popup-content-wrapper) {
+		border-radius: 4px !important;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+		padding: 0 !important;
+	}
+
+	:global(.leaflet-popup-content) {
+		margin: 0 !important;
+		font-family: 'DM Sans', system-ui, sans-serif !important;
+		font-size: 0.85rem !important;
+		line-height: 1.5 !important;
+		min-width: 200px !important;
+	}
+
+	:global(.map-popup) {
+		padding: 0.85rem 1rem;
+	}
+
+	:global(.map-popup-name) {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 0.9rem;
+		text-transform: uppercase;
+		color: #1A1A2E;
+		margin: 0 0 0.25rem;
+	}
+
+	:global(.map-popup-name a) {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	:global(.map-popup-name a:hover) {
+		color: #01417A;
+	}
+
+	:global(.map-popup-city) {
+		color: #718096;
+		font-size: 0.8rem;
+		margin: 0 0 0.5rem;
+	}
+
+	:global(.map-popup-link) {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 600;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: #01417A;
+		text-decoration: none;
+	}
+
+	:global(.map-popup-link:hover) {
+		color: #015A9E;
+	}
+
+	/* === Listing === */
+	.lojas-listing {
+		background: var(--bg-surface);
+		padding: 2rem 0 4rem;
+	}
+
+	.lojas-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.75rem;
+	}
+
+	@media (min-width: 640px) {
+		.lojas-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.lojas-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	/* === Card === */
+	.loja-card {
+		background: var(--bg-primary);
+		border: 1px solid var(--border-subtle);
+		border-radius: 4px;
+		padding: 1.25rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.loja-card:hover {
+		border-color: var(--condor-blue);
+		box-shadow: 0 2px 12px rgba(1, 65, 122, 0.08);
+	}
+
+	/* Card header */
+	.loja-card-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	.loja-card-name {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.01em;
+		line-height: 1.25;
+		color: var(--text-primary);
+		margin: 0;
+	}
+
+	.loja-card-name a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.loja-card-name a:hover {
+		color: var(--condor-blue);
+	}
+
+	.loja-card-status {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: var(--status-green);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	.loja-card-status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--status-green);
+	}
+
+	/* Card info */
+	.loja-card-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+
+	.loja-card-city,
+	.loja-card-hours,
+	.loja-card-phone {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.8rem;
+		color: var(--text-secondary);
+		margin: 0;
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.loja-card-info svg {
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+		color: var(--text-muted);
+	}
+
+	/* Card footer */
+	.loja-card-footer {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--border-subtle);
+		margin-top: auto;
+	}
+
+	.loja-card-link {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 600;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--condor-blue);
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		transition: color 0.2s ease;
+	}
+
+	.loja-card-link svg {
+		width: 14px;
+		height: 14px;
+		transition: transform 0.2s ease;
+	}
+
+	.loja-card-link:hover {
+		color: var(--condor-blue-light);
+	}
+
+	.loja-card-link:hover svg {
+		transform: translateX(2px);
+	}
+
+	.loja-card-maps {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.8rem;
+		font-weight: 500;
+		color: var(--text-muted);
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		margin-left: auto;
+		transition: color 0.2s ease;
+	}
+
+	.loja-card-maps svg {
+		width: 14px;
+		height: 14px;
+	}
+
+	.loja-card-maps:hover {
+		color: var(--accent-red);
+	}
+
+	/* === Load more === */
+	.lojas-load-more-wrap {
+		display: flex;
+		justify-content: center;
+		margin-top: 1.5rem;
+	}
+
+	.lojas-load-more {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.75rem 2rem;
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 600;
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--condor-blue);
+		background: var(--bg-primary);
+		border: 1px solid var(--condor-blue);
+		border-radius: 4px;
+		cursor: pointer;
+		transition: background 0.2s ease, color 0.2s ease;
+	}
+
+	.lojas-load-more svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.lojas-load-more:hover {
+		background: var(--condor-blue);
+		color: #FFFFFF;
+	}
+
+	/* Hide button on mobile (infinite scroll), show on desktop */
+	@media (max-width: 767px) {
+		.lojas-load-more-wrap {
+			display: none;
+		}
+	}
+
+	.lojas-scroll-sentinel {
+		height: 1px;
+	}
+
+	/* Hide sentinel on desktop */
+	@media (min-width: 768px) {
+		.lojas-scroll-sentinel {
+			display: none;
+		}
+	}
+
+	/* === No results === */
+	.lojas-no-results {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 1rem;
+		color: var(--text-muted);
+		text-align: center;
+		padding: 3rem 0;
+	}
+
+	/* === Reduced motion === */
+	@media (prefers-reduced-motion: reduce) {
+		.loja-card,
+		.loja-card-link,
+		.loja-card-link svg,
+		.loja-card-maps,
+		.lojas-search-input,
+		.lojas-select {
+			transition: none;
+		}
+	}
+</style>
+
+<script is:inline define:vars={{ storesJson: JSON.stringify(lojas.filter((l: any) => l.latitude && l.longitude).map((l: any) => ({ nome: l.nome, slug: l.slug, cidade: l.cidade, lat: parseFloat(l.latitude), lng: parseFloat(l.longitude) }))) }}>
+	// Parse store data
+	var stores = JSON.parse(storesJson);
+
+	// --- Map ---
+	var map = L.map('lojas-map', { scrollWheelZoom: false }).setView([-25.43, -49.27], 30);
+
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; OpenStreetMap',
+		maxZoom: 24,
+	}).addTo(map);
+
+	// Custom red marker
+	var redIcon = L.divIcon({
+		className: 'condor-marker',
+		html: '<svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 0C6.268 0 0 6.268 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.268 21.732 0 14 0z" fill="#E31937"/><circle cx="14" cy="13" r="5" fill="#fff"/></svg>',
+		iconSize: [28, 36],
+		iconAnchor: [14, 36],
+		popupAnchor: [0, -36],
+	});
+
+	// Cluster group with Condor styling
+	var clusterGroup = L.markerClusterGroup({
+		maxClusterRadius: 50,
+		spiderfyOnMaxZoom: true,
+		showCoverageOnHover: false,
+		zoomToBoundsOnClick: true,
+		iconCreateFunction: function (cluster) {
+			var count = cluster.getChildCount();
+			var size = count < 10 ? 'small' : count < 30 ? 'medium' : 'large';
+			var px = size === 'small' ? 36 : size === 'medium' ? 44 : 52;
+			return L.divIcon({
+				html: '<div class="condor-cluster condor-cluster--' + size + '">' + count + '</div>',
+				className: 'condor-cluster-icon',
+				iconSize: L.point(px, px),
+			});
+		},
+	});
+
+	var markers = [];
+	stores.forEach(function (s) {
+		if (isNaN(s.lat) || isNaN(s.lng)) return;
+		var marker = L.marker([s.lat, s.lng], { icon: redIcon });
+		marker.bindPopup(
+			'<div class="map-popup">' +
+				'<p class="map-popup-name"><a href="/nossas-lojas/' + s.slug + '">' + s.nome + '</a></p>' +
+				'<p class="map-popup-city">' + s.cidade + '</p>' +
+				'<a class="map-popup-link" href="/nossas-lojas/' + s.slug + '">Ver detalhes →</a>' +
+			'</div>'
+		);
+		marker._storeData = s;
+		markers.push(marker);
+		clusterGroup.addLayer(marker);
+	});
+
+	map.addLayer(clusterGroup);
+
+	// Fit bounds with closer zoom
+	if (markers.length > 0) {
+		map.fitBounds(clusterGroup.getBounds().pad(0.05), { maxZoom: 12 });
+	}
+
+	// --- Pagination ---
+	var PAGE_SIZE = 12;
+	var searchInput = document.getElementById('lojas-search');
+	var cityFilter = document.getElementById('lojas-city-filter');
+	var allCards = Array.prototype.slice.call(document.querySelectorAll('.loja-card'));
+	var noResults = document.getElementById('lojas-no-results');
+	var resultCount = document.getElementById('lojas-result-count');
+	var loadMoreBtn = document.getElementById('lojas-load-more');
+	var loadMoreWrap = document.getElementById('lojas-load-more-wrap');
+	var sentinel = document.getElementById('lojas-scroll-sentinel');
+
+	var filteredCards = allCards.slice();
+	var visibleCount = 0;
+	var isMobile = window.matchMedia('(max-width: 767px)').matches;
+
+	function getFilteredCards() {
+		var query = (searchInput && searchInput.value || '').toLowerCase().trim();
+		var selectedCity = (cityFilter && cityFilter.value || '').toLowerCase();
+		return allCards.filter(function (card) {
+			var nome = card.dataset.nome || '';
+			var cidade = card.dataset.cidade || '';
+			var matchSearch = !query || nome.indexOf(query) !== -1 || cidade.indexOf(query) !== -1;
+			var matchCity = !selectedCity || cidade === selectedCity;
+			return matchSearch && matchCity;
+		});
+	}
+
+	function showCards(count) {
+		allCards.forEach(function (c) { c.style.display = 'none'; });
+		for (var i = 0; i < Math.min(count, filteredCards.length); i++) {
+			filteredCards[i].style.display = '';
+		}
+		visibleCount = Math.min(count, filteredCards.length);
+		updateLoadMore();
+	}
+
+	function updateLoadMore() {
+		var allShown = visibleCount >= filteredCards.length;
+		if (loadMoreWrap) loadMoreWrap.style.display = allShown ? 'none' : '';
+		if (sentinel) sentinel.style.display = allShown ? 'none' : '';
+	}
+
+	function loadMore() {
+		showCards(visibleCount + PAGE_SIZE);
+	}
+
+	function filterLojas() {
+		var query = (searchInput && searchInput.value || '').toLowerCase().trim();
+		var selectedCity = (cityFilter && cityFilter.value || '').toLowerCase();
+
+		filteredCards = getFilteredCards();
+		showCards(PAGE_SIZE);
+
+		if (noResults) noResults.hidden = filteredCards.length > 0;
+		if (resultCount) resultCount.textContent = filteredCards.length + ' loja' + (filteredCards.length !== 1 ? 's' : '');
+
+		// Rebuild cluster with filtered markers
+		clusterGroup.clearLayers();
+		var visibleMarkers = [];
+		markers.forEach(function (m) {
+			var s = m._storeData;
+			var nome = s.nome.toLowerCase();
+			var cidade = s.cidade.toLowerCase();
+			var matchSearch = !query || nome.indexOf(query) !== -1 || cidade.indexOf(query) !== -1;
+			var matchCity = !selectedCity || cidade === selectedCity;
+			if (matchSearch && matchCity) {
+				clusterGroup.addLayer(m);
+				visibleMarkers.push(m);
+			}
+		});
+
+		if (visibleMarkers.length > 0) {
+			var g = L.featureGroup(visibleMarkers);
+			map.fitBounds(g.getBounds().pad(0.05), { maxZoom: 14 });
+		}
+	}
+
+	// Desktop: "Ver mais" button
+	if (loadMoreBtn) {
+		loadMoreBtn.addEventListener('click', loadMore);
+	}
+
+	// Mobile: infinite scroll via IntersectionObserver
+	if (isMobile && sentinel && 'IntersectionObserver' in window) {
+		var observer = new IntersectionObserver(function (entries) {
+			if (entries[0].isIntersecting && visibleCount < filteredCards.length) {
+				loadMore();
+			}
+		}, { rootMargin: '200px' });
+		observer.observe(sentinel);
+	}
+
+	// Listen to filter changes
+	if (searchInput) searchInput.addEventListener('input', filterLojas);
+	if (cityFilter) cityFilter.addEventListener('change', filterLojas);
+
+	// Respond to viewport changes
+	window.matchMedia('(max-width: 767px)').addEventListener('change', function (e) {
+		isMobile = e.matches;
+	});
+
+	// Initial render: show first page
+	filteredCards = allCards.slice();
+	showCards(PAGE_SIZE);
+</script>

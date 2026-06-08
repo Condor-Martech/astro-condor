@@ -1,0 +1,426 @@
+---
+interface PromoBlock {
+  url: string;
+  target?: '_blank' | '_self';
+  headline: string;
+  subtitle: string;
+  cta: string;
+  variant: 'ofertas' | 'clube' | 'autoposto' | 'zon';
+  order: number;
+}
+
+const blocks: PromoBlock[] = [
+  {
+    url: 'https://institucional.condor.com.br/ofertas/',
+    headline: 'Ofertas da semana',
+    subtitle: 'Até 40% de desconto em centenas de produtos — atualizadas toda segunda',
+    cta: 'Conferir ofertas',
+    variant: 'ofertas',
+    order: 1,
+  },
+  {
+    url: 'https://premia.condor.com.br/',
+    headline: 'Condor Premia',
+    subtitle: 'Concorra a R$ 500 mil todo mês e a R$ 1 milhão — cada compra é uma nova chance',
+    cta: 'Quero concorrer',
+    variant: 'clube',
+    order: 3,
+  },
+  {
+    url: 'https://institucional.condor.com.br/institucional/autoposto/',
+    headline: 'Auto Posto Condor',
+    subtitle: 'Combustível com controle de qualidade e a conveniência de abastecer onde você já faz suas compras',
+    cta: 'Encontrar posto',
+    variant: 'autoposto',
+    order: 4,
+  },
+  {
+    url: 'https://zonsolucoes.com.br/',
+    target: '_blank',
+    headline: 'Z-ON Soluções',
+    subtitle: 'Cartão, conta digital e crédito em um só app — do mesmo grupo que você já confia',
+    cta: 'Conhecer a Z-ON',
+    variant: 'zon',
+    order: 2,
+  },
+];
+---
+
+<section class="promo-section" aria-label="Serviços Condor">
+  <div class="promo-container">
+    <div class="promo-grid">
+      {blocks.map((block, i) => (
+        <a
+          href={block.url}
+          target={block.target ?? '_self'}
+          rel={block.target === '_blank' ? 'noopener noreferrer' : undefined}
+          class={`promo-card promo-card--${block.variant}`}
+          style={`--delay: ${i * 0.08}s; --mobile-order: ${block.order}`}
+          aria-label={`${block.headline} — ${block.cta}`}
+        >
+          <div class="promo-card-pattern" aria-hidden="true"></div>
+
+          <div class="promo-card-content">
+            <div class="promo-card-icon" aria-hidden="true">
+              {block.variant === 'ofertas' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+                  <circle cx="7" cy="7" r="1.5" />
+                  <path d="M14 10l-1.5 1.5M16.5 12.5L15 14" />
+                </svg>
+              )}
+              {block.variant === 'clube' && null}
+              {block.variant === 'autoposto' && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 22V6a2 2 0 012-2h8a2 2 0 012 2v16" />
+                  <path d="M3 22h12" />
+                  <path d="M15 13h2a2 2 0 012 2v3a1.5 1.5 0 003 0v-7l-3-3" />
+                  <path d="M6 8h6" />
+                  <path d="M6 12h6" />
+                </svg>
+              )}
+              {block.variant === 'zon' && (
+                <img
+                  src="https://zonsolucoes.com.br/wp-content/uploads/2025/06/logo-z-on.png"
+                  alt="Z-ON"
+                  class="promo-zon-logo"
+                  width="106"
+                  height="32"
+                  loading="lazy"
+                />
+              )}
+            </div>
+
+            <h3 class="promo-card-headline">{block.headline}</h3>
+            <p class="promo-card-subtitle">{block.subtitle}</p>
+
+            <span class="promo-card-cta">
+              {block.cta}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="promo-card-arrow">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
+
+          {/* Z-ON: card image on the right with diagonal cut */}
+          {block.variant === 'zon' && (
+            <div class="promo-zon-img-wrap" aria-hidden="true">
+              <div class="promo-zon-diagonal"></div>
+              <img
+                src="https://zonsolucoes.com.br/wp-content/uploads/2025/06/z_onCard.png"
+                alt=""
+                class="promo-zon-card-img ps-8"
+                width="614"
+                height="624"
+                loading="lazy"
+              />
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .promo-section {
+    --condor-blue: #003B8E;
+    --condor-blue-deep: #002456;
+    --condor-red: #E31937;
+    --condor-slate: #64748B;
+
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #FFFFFF;
+    padding: 1.5rem 0;
+    position: relative;
+  }
+
+  .promo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .promo-container {
+      padding: 0 2rem;
+    }
+  }
+
+  /* === Grid === */
+  .promo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Mobile order: 1.Ofertas 2.Z-ON 3.Premia 4.AutoPosto */
+  .promo-card {
+    order: var(--mobile-order);
+  }
+
+  @media (min-width: 640px) {
+    .promo-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .promo-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "ofertas ofertas clube"
+        "autoposto zon zon";
+    }
+
+    .promo-card--ofertas { grid-area: ofertas; min-height: 280px; }
+    .promo-card--clube   { grid-area: clube; }
+    .promo-card--autoposto { grid-area: autoposto; }
+    .promo-card--zon     { grid-area: zon; }
+  }
+
+  /* === Card Base === */
+  .promo-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    min-height: 200px;
+    padding: 1.75rem;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: card-in 0.5s ease both;
+    animation-delay: var(--delay);
+  }
+
+  .promo-card:focus-visible {
+    outline: 2px solid var(--condor-blue);
+    outline-offset: 2px;
+  }
+
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .promo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 36, 86, 0.15), 0 4px 12px rgba(0, 36, 86, 0.08);
+  }
+
+  /* === Pattern Overlay === */
+  .promo-card-pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+  }
+
+  .promo-card--ofertas .promo-card-pattern {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(255,255,255,0.3) 8px, rgba(255,255,255,0.3) 9px);
+    opacity: 0.15;
+  }
+
+  .promo-card--clube .promo-card-pattern {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px);
+    background-size: 16px 16px;
+    opacity: 0.12;
+  }
+
+  /* === Variant: Ofertas (red) === */
+  .promo-card--ofertas {
+    background: linear-gradient(135deg, #E31937, #C41230);
+    color: white;
+  }
+  .promo-card--ofertas:focus-visible { outline-color: #E31937; }
+
+  /* === Variant: Clube / Premia (banner bg) === */
+  .promo-card--clube {
+    background:
+      linear-gradient(to right, #001A3D 40%, rgba(0, 26, 61, 0.6) 65%, transparent 90%),
+      linear-gradient(to top, #001A3D 15%, transparent 50%),
+      url('https://premia.condor.com.br/images/section-three-img3-carousel.webp') right bottom / contain no-repeat,
+      #001A3D;
+    color: white;
+    justify-content: flex-end;
+  }
+  .promo-card--clube .promo-card-icon { display: none; }
+  .promo-card--clube .promo-card-content { text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); }
+  .promo-card--clube:focus-visible { outline-color: #003B8E; }
+
+  /* === Variant: Trabalhe (white card) === */
+  .promo-card--autoposto {
+    background: #FFFFFF;
+    color: var(--condor-blue-deep);
+    border: 1.5px solid #E2E8F0;
+  }
+  .promo-card--autoposto:hover { border-color: var(--condor-blue); }
+  .promo-card--autoposto:focus-visible { outline-color: var(--condor-blue); }
+  .promo-card--autoposto .promo-card-subtitle { color: var(--condor-slate); opacity: 1; }
+  .promo-card--autoposto .promo-card-cta { color: var(--condor-blue); }
+
+  /* === Variant: Z-ON (white card with image) === */
+  .promo-card--zon {
+    background: #FFFFFF;
+    color: var(--condor-blue-deep);
+    border: 1.5px solid #E2E8F0;
+  }
+  .promo-card--zon:hover { border-color: #1A3DE8; }
+  .promo-card--zon:focus-visible { outline-color: #1A3DE8; }
+  .promo-card--zon .promo-card-subtitle { color: var(--condor-slate); opacity: 1; }
+  .promo-card--zon .promo-card-cta { color: #1A3DE8; }
+
+  /* Z-ON logo in icon slot */
+  .promo-zon-logo {
+    width: auto;
+    height: 28px;
+    display: block;
+  }
+  .promo-card--zon .promo-card-icon {
+    width: auto;
+    height: auto;
+  }
+
+  /* Z-ON image wrapper — hidden on mobile */
+  .promo-zon-img-wrap {
+    display: none;
+  }
+
+  /* Z-ON: horizontal layout with image from tablet up */
+  @media (min-width: 640px) {
+    .promo-card--zon {
+      flex-direction: row;
+      align-items: stretch;
+      padding: 0;
+    }
+
+    .promo-card--zon .promo-card-content {
+      flex: 1;
+      padding: 1.75rem;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .promo-zon-img-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 180px;
+      flex-shrink: 0;
+      background: #0046CD;
+    }
+
+    .promo-zon-diagonal {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -1px;
+      width: 60px;
+      background: #FFFFFF;
+      clip-path: polygon(0 0, 0 100%, 100% 100%);
+      z-index: 1;
+    }
+
+    .promo-zon-card-img {
+      position: relative;
+      z-index: 2;
+      width: 120px;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .promo-zon-img-wrap { width: 260px; }
+    .promo-zon-card-img { width: 150px; }
+    .promo-zon-diagonal { width: 70px; }
+  }
+
+
+  /* === Content === */
+  .promo-card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* === Icon === */
+  .promo-card-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+  }
+  .promo-card-icon svg { width: 100%; height: 100%; }
+  .promo-card:hover .promo-card-icon { transform: scale(1.1); }
+
+  @media (min-width: 1024px) {
+    .promo-card--ofertas .promo-card-icon { width: 48px; height: 48px; }
+  }
+
+  /* === Typography === */
+  .promo-card-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 1024px) {
+    .promo-card--ofertas .promo-card-headline {
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+    }
+  }
+
+  .promo-card-subtitle {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    margin: 0 0 1.25rem;
+    opacity: 0.88;
+    max-width: 36ch;
+  }
+
+  /* === CTA === */
+  .promo-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: inherit;
+    margin-top: auto;
+  }
+
+  .promo-card-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  .promo-card:hover .promo-card-arrow {
+    transform: translateX(4px);
+  }
+
+  /* === Reduced Motion === */
+  @media (prefers-reduced-motion: reduce) {
+    .promo-card { animation: none; }
+    .promo-card,
+    .promo-card-icon,
+    .promo-card-arrow { transition: none; }
+  }
+</style>

@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+body {
+  padding-top: 74px;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-top: 82px;
+  }
+}

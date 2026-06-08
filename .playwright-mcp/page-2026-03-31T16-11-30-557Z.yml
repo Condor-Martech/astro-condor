@@ -1,0 +1,277 @@
+- generic [active] [ref=e1]:
+  - link "Ir para o conteúdo" [ref=e2] [cursor=pointer]:
+    - /url: "#content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "Condor em Casa" [ref=e9] [cursor=pointer]:
+            - /url: https://www.condoremcasa.com.br/
+            - generic [ref=e10]: Condor em Casa
+      - list [ref=e12]:
+        - listitem [ref=e13]:
+          - generic [ref=e14]: Institucional
+    - generic [ref=e16]:
+      - text:     
+      - link [ref=e18] [cursor=pointer]:
+        - /url: https://institucional.condor.com.br
+    - navigation "Menu" [ref=e22]:
+      - list [ref=e23]:
+        - listitem [ref=e24]:
+          - link "Home" [ref=e25] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/
+        - listitem [ref=e26]:
+          - link "Empresa" [ref=e27] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/institucional/
+            - text: Empresa
+        - listitem [ref=e29]:
+          - link "Trabalhe Conosco" [ref=e30] [cursor=pointer]:
+            - /url: https://grupozonta.portaldetalentos.senior.com.br/
+        - listitem [ref=e31]:
+          - link "Fale Conosco" [ref=e32] [cursor=pointer]:
+            - /url: "#"
+            - text: Fale Conosco
+        - listitem [ref=e34]:
+          - link "Lojas" [ref=e35] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/lojas/
+        - listitem [ref=e36]:
+          - link "Ofertas" [ref=e37] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/ofertas/
+        - listitem [ref=e38]:
+          - link "Informações" [ref=e39] [cursor=pointer]:
+            - /url: "#"
+            - text: Informações
+        - listitem [ref=e41]:
+          - link "Auto Posto" [ref=e42] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/institucional/autoposto/
+        - listitem [ref=e43]:
+          - link "Z-ON" [ref=e44] [cursor=pointer]:
+            - /url: https://www.zonsuperapp.com.br/
+  - main [ref=e45]:
+    - generic [ref=e48]:
+      - link [ref=e50] [cursor=pointer]:
+        - /url: https://www.condoremcasa.com.br/
+      - generic [ref=e56]:
+        - link [ref=e61] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/institucional/autoposto/
+        - link [ref=e66] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/radar-de-ofertas/
+        - link [ref=e71] [cursor=pointer]:
+          - /url: https://campanha.condor.com.br/ganhadores-semanas-premiadas/
+        - link [ref=e76] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/institucional/autoposto/
+        - link [ref=e81] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/radar-de-ofertas/
+        - link [ref=e86] [cursor=pointer]:
+          - /url: https://campanha.condor.com.br/ganhadores-semanas-premiadas/
+        - link [ref=e91] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/institucional/autoposto/
+        - link [ref=e96] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/radar-de-ofertas/
+      - generic [ref=e98]:
+        - link [ref=e100] [cursor=pointer]:
+          - /url: /ofertas
+        - link [ref=e102] [cursor=pointer]:
+          - /url: https://www.clubecondor.com/
+      - generic [ref=e104]:
+        - link [ref=e106] [cursor=pointer]:
+          - /url: https://grupozonta.portaldetalentos.senior.com.br/jobs
+        - link [ref=e108] [cursor=pointer]:
+          - /url: https://www.condoremcasa.com.br/
+      - generic [ref=e110]:
+        - list [ref=e114]:
+          - listitem [ref=e115]:
+            - link "CONDOR PERTO DE VOCÊ" [ref=e116] [cursor=pointer]:
+              - /url: /lojas
+              - generic [ref=e118]: 
+              - generic [ref=e119]: CONDOR PERTO DE VOCÊ
+        - generic [ref=e123]:
+          - button "Previous" [ref=e124] [cursor=pointer]:
+            - img [ref=e125]
+          - generic [ref=e128]:
+            - generic [ref=e130] [cursor=pointer]:
+              - heading [level=2] [ref=e134]: Supermercado Condor Barreirinha
+              - link [ref=e136]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-barreirinha/
+            - generic [ref=e138] [cursor=pointer]:
+              - heading [level=2] [ref=e142]: Supermercado Condor Rio Negro
+              - link [ref=e144]:
+                - /url: https://institucional.condor.com.br/lojas_/rio-negro/
+            - generic [ref=e146] [cursor=pointer]:
+              - heading [level=2] [ref=e150]: Supermercado Condor Ernesto Vilela
+              - link [ref=e152]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-ernesto-vilela/
+            - generic [ref=e154] [cursor=pointer]:
+              - heading "Supermercado Condor São José dos Pinhais Rui Barbosa" [level=2] [ref=e158]
+              - link [ref=e160]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-sao-jose-dos-pinhais-rui-barbosa/
+            - generic [ref=e162] [cursor=pointer]:
+              - heading "Hipermercado Condor JK" [level=2] [ref=e166]
+              - link [ref=e168]:
+                - /url: https://institucional.condor.com.br/lojas_/hipermercado-condor-jk/
+            - generic [ref=e170] [cursor=pointer]:
+              - heading "Supermercado Condor Merces" [level=2] [ref=e174]
+              - link [ref=e176]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-merces/
+            - generic [ref=e178] [cursor=pointer]:
+              - heading [level=2] [ref=e182]: Super Condor Rio Negrinho
+              - link [ref=e184]:
+                - /url: https://institucional.condor.com.br/lojas_/super-condor-rio-negrinho/
+            - generic [ref=e186] [cursor=pointer]:
+              - heading [level=2] [ref=e190]: Super Condor São Bento do Sul
+              - link [ref=e192]:
+                - /url: https://institucional.condor.com.br/lojas_/super-condor-sao-bento-do-sul/
+            - generic [ref=e194] [cursor=pointer]:
+              - heading [level=2] [ref=e198]: Super Condor Araucária Capela Velha
+              - link [ref=e200]:
+                - /url: https://institucional.condor.com.br/lojas_/super-condor-araucaria-capela-velha/
+            - generic [ref=e202] [cursor=pointer]:
+              - heading [level=2] [ref=e206]: Supermercado Condor Barreirinha
+              - link [ref=e208]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-barreirinha/
+            - generic [ref=e210] [cursor=pointer]:
+              - heading [level=2] [ref=e214]: Supermercado Condor Rio Negro
+              - link [ref=e216]:
+                - /url: https://institucional.condor.com.br/lojas_/rio-negro/
+            - generic [ref=e218] [cursor=pointer]:
+              - heading [level=2] [ref=e222]: Supermercado Condor Ernesto Vilela
+              - link [ref=e224]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-ernesto-vilela/
+            - generic [ref=e226] [cursor=pointer]:
+              - heading [level=2] [ref=e230]: Supermercado Condor São José dos Pinhais Rui Barbosa
+              - link [ref=e232]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-sao-jose-dos-pinhais-rui-barbosa/
+            - generic [ref=e234] [cursor=pointer]:
+              - heading [level=2] [ref=e238]: Hipermercado Condor JK
+              - link [ref=e240]:
+                - /url: https://institucional.condor.com.br/lojas_/hipermercado-condor-jk/
+            - generic [ref=e242] [cursor=pointer]:
+              - heading [level=2] [ref=e246]: Supermercado Condor Merces
+              - link [ref=e248]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-merces/
+            - generic [ref=e250] [cursor=pointer]:
+              - heading [level=2] [ref=e254]: Super Condor Rio Negrinho
+              - link [ref=e256]:
+                - /url: https://institucional.condor.com.br/lojas_/super-condor-rio-negrinho/
+            - generic [ref=e258] [cursor=pointer]:
+              - heading [level=2] [ref=e262]: Super Condor São Bento do Sul
+              - link [ref=e264]:
+                - /url: https://institucional.condor.com.br/lojas_/super-condor-sao-bento-do-sul/
+            - generic [ref=e266] [cursor=pointer]:
+              - heading [level=2] [ref=e270]: Super Condor Araucária Capela Velha
+              - link [ref=e272]:
+                - /url: https://institucional.condor.com.br/lojas_/super-condor-araucaria-capela-velha/
+            - generic [ref=e274] [cursor=pointer]:
+              - heading [level=2] [ref=e278]: Supermercado Condor Barreirinha
+              - link [ref=e280]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-barreirinha/
+            - generic [ref=e282] [cursor=pointer]:
+              - heading [level=2] [ref=e286]: Supermercado Condor Rio Negro
+              - link [ref=e288]:
+                - /url: https://institucional.condor.com.br/lojas_/rio-negro/
+            - generic [ref=e290] [cursor=pointer]:
+              - heading [level=2] [ref=e294]: Supermercado Condor Ernesto Vilela
+              - link [ref=e296]:
+                - /url: https://institucional.condor.com.br/lojas_/supermercado-condor-ernesto-vilela/
+          - button "Next" [ref=e297] [cursor=pointer]:
+            - img [ref=e298]
+      - generic [ref=e301]:
+        - list [ref=e305]:
+          - listitem [ref=e306]:
+            - link "BLOG CONDOR" [ref=e307] [cursor=pointer]:
+              - /url: https://blog.condor.com.br/
+              - generic [ref=e309]: 
+              - generic [ref=e310]: BLOG CONDOR
+        - generic [ref=e316]:
+          - generic [ref=e318] [cursor=pointer]:
+            - generic [ref=e321]:
+              - link [ref=e324]:
+                - /url: https://blog.condor.com.br/dicas-de-primavera-como-comecar-seu-jardim/
+              - generic [ref=e328]: "Dicas de Primavera: como começar seu jardim?"
+            - link [ref=e329]:
+              - /url: https://blog.condor.com.br/dicas-de-primavera-como-comecar-seu-jardim/
+          - generic [ref=e331] [cursor=pointer]:
+            - generic [ref=e334]:
+              - link [ref=e337]:
+                - /url: https://blog.condor.com.br/por-que-tantas-marcas-varejistas-fazem-aniversario-no-ultimo-trimestre-do-ano/
+              - generic [ref=e341]: Por que tantas marcas varejistas fazem aniversário no último trimestre do ano?
+            - link [ref=e342]:
+              - /url: https://blog.condor.com.br/por-que-tantas-marcas-varejistas-fazem-aniversario-no-ultimo-trimestre-do-ano/
+          - generic [ref=e344] [cursor=pointer]:
+            - generic [ref=e347]:
+              - generic:
+                - generic:
+                  - link:
+                    - /url: https://blog.condor.com.br/drinks-para-aquecer-no-inverno-receitas-e-dicas/
+              - generic [ref=e351]: "Drinks para Aquecer no Inverno: receitas e dicas"
+            - link [ref=e352]:
+              - /url: https://blog.condor.com.br/drinks-para-aquecer-no-inverno-receitas-e-dicas/
+          - generic [ref=e354] [cursor=pointer]:
+            - generic [ref=e357]:
+              - link [ref=e360]:
+                - /url: https://blog.condor.com.br/hamburguer-com-cerveja/
+              - generic [ref=e364]: "Hambúrguer com cerveja: a harmonização perfeita"
+            - link [ref=e365]:
+              - /url: https://blog.condor.com.br/hamburguer-com-cerveja/
+        - link [ref=e367] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/radar-de-ofertas/
+  - contentinfo [ref=e368]:
+    - generic [ref=e370]:
+      - list [ref=e372]:
+        - listitem [ref=e373]:
+          - link "Facebook" [ref=e374] [cursor=pointer]:
+            - /url: https://www.facebook.com/RedeCondor/
+            - generic [ref=e375]: Facebook
+            - generic [ref=e376]: 
+        - listitem [ref=e377]:
+          - link "Instagram" [ref=e378] [cursor=pointer]:
+            - /url: https://www.instagram.com/redecondor/
+            - generic [ref=e379]: Instagram
+            - generic [ref=e380]: 
+        - listitem [ref=e381]:
+          - link [ref=e382] [cursor=pointer]:
+            - /url: https://twitter.com/RedeCondor
+            - img [ref=e384]
+        - listitem [ref=e386]:
+          - link "Youtube" [ref=e387] [cursor=pointer]:
+            - /url: https://www.youtube.com/user/redecondor
+            - generic [ref=e388]: Youtube
+            - generic [ref=e389]: 
+        - listitem [ref=e390]:
+          - link "Linkedin-in" [ref=e391] [cursor=pointer]:
+            - /url: https://br.linkedin.com/company/redecondor
+            - generic [ref=e392]: Linkedin-in
+            - generic [ref=e393]: 
+        - listitem [ref=e394]:
+          - link "Tiktok" [ref=e395] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@redecondor
+            - generic [ref=e396]: Tiktok
+            - generic [ref=e397]: 
+      - list [ref=e400]:
+        - listitem [ref=e401]:
+          - link "Fale Conosco 0800 416655" [ref=e402] [cursor=pointer]:
+            - /url: tel:0800416655
+            - img [ref=e404]
+            - generic [ref=e407]: Fale Conosco 0800 416655
+        - listitem [ref=e408]:
+          - link "Trabalhe Conosco" [ref=e409] [cursor=pointer]:
+            - /url: https://grupozonta.portaldetalentos.senior.com.br
+            - img [ref=e411]
+            - generic [ref=e413]: Trabalhe Conosco
+        - listitem [ref=e414]:
+          - link "Contato" [ref=e415] [cursor=pointer]:
+            - /url: /sac
+            - img [ref=e417]
+            - generic [ref=e419]: Contato
+        - listitem [ref=e420]:
+          - link "Política de Privacidade" [ref=e421] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/acoes-condor/politica-de-privacidade/
+            - generic [ref=e423]: 
+            - generic [ref=e424]: Política de Privacidade
+    - heading "Condor© 2024 - Todos os direitos reservados" [level=2] [ref=e428]
+  - generic [ref=e429]: desktop
+  - dialog "cookieconsent" [ref=e430]:
+    - generic [ref=e431]:
+      - text: Nós usamos cookies para melhorar sua experiência de navegação no site. Ao utilizá-lo, você concorda com a nossa política de monitoramento de cookies.
+      - button "cookies - Saiba mais" [ref=e432] [cursor=pointer]: Saiba mais
+    - button "Aceito cookie" [ref=e434] [cursor=pointer]: Aceito

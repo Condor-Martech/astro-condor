@@ -1,0 +1,85 @@
+<h2>Home Page — 3 Approaches</h2>
+<p class="subtitle">Mismo contenido (10 secciones), diferente estructura y nivel de interactividad</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Full Static + Minimal Islands</h3>
+      <p><strong>Idea:</strong> Todo Astro estático. React islands SOLO para el hero carousel y el header (como dice el spec). El resto son secciones HTML/CSS puras con hover effects via Tailwind.</p>
+      <br>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Mínimo JS — ultra rápido (casi 0kb JS en body)</li>
+            <li>SEO perfecto, todo renderizado estático</li>
+            <li>Simple de mantener</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Sin animaciones de entrada en secciones</li>
+            <li>El carousel necesita React igual</li>
+            <li>Se siente más "sitio estático" que "experiencia premium"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Static Sections + Scroll Animations (Recomendado ⭐)</h3>
+      <p><strong>Idea:</strong> Secciones estáticas en Astro, pero con un React island ligero que agrega animaciones de entrada (fade-in, slide-up) al hacer scroll via Framer Motion + Intersection Observer. Carousel y header como islands separados.</p>
+      <br>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Sensación premium con animaciones sutiles al scroll</li>
+            <li>JS controlado — solo Framer Motion para animaciones</li>
+            <li>SEO sigue siendo excelente (contenido en HTML estático)</li>
+            <li>Equilibrio perfecto entre performance y experiencia</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Más JS que approach A (~30-40kb Framer Motion)</li>
+            <li>Necesita client:visible para los islands de animación</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Full React SPA-like</h3>
+      <p><strong>Idea:</strong> Toda la home como un gran React island. Animaciones complejas, transiciones entre secciones, parallax, efectos de scroll avanzados.</p>
+      <br>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Máxima flexibilidad de animaciones</li>
+            <li>Experiencia tipo landing page de producto tech</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Mucho JS — contradice la filosofía del spec ("sin JS innecesario")</li>
+            <li>SEO más débil (depende de hidratación)</li>
+            <li>Overkill para un supermercado institucional</li>
+            <li>Performance afectada en móviles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

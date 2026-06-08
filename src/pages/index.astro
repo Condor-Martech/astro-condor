@@ -1,0 +1,86 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PromoBlocks from '../components/PromoBlocks.astro';
+import StoreShowcase from '../components/StoreShowcase.astro';
+import ClubeCondor from '../components/ClubeCondor.astro';
+import RadarOfertas from '../components/RadarOfertas.astro';
+import BlogSection from '../components/BlogSection.astro';
+import HeroCarousel from '../components/HeroCarousel';
+import '../styles/global.css';
+import '../styles/hero-carousel.css';
+
+const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+
+const res = await fetch(
+	`${DIRECTUS_URL}/items/hero_slides?filter[status][_eq]=published&sort=sort&fields=id,title,subtitle,cta_label,cta_href,image_desktop,image_mobile`
+);
+const { data } = await res.json();
+
+const slides = data.map((item: any) => ({
+	id: item.id,
+	title: item.title,
+	subtitle: item.subtitle,
+	cta: { label: item.cta_label, href: item.cta_href },
+	desktop: item.image_desktop
+		? `${DIRECTUS_URL}/assets/${item.image_desktop}?width=1920&height=700&fit=cover`
+		: 'https://picsum.photos/id/1036/1920/700',
+	mobile: item.image_mobile
+		? `${DIRECTUS_URL}/assets/${item.image_mobile}?width=768&height=900&fit=cover`
+		: 'https://picsum.photos/id/1036/768/900',
+}));
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<title>Condor</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<HeroCarousel client:load slides={slides} />
+			<PromoBlocks />
+			<StoreShowcase />
+			<ClubeCondor />
+			<section class="rdo-section">
+				<div class="rdo-container">
+					<RadarOfertas />
+				</div>
+			</section>
+			<BlogSection />
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.rdo-section {
+		padding: 3rem 0;
+		background: #F7F9FC;
+	}
+
+	.rdo-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.rdo-container {
+			padding: 0 2rem;
+		}
+	}
+</style>

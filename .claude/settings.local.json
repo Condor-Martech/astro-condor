@@ -1,4 +1,29 @@
 {
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:blog.condor.com.br)",
+      "Bash(node -e \":*)",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py \"retail supermarket blog cards grid\" --design-system -p \"Condor\")",
+      "WebFetch(domain:www.condor.com.br)",
+      "WebFetch(domain:teste-mais.z0n.co)",
+      "mcp__plugin_playwright_playwright__browser_run_code",
+      "Bash(pkill -f \"chrome.*mcp\")",
+      "Bash(pkill -9 -f \"chrome\")",
+      "mcp__directus__read-collections",
+      "mcp__directus__create-item",
+      "mcp__directus__read-items",
+      "mcp__directus__update-item",
+      "Bash(npm run:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/)",
+      "mcp__directus__read-fields",
+      "mcp__directus__create-field",
+      "mcp__directus__import-file",
+      "Bash(node /tmp/import-lojas.mjs)",
+      "mcp__directus__update-field",
+      "Bash(DIRECTUS_TOKEN=dtPXTqlOwKNFp0B5BzsI79bn_ihTD6sw node scripts/migrate-posts.mjs)",
+      "Bash(node /tmp/import-lojas-images.mjs)"
+    ]
+  },
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true

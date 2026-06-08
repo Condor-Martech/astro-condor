@@ -1,0 +1,458 @@
+- generic [active] [ref=e1]:
+  - link "Ir para o conteúdo" [ref=e2] [cursor=pointer]:
+    - /url: "#content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link [ref=e9] [cursor=pointer]:
+        - /url: https://zonsolucoes.com.br
+      - navigation "Menu" [ref=e13]:
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - link "Para você" [ref=e16] [cursor=pointer]:
+              - /url: "#"
+              - text: Para você
+              - img [ref=e18]
+          - listitem [ref=e20]:
+            - link "Para sua empresa" [ref=e21] [cursor=pointer]:
+              - /url: https://zonsolucoes.com.br/para-sua-empresa/
+              - text: Para sua empresa
+              - img [ref=e23]
+          - listitem [ref=e25]:
+            - link "Quem somos" [ref=e26] [cursor=pointer]:
+              - /url: https://zonsolucoes.com.br/quem-somos/
+          - listitem [ref=e27]:
+            - link "Dúvidas" [ref=e28] [cursor=pointer]:
+              - /url: https://zonsolucoes.com.br/perguntas-frequentes/
+          - listitem [ref=e29]:
+            - link "Negocie sua dívida" [ref=e30] [cursor=pointer]:
+              - /url: https://facilquitar.com.br/zoncard
+      - link "Baixe o app" [ref=e35] [cursor=pointer]:
+        - /url: "#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjIyNTYiLCJ0b2dnbGUiOmZhbHNlfQ%3D%3D"
+        - generic [ref=e37]: Baixe o app
+  - main [ref=e38]:
+    - generic [ref=e40]:
+      - generic [ref=e46]:
+        - generic [ref=e49]:
+          - generic [ref=e56]:
+            - heading [level=1] [ref=e59]:
+              - generic [ref=e60]: Z-ON empréstimos
+              - text: Seu crédito rápido e sem complicação
+            - paragraph [ref=e63]: Seja para guardar, investir, pagar ou controlar, o Z-ON está com você em todos os momentos.
+            - generic [ref=e64]:
+              - link [ref=e68] [cursor=pointer]:
+                - /url: /emprestimos/#saiba-mais
+                - generic [ref=e70]: Saiba mais
+              - link [ref=e74] [cursor=pointer]:
+                - /url: https://wa.me/5541992498832?text=Ol%C3%A1%21%20Vi%20no%20site%20e%20quero%20simular%20empr%C3%A9stimo
+                - generic [ref=e76]: Simular agora
+          - generic [ref=e86]:
+            - heading "Z-ON conta digital Sua conta fácil e gratuita" [level=1] [ref=e89]:
+              - generic [ref=e90]: Z-ON conta digital
+              - text: Sua conta fácil e gratuita
+            - paragraph [ref=e93]: Movimente seu dinheiro com Pix, transferências e pagamentos sem complicação.
+            - generic [ref=e94]:
+              - link "Saiba mais" [ref=e98] [cursor=pointer]:
+                - /url: /conta-digital/#saiba-mais
+                - generic [ref=e100]: Saiba mais
+              - link "Abra sua conta" [ref=e104] [cursor=pointer]:
+                - /url: /baixe-o-app/
+                - generic [ref=e106]: Abra sua conta
+          - generic [ref=e116]:
+            - heading [level=1] [ref=e119]:
+              - generic [ref=e120]: Z-ON card
+              - text: Mais vantagens para seu dia a dia
+            - paragraph [ref=e123]: Ofertas exclusivas, parcelamentos diferenciados e muitos outros benefícios em todas as lojas do grupo Zonta.
+            - generic [ref=e124]:
+              - link [ref=e128] [cursor=pointer]:
+                - /url: /cartao-de-credito/#saiba-mais
+                - generic [ref=e130]: Saiba mais
+              - link [ref=e134] [cursor=pointer]:
+                - /url: /faca-seu-z-on-card/
+                - generic [ref=e136]: Peça já seu cartão
+          - generic [ref=e146]:
+            - heading [level=1] [ref=e149]:
+              - generic [ref=e150]: Z-ON empréstimos
+              - text: Seu crédito rápido e sem complicação
+            - paragraph [ref=e153]: Seja para guardar, investir, pagar ou controlar, o Z-ON está com você em todos os momentos.
+            - generic [ref=e154]:
+              - link [ref=e158] [cursor=pointer]:
+                - /url: /emprestimos/#saiba-mais
+                - generic [ref=e160]: Saiba mais
+              - link [ref=e164] [cursor=pointer]:
+                - /url: https://wa.me/5541992498832?text=Ol%C3%A1%21%20Vi%20no%20site%20e%20quero%20simular%20empr%C3%A9stimo
+                - generic [ref=e166]: Simular agora
+          - generic [ref=e176]:
+            - heading [level=1] [ref=e179]:
+              - generic [ref=e180]: Z-ON conta digital
+              - text: Sua conta fácil e gratuita
+            - paragraph [ref=e183]: Movimente seu dinheiro com Pix, transferências e pagamentos sem complicação.
+            - generic [ref=e184]:
+              - link [ref=e188] [cursor=pointer]:
+                - /url: /conta-digital/#saiba-mais
+                - generic [ref=e190]: Saiba mais
+              - link [ref=e194] [cursor=pointer]:
+                - /url: /baixe-o-app/
+                - generic [ref=e196]: Abra sua conta
+          - generic [ref=e206]:
+            - heading [level=1] [ref=e209]:
+              - generic [ref=e210]: Z-ON card
+              - text: Mais vantagens para seu dia a dia
+            - paragraph [ref=e213]: Ofertas exclusivas, parcelamentos diferenciados e muitos outros benefícios em todas as lojas do grupo Zonta.
+            - generic [ref=e214]:
+              - link [ref=e218] [cursor=pointer]:
+                - /url: /cartao-de-credito/#saiba-mais
+                - generic [ref=e220]: Saiba mais
+              - link [ref=e224] [cursor=pointer]:
+                - /url: /faca-seu-z-on-card/
+                - generic [ref=e226]: Peça já seu cartão
+          - generic [ref=e236]:
+            - heading [level=1] [ref=e239]:
+              - generic [ref=e240]: Z-ON empréstimos
+              - text: Seu crédito rápido e sem complicação
+            - paragraph [ref=e243]: Seja para guardar, investir, pagar ou controlar, o Z-ON está com você em todos os momentos.
+            - generic [ref=e244]:
+              - link [ref=e248] [cursor=pointer]:
+                - /url: /emprestimos/#saiba-mais
+                - generic [ref=e250]: Saiba mais
+              - link [ref=e254] [cursor=pointer]:
+                - /url: https://wa.me/5541992498832?text=Ol%C3%A1%21%20Vi%20no%20site%20e%20quero%20simular%20empr%C3%A9stimo
+                - generic [ref=e256]: Simular agora
+        - img [ref=e261] [cursor=pointer]
+        - img [ref=e264] [cursor=pointer]
+      - generic [ref=e269]:
+        - generic [ref=e270]:
+          - link [ref=e274] [cursor=pointer]:
+            - /url: "#cartao"
+            - img [ref=e275]
+          - heading "Cartão de Crédito" [level=3] [ref=e279]:
+            - link "Cartão de Crédito" [ref=e280] [cursor=pointer]:
+              - /url: "#cartao"
+          - paragraph [ref=e283]: O cartão ideal para suas necessidades, com benefícios exclusivos e válido pra
+        - generic [ref=e284]:
+          - link [ref=e288] [cursor=pointer]:
+            - /url: "#conta-digital"
+            - img [ref=e289]
+          - heading "Conta digital" [level=3] [ref=e294]:
+            - link "Conta digital" [ref=e295] [cursor=pointer]:
+              - /url: "#conta-digital"
+          - paragraph [ref=e298]: Gerencie seu dinheiro de forma prática e segura, com transferências, pagamentos e muito mais na palma da sua mão.
+        - generic [ref=e299]:
+          - link [ref=e303] [cursor=pointer]:
+            - /url: "#emprestimos"
+            - img [ref=e304]
+          - heading "Empréstimos" [level=3] [ref=e310]:
+            - link "Empréstimos" [ref=e311] [cursor=pointer]:
+              - /url: "#emprestimos"
+          - paragraph [ref=e314]: Encontre as melhores opções de crédito para realizar seus projetos e alcançar seus objetivos.
+        - generic [ref=e315]:
+          - link [ref=e319] [cursor=pointer]:
+            - /url: "#seguros"
+            - img [ref=e320]
+          - heading "Seguros" [level=3] [ref=e326]:
+            - link "Seguros" [ref=e327] [cursor=pointer]:
+              - /url: "#seguros"
+          - paragraph [ref=e330]: Proteja o que é importante para você e sua família com as soluções de seguros Z-ON.
+      - generic [ref=e336]:
+        - 'heading "Z-ON card: seu melhor aliado nas compras" [level=2] [ref=e339]'
+        - generic [ref=e340]:
+          - img [ref=e346]
+          - generic [ref=e348]:
+            - heading "Limite de crédito exclusivo" [level=4] [ref=e351]
+            - paragraph [ref=e354]: Tenha um cartão exclusivo para compras nas lojas Condor, Auto Posto Condor, Gigante Atacadista e Hipermais.
+        - generic [ref=e355]:
+          - img [ref=e361]
+          - generic [ref=e363]:
+            - heading "Ofertas exclusivas" [level=4] [ref=e366]
+            - paragraph [ref=e369]: Aproveite descontos imperdíveis em diversos produtos e departamentos.
+        - generic [ref=e370]:
+          - img [ref=e376]
+          - generic [ref=e378]:
+            - heading "Parcelamento em até 20x sem juros" [level=4] [ref=e381]
+            - paragraph [ref=e384]: De alimentos à eletros, parcele sempre que precisar.
+        - generic [ref=e385]:
+          - img [ref=e391]
+          - generic [ref=e393]:
+            - heading "Cartão virtual" [level=4] [ref=e396]
+            - paragraph [ref=e399]: Compre com segurança pelo app Z-ON, sem precisar do cartão físico.
+        - generic [ref=e407]:
+          - link "condor" [ref=e410] [cursor=pointer]:
+            - /url: https://www.condor.com.br/
+            - img "condor" [ref=e411]
+          - link "condor2" [ref=e414] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/institucional/autoposto/
+            - img "condor2" [ref=e415]
+          - link "gigante" [ref=e418] [cursor=pointer]:
+            - /url: https://giganteatacadista.com/
+            - img "gigante" [ref=e419]
+          - link "hiper" [ref=e422] [cursor=pointer]:
+            - /url: https://www.grupohipermais.com.br/
+            - img "hiper" [ref=e423]
+        - generic [ref=e424]:
+          - link "Saiba mais" [ref=e428] [cursor=pointer]:
+            - /url: /cartao-de-credito/
+            - generic [ref=e430]: Saiba mais
+          - link "Peça já seu cartão" [ref=e434] [cursor=pointer]:
+            - /url: /faca-seu-z-on-card/
+            - generic [ref=e436]: Peça já seu cartão
+      - generic [ref=e439]:
+        - 'heading "Z-ON conta digital: fácil e gratuita" [level=2] [ref=e442]'
+        - generic [ref=e443]:
+          - img [ref=e449]
+          - generic [ref=e451]:
+            - heading "Pix sem limite" [level=4] [ref=e454]
+            - paragraph [ref=e457]: Dinheiro na hora, sem taxas
+        - generic [ref=e458]:
+          - img [ref=e464]
+          - generic [ref=e466]:
+            - heading "Pagamentos" [level=4] [ref=e469]
+            - paragraph [ref=e472]: Boletos e contas sem complicação.
+        - generic [ref=e473]:
+          - img [ref=e479]
+          - generic [ref=e481]:
+            - heading "Regarga de celular" [level=4] [ref=e484]
+            - paragraph [ref=e487]: Crédito instantâneo, onde estiver.
+        - generic [ref=e488]:
+          - img [ref=e494]
+          - generic [ref=e496]:
+            - heading "Gift Card" [level=4] [ref=e499]
+            - paragraph [ref=e502]: Compre e presenteie fácil com cartões de diversas marcas.
+        - generic [ref=e503]:
+          - link "Saiba mais" [ref=e507] [cursor=pointer]:
+            - /url: /conta-digital/
+            - generic [ref=e509]: Saiba mais
+          - link "Abra sua conta" [ref=e513] [cursor=pointer]:
+            - /url: "#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjIyNTYiLCJ0b2dnbGUiOmZhbHNlfQ%3D%3D"
+            - generic [ref=e515]: Abra sua conta
+      - generic [ref=e520]:
+        - heading "O jeito fácil de cuidar do seu dinheiro" [level=2] [ref=e527]
+        - link "Começar agora" [ref=e532] [cursor=pointer]:
+          - /url: "#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjIyNTYiLCJ0b2dnbGUiOmZhbHNlfQ%3D%3D"
+          - generic [ref=e534]: Começar agora
+      - generic [ref=e537]:
+        - 'heading "Z-ON empréstimos: crédito para todas as suas necessidades" [level=2] [ref=e540]'
+        - generic [ref=e541]:
+          - img [ref=e547]
+          - generic [ref=e549]:
+            - heading "Antecipação do FGTS" [level=4] [ref=e552]
+            - paragraph [ref=e555]: Antecipe o saque do seu FGTS de forma simples e segura, pelo app ou pelo Whats.
+        - generic [ref=e556]:
+          - img [ref=e562]
+          - generic [ref=e564]:
+            - heading "Crédito Pessoal" [level=4] [ref=e567]
+            - paragraph [ref=e570]: Dinheiro rápido e fácil para realizar todos seus projetos.
+        - generic [ref=e571]:
+          - img [ref=e577]
+          - generic [ref=e579]:
+            - heading "Consignado INSS" [level=4] [ref=e582]
+            - paragraph [ref=e585]: Taxas reduzidas e prazos flexíveis para aposentados e pensionistas.
+        - generic [ref=e586]:
+          - img [ref=e592]
+          - generic [ref=e594]:
+            - heading "Crédito do Trabalhador CLT" [level=4] [ref=e597]
+            - paragraph [ref=e600]: Crédito com desconto em folha para trabalhadores com vínculo ativo, com taxas mais baixas e contratação facilitada.
+        - generic [ref=e601]:
+          - link "Saiba mais" [ref=e605] [cursor=pointer]:
+            - /url: /emprestimos/
+            - generic [ref=e607]: Saiba mais
+          - link "Simule agora" [ref=e611] [cursor=pointer]:
+            - /url: https://wa.me/5541992498832?text=Ol%C3%A1%21%20Vi%20no%20site%20e%20quero%20simular%20empr%C3%A9stimo
+            - generic [ref=e613]: Simule agora
+      - generic [ref=e628]:
+        - heading "Baixe já o app" [level=2] [ref=e631]:
+          - generic [ref=e632]: Baixe já
+          - text: o app
+        - paragraph [ref=e635]: É só apontar a câmera do seu celular para o QR Code ou clicar no botão abaixo. Rápido, fácil e só seu.
+        - generic [ref=e640]:
+          - link [ref=e643] [cursor=pointer]:
+            - /url: https://play.google.com/store/apps/details?id=com.bankeiro.zon&hl=pt_BR
+          - link [ref=e646] [cursor=pointer]:
+            - /url: https://apps.apple.com/br/app/z-on-super-app/id6446367529
+      - generic [ref=e649]:
+        - heading "Confiança e credibilidade do Grupo Zonta" [level=2] [ref=e652]:
+          - text: Confiança e credibilidade do
+          - generic [ref=e653]: Grupo Zonta
+        - paragraph [ref=e656]: O Z-ON faz parte do Grupo Zonta, uma das maiores redes varejistas do Brasil, com mais de 50 anos de história e 13 mil colaboradores. Prezamos por soluções de crédito simples e segura para facilitar seu dia a dia.
+        - generic [ref=e670]:
+          - generic [ref=e671]:
+            - generic:
+              - img "logo_grupo_zonta_3"
+          - link "logo-z-on" [ref=e674] [cursor=pointer]:
+            - /url: "#"
+            - img "logo-z-on" [ref=e675]
+          - link "condor" [ref=e678] [cursor=pointer]:
+            - /url: https://www.condor.com.br/
+            - img "condor" [ref=e679]
+          - link "condor2" [ref=e682] [cursor=pointer]:
+            - /url: https://institucional.condor.com.br/institucional/autoposto/
+            - img "condor2" [ref=e683]
+          - link "gigante" [ref=e686] [cursor=pointer]:
+            - /url: https://giganteatacadista.com/
+            - img "gigante" [ref=e687]
+          - link "hiper" [ref=e690] [cursor=pointer]:
+            - /url: https://www.grupohipermais.com.br/
+            - img "hiper" [ref=e691]
+          - generic [ref=e692]:
+            - generic:
+              - link "container":
+                - /url: https://www.cipla.com.br/
+                - img "container"
+          - generic [ref=e693]:
+            - generic:
+              - img "ourofino"
+  - contentinfo [ref=e694]:
+    - generic [ref=e696]:
+      - generic [ref=e697]:
+        - generic [ref=e698]:
+          - paragraph [ref=e701]: PARA VOCÊ
+          - list [ref=e704]:
+            - listitem [ref=e705]:
+              - link "Conta Digital" [ref=e706] [cursor=pointer]:
+                - /url: /conta-digital/
+                - generic [ref=e707]: Conta Digital
+            - listitem [ref=e708]:
+              - link "Cartão" [ref=e709] [cursor=pointer]:
+                - /url: /cartao-de-credito/
+                - generic [ref=e710]: Cartão
+            - listitem [ref=e711]:
+              - link "Empréstimos" [ref=e712] [cursor=pointer]:
+                - /url: /emprestimos/
+                - generic [ref=e713]: Empréstimos
+            - listitem [ref=e714]:
+              - link "Seguros" [ref=e715] [cursor=pointer]:
+                - /url: /seguros/
+                - generic [ref=e716]: Seguros
+          - paragraph [ref=e719]:
+            - link "PARA SUA EMPRESA" [ref=e720] [cursor=pointer]:
+              - /url: /para-sua-empresa/
+        - generic [ref=e721]:
+          - paragraph [ref=e724]: SOBRE
+          - list [ref=e727]:
+            - listitem [ref=e728]:
+              - link "O Z-ON" [ref=e729] [cursor=pointer]:
+                - /url: /quem-somos/
+                - generic [ref=e730]: O Z-ON
+            - listitem [ref=e731]:
+              - link "Grupo Zonta" [ref=e732] [cursor=pointer]:
+                - /url: https://grupozonta.com.br/
+                - generic [ref=e733]: Grupo Zonta
+            - listitem [ref=e734]:
+              - link "Condor" [ref=e735] [cursor=pointer]:
+                - /url: https://www.condor.com.br/
+                - generic [ref=e736]: Condor
+            - listitem [ref=e737]:
+              - link "Condor Auto Posto" [ref=e738] [cursor=pointer]:
+                - /url: https://institucional.condor.com.br/institucional/autoposto/
+                - generic [ref=e739]: Condor Auto Posto
+            - listitem [ref=e740]:
+              - link "Hipermais" [ref=e741] [cursor=pointer]:
+                - /url: https://www.grupohipermais.com.br/
+                - generic [ref=e742]: Hipermais
+            - listitem [ref=e743]:
+              - link "Gigante" [ref=e744] [cursor=pointer]:
+                - /url: https://giganteatacadista.com/
+                - generic [ref=e745]: Gigante
+        - generic [ref=e746]:
+          - paragraph [ref=e749]: TRANSPARÊNCIA
+          - list [ref=e752]:
+            - listitem [ref=e753]:
+              - link "Código de Conduta e Ética" [ref=e754] [cursor=pointer]:
+                - /url: /codigo-de-conduta-e-etica_z-on/
+                - generic [ref=e755]: Código de Conduta e Ética
+            - listitem [ref=e756]:
+              - link "Contratos e Documentos" [ref=e757] [cursor=pointer]:
+                - /url: /contratos-e-documentos/
+                - generic [ref=e758]: Contratos e Documentos
+            - listitem [ref=e759]:
+              - link "Politica de Privacidade" [ref=e760] [cursor=pointer]:
+                - /url: /politica-de-privacidade_z-on/
+                - generic [ref=e761]: Politica de Privacidade
+            - listitem [ref=e762]:
+              - link "Política de Segurança" [ref=e763] [cursor=pointer]:
+                - /url: https://zonsolucoes.com.br/wp-content/uploads/2025/07/POL_SEG_CIBER_GRC_V1.1.pdf
+                - generic [ref=e764]: Política de Segurança
+            - listitem [ref=e765]:
+              - link "Promoções e Regulamentos" [ref=e766] [cursor=pointer]:
+                - /url: /promocoes-e-regulamentos/
+                - generic [ref=e767]: Promoções e Regulamentos
+            - listitem [ref=e768]:
+              - link "PRSAC" [ref=e769] [cursor=pointer]:
+                - /url: /politica-de-responsabilidade-social-ambiental-e-climatica-prsac/
+                - generic [ref=e770]: PRSAC
+            - listitem [ref=e771]:
+              - link "Relatórios financeiros" [ref=e772] [cursor=pointer]:
+                - /url: /relatorios-financeiros/
+                - generic [ref=e773]: Relatórios financeiros
+            - listitem [ref=e774]:
+              - link "Taxas e tarifas" [ref=e775] [cursor=pointer]:
+                - /url: /taxas-e-tarifas/
+                - generic [ref=e776]: Taxas e tarifas
+            - listitem [ref=e777]:
+              - link "Termos de uso" [ref=e778] [cursor=pointer]:
+                - /url: /z_on_termos_de_uso/
+                - generic [ref=e779]: Termos de uso
+        - generic [ref=e780]:
+          - paragraph [ref=e783]: AJUDA
+          - list [ref=e786]:
+            - listitem [ref=e787]:
+              - link "Perguntas frequentes" [ref=e788] [cursor=pointer]:
+                - /url: /perguntas-frequentes/
+                - generic [ref=e789]: Perguntas frequentes
+            - listitem [ref=e790]:
+              - link "Dicas de segurança" [ref=e791] [cursor=pointer]:
+                - /url: /em-breve/
+                - generic [ref=e792]: Dicas de segurança
+            - listitem [ref=e793]:
+              - link "Educação financeira" [ref=e794] [cursor=pointer]:
+                - /url: /em-breve/
+                - generic [ref=e795]: Educação financeira
+            - listitem [ref=e796]:
+              - link "Negocie sua dívida" [ref=e797] [cursor=pointer]:
+                - /url: https://facilquitar.com.br/zoncard
+                - generic [ref=e798]: Negocie sua dívida
+        - generic [ref=e800]:
+          - paragraph [ref=e803]: CONTATO
+          - list [ref=e806]:
+            - listitem [ref=e807]:
+              - link "Canais de Atendimento" [ref=e808] [cursor=pointer]:
+                - /url: /canais-de-atendimento/
+                - generic [ref=e809]: Canais de Atendimento
+            - listitem [ref=e810]:
+              - link "Ouvidoria" [ref=e811] [cursor=pointer]:
+                - /url: /ouvidoria/
+                - generic [ref=e812]: Ouvidoria
+        - generic [ref=e813]:
+          - paragraph [ref=e816]: BAIXE O APP
+          - list [ref=e819]:
+            - listitem [ref=e820]:
+              - link "Google Play" [ref=e821] [cursor=pointer]:
+                - /url: https://play.google.com/store/apps/details?id=com.bankeiro.zon&hl=pt_BR
+                - img [ref=e823]
+                - generic [ref=e825]: Google Play
+            - listitem [ref=e826]:
+              - link "App Store" [ref=e827] [cursor=pointer]:
+                - /url: https://apps.apple.com/br/app/z-on-super-app/id6446367529
+                - img [ref=e829]
+                - generic [ref=e831]: App Store
+      - generic [ref=e832]:
+        - link [ref=e836] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=e840]:
+          - text: Z-ON soluções financeiras ©2025 Todos os direitos reservados
+          - text: CNPJ 76.549.708/0001-68
+          - text: Rua Leon Nícolas, 67, 2º andar, Capão Raso Curitiba-PR, CEP 81.150-140
+        - generic [ref=e841]:
+          - link [ref=e845] [cursor=pointer]:
+            - /url: https://www.instagram.com/zonsuperapp
+            - img [ref=e846]
+          - link [ref=e851] [cursor=pointer]:
+            - /url: https://facebook.com/zonsuperapp
+            - img [ref=e852]
+  - generic [ref=e854]: desktop
+  - dialog "cookieconsent" [ref=e855]:
+    - generic [ref=e856]:
+      - text: Este site utiliza cookies para permitir uma melhor experiência ao usuário. Ao navegar no site estará consentindo com a sua utilização. Para mais detalhes a Política de Privacidade
+      - button "cookies - Leia mais" [ref=e857] [cursor=pointer]: Leia mais
+    - generic [ref=e858]:
+      - button "Negar cookies" [ref=e859] [cursor=pointer]: Negar
+      - button "Permitir cookies" [ref=e860] [cursor=pointer]: Permitir
+    - button "x cookie" [ref=e861] [cursor=pointer]: x

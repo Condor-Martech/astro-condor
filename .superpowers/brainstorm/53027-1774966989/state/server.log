@@ -1,0 +1,5 @@
+{"type":"server-started","port":59647,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:59647","screen_dir":"/Users/al3jandro/project/condor/astro-condor/.superpowers/brainstorm/53027-1774966989/content","state_dir":"/Users/al3jandro/project/condor/astro-condor/.superpowers/brainstorm/53027-1774966989/state"}
+{"type":"screen-added","file":"/Users/al3jandro/project/condor/astro-condor/.superpowers/brainstorm/53027-1774966989/content/approaches.html"}
+{"type":"screen-added","file":"/Users/al3jandro/project/condor/astro-condor/.superpowers/brainstorm/53027-1774966989/content/design-structure.html"}
+{"type":"screen-added","file":"/Users/al3jandro/project/condor/astro-condor/.superpowers/brainstorm/53027-1774966989/content/design-structure-v2.html"}
+{"type":"server-stopped","reason":"idle timeout"}

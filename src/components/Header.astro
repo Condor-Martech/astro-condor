@@ -1,0 +1,711 @@
+---
+import { getMenuByPosition } from '../models/menu';
+
+const navItems = await getMenuByPosition('top');
+---
+
+<header
+  class="header"
+  id="site-header"
+  data-scrolled="false"
+>
+  <div class="header-inner">
+    <!-- Logo -->
+    <a href="/" class="header-logo" aria-label="Condor - Ir para a página inicial">
+      <img
+        src="/logo.png"
+        alt="Condor"
+        width="288"
+        height="84"
+        class="header-logo-img"
+      />
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="header-nav" aria-label="Menu principal">
+      <ul class="header-nav-list" role="menubar">
+        {navItems.map((item) => (
+          <li class="header-nav-item" role="none">
+            <a
+              href={item.href}
+              role="menuitem"
+              aria-haspopup={item.children ? 'true' : undefined}
+              class="header-nav-link"
+            >
+              {item.label}
+              {item.children && (
+                <svg class="header-nav-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
+            </a>
+            {item.children && (
+              <ul class="header-dropdown" role="menu">
+                {item.children.map((child) => (
+                  <li role="none">
+                    <a
+                      href={child.href}
+                      target={child.target}
+                      rel={child.target === '_blank' ? 'noopener' : undefined}
+                      role="menuitem"
+                      class="header-dropdown-link"
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- CTA -->
+    <a
+      href="https://www.condoremcasa.com.br/"
+      target="_blank"
+      rel="noopener"
+      class="header-cta"
+    >
+      <svg class="header-cta-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+      </svg>
+      Condor em Casa
+    </a>
+
+    <!-- Mobile toggle -->
+    <button
+      type="button"
+      id="mobile-menu-toggle"
+      class="header-burger"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="burger-line burger-line--1"></span>
+      <span class="burger-line burger-line--2"></span>
+      <span class="burger-line burger-line--3"></span>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div
+    id="mobile-menu"
+    class="mobile-drawer"
+    aria-hidden="true"
+  >
+    <nav class="mobile-drawer-nav" aria-label="Menu mobile">
+      <ul class="mobile-nav-list">
+        {navItems.map((item) => (
+          <li class="mobile-nav-item">
+            {item.children ? (
+              <div>
+                <button
+                  type="button"
+                  class="mobile-nav-toggle"
+                  aria-expanded="false"
+                >
+                  {item.label}
+                  <svg class="mobile-nav-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <ul class="mobile-sub-list" aria-hidden="true">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        target={child.target}
+                        rel={child.target === '_blank' ? 'noopener' : undefined}
+                        class="mobile-sub-link"
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <a href={item.href} class="mobile-nav-link">
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <!-- Mobile CTA -->
+      <a
+        href="https://www.condoremcasa.com.br/"
+        target="_blank"
+        rel="noopener"
+        class="mobile-cta"
+      >
+        <svg class="header-cta-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+        </svg>
+        Condor em Casa
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* === Tokens (matching the rest of the project) === */
+  .header {
+    --bg-primary: #0A0F1E;
+    --bg-darker: #070B15;
+    --border-subtle: #1A2035;
+    --accent-red: #E31937;
+    --accent-red-glow: #FF2D4B;
+    --text-primary: #FFFFFF;
+    --text-nav: #F0F0F0;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--bg-primary);
+    transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .header[data-scrolled="true"] {
+    background: rgba(10, 15, 30, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    transition: padding 0.3s ease;
+  }
+
+  .header[data-scrolled="true"] .header-inner {
+    padding: 0.6rem 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .header-inner {
+      padding: 1.25rem 2rem;
+    }
+
+    .header[data-scrolled="true"] .header-inner {
+      padding: 0.65rem 2rem;
+    }
+  }
+
+  /* === Logo === */
+  .header-logo {
+    display: block;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .header-logo:hover {
+    opacity: 0.85;
+  }
+
+  .header-logo:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .header-logo-img {
+    height: 42px;
+    width: auto;
+    transition: height 0.3s ease;
+  }
+
+  .header[data-scrolled="true"] .header-logo-img {
+    height: 34px;
+  }
+
+  /* === Desktop Nav === */
+  .header-nav {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .header-nav {
+      display: block;
+    }
+  }
+
+  .header-nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header-nav-item {
+    position: relative;
+  }
+
+  .header-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 0.9rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-nav);
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+
+  .header-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: calc(100% - 1.8rem);
+    height: 2px;
+    background: var(--accent-red);
+    transition: transform 0.25s ease;
+    border-radius: 1px;
+  }
+
+  .header-nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .header-nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  .header-nav-link:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+  }
+
+  .header-nav-chevron {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .header-nav-item:hover .header-nav-chevron {
+    opacity: 0.8;
+    transform: rotate(180deg);
+  }
+
+  /* === Desktop Dropdown === */
+  .header-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 220px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+    z-index: 50;
+  }
+
+  .header-nav-item:hover .header-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .header-dropdown-link {
+    display: block;
+    padding: 0.6rem 1.25rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s ease, padding-left 0.2s ease;
+    position: relative;
+  }
+
+  .header-dropdown-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scaleY(0);
+    width: 2px;
+    height: 60%;
+    background: var(--accent-red);
+    border-radius: 1px;
+    transition: transform 0.2s ease;
+  }
+
+  .header-dropdown-link:hover {
+    color: var(--text-primary);
+    padding-left: 1.5rem;
+  }
+
+  .header-dropdown-link:hover::before {
+    transform: translateY(-50%) scaleY(1);
+  }
+
+  .header-dropdown-link:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: -2px;
+  }
+
+  /* === CTA Button === */
+  .header-cta {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.4rem;
+    background: var(--accent-red);
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+    padding-right: 1.8rem;
+    transition: background 0.2s ease, gap 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .header-cta {
+      display: inline-flex;
+    }
+  }
+
+  .header-cta:hover {
+    background: var(--accent-red-glow);
+    gap: 0.75rem;
+  }
+
+  .header-cta:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
+  .header-cta-cart {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .header-cta-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  .header-cta:hover .header-cta-arrow {
+    transform: translateX(2px);
+  }
+
+  /* === Hamburger === */
+  .header-burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (min-width: 768px) {
+    .header-burger {
+      display: none;
+    }
+  }
+
+  .header-burger:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .burger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+
+  .header-burger[aria-expanded="true"] .burger-line--1 {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .header-burger[aria-expanded="true"] .burger-line--2 {
+    opacity: 0;
+  }
+
+  .header-burger[aria-expanded="true"] .burger-line--3 {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* === Mobile Drawer === */
+  .mobile-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background: var(--bg-primary);
+    padding-top: 80px;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+
+  .mobile-drawer[aria-hidden="false"] {
+    transform: translateX(0);
+  }
+
+  @media (min-width: 768px) {
+    .mobile-drawer {
+      display: none;
+    }
+  }
+
+  .mobile-drawer-nav {
+    padding: 1rem 1.5rem 2rem;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-nav-item {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .mobile-nav-link,
+  .mobile-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 52px;
+    padding: 0.75rem 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-nav);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-toggle:hover {
+    color: var(--text-primary);
+  }
+
+  .mobile-nav-link:focus-visible,
+  .mobile-nav-toggle:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .mobile-nav-link:active,
+  .mobile-nav-toggle:active {
+    opacity: 0.7;
+  }
+
+  .mobile-nav-chevron {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+    transition: transform 0.25s ease;
+  }
+
+  .mobile-nav-toggle[aria-expanded="true"] .mobile-nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .mobile-sub-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0.5rem 1rem;
+    display: none;
+  }
+
+  .mobile-sub-list[aria-hidden="false"] {
+    display: block;
+  }
+
+  .mobile-sub-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem 0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+    position: relative;
+    padding-left: 0.75rem;
+  }
+
+  .mobile-sub-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 16px;
+    background: var(--border-subtle);
+    border-radius: 1px;
+    transition: background 0.2s ease;
+  }
+
+  .mobile-sub-link:hover {
+    color: var(--text-primary);
+  }
+
+  .mobile-sub-link:hover::before {
+    background: var(--accent-red);
+  }
+
+  .mobile-sub-link:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Mobile CTA */
+  .mobile-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 0.85rem 2rem;
+    background: var(--accent-red);
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%);
+    padding-right: 2.5rem;
+    transition: background 0.2s ease;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mobile-cta:hover {
+    background: var(--accent-red-glow);
+  }
+
+  .mobile-cta:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
+  /* === Reduced motion === */
+  @media (prefers-reduced-motion: reduce) {
+    .header,
+    .header-inner,
+    .header-logo-img,
+    .header-nav-link::after,
+    .header-dropdown,
+    .header-dropdown-link,
+    .header-dropdown-link::before,
+    .burger-line,
+    .mobile-drawer,
+    .mobile-nav-chevron,
+    .header-cta,
+    .header-cta-arrow {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Sticky header behavior
+  const header = document.getElementById('site-header');
+  let ticking = false;
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        header?.setAttribute('data-scrolled', String(window.scrollY > 50));
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mobile menu
+  const burger = document.getElementById('mobile-menu-toggle');
+  const drawer = document.getElementById('mobile-menu');
+
+  function toggleDrawer() {
+    const isOpen = drawer?.getAttribute('aria-hidden') === 'false';
+    drawer?.setAttribute('aria-hidden', String(!isOpen ? 'false' : 'true'));
+    burger?.setAttribute('aria-expanded', String(!isOpen));
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+
+  burger?.addEventListener('click', toggleDrawer);
+
+  // Mobile sub-menus
+  document.querySelectorAll('.mobile-nav-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      const sub = btn.nextElementSibling as HTMLElement | null;
+      sub?.setAttribute('aria-hidden', String(expanded));
+    });
+  });
+</script>
