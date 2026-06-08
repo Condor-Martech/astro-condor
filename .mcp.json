@@ -5,7 +5,7 @@
       "args": ["@directus/content-mcp@latest"],
       "env": {
         "DIRECTUS_URL": "http://localhost:8055",
-        "DIRECTUS_TOKEN": "dtPXTqlOwKNFp0B5BzsI79bn_ihTD6sw"
+        "DIRECTUS_TOKEN": "DIRECTUS_TOKEN"
       }
     }
   }
