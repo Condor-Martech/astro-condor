@@ -1,0 +1,344 @@
+---
+export const prerender = false;
+
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { fetchDirectus, assetUrl } from '../../lib/directus';
+import '../../styles/global.css';
+
+interface PageListItem {
+	id: string;
+	titulo: string;
+	slug: string;
+	image: string | null;
+}
+
+const CATEGORIA_LABELS: Record<string, { title: string; subtitle: string }> = {
+	institucional: {
+		title: 'Institucional',
+		subtitle: 'Conheça a história, a estrutura e os valores da Rede Condor.',
+	},
+	'acoes-condor': {
+		title: 'Ações Condor',
+		subtitle: 'Iniciativas culturais, sociais, ambientais e educacionais do Grupo.',
+	},
+};
+
+const { categoria } = Astro.params;
+
+if (!categoria) {
+	return Astro.redirect('/404');
+}
+
+const pages = await fetchDirectus<PageListItem>(
+	`/items/pages?filter[categoria][_eq]=${categoria}&filter[status][_eq]=published&fields=id,titulo,slug,image&sort=titulo&limit=100`
+);
+
+if (pages.length === 0) {
+	return Astro.redirect('/404');
+}
+
+const meta = CATEGORIA_LABELS[categoria] ?? {
+	title: categoria.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+	subtitle: '',
+};
+---
+
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		{meta.subtitle && <meta name="description" content={meta.subtitle} />}
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<title>{meta.title} — Condor</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Breadcrumb -->
+			<nav class="breadcrumb" aria-label="Breadcrumb">
+				<div class="breadcrumb-container">
+					<a href="/">Início</a>
+					<span class="breadcrumb-sep" aria-hidden="true">/</span>
+					<span aria-current="page">{meta.title}</span>
+				</div>
+			</nav>
+
+			<!-- Header -->
+			<section class="cat-header">
+				<div class="cat-header-content">
+					<h1 class="cat-header-title">{meta.title}</h1>
+					{meta.subtitle && <p class="cat-header-sub">{meta.subtitle}</p>}
+				</div>
+			</section>
+
+			<!-- Grid -->
+			<section class="cat-grid-section">
+				<div class="cat-grid">
+					{pages.map((page) => {
+						const thumb = assetUrl(page.image, { width: 600, height: 400, fit: 'cover' }, '') || null;
+						return (
+							<a href={`/${categoria}/${page.slug}`} class="cat-card">
+								<div class="cat-card-img-wrap">
+									{thumb ? (
+										<img
+											src={thumb}
+											alt={page.titulo}
+											class="cat-card-img"
+											width="600"
+											height="400"
+											loading="lazy"
+											decoding="async"
+										/>
+									) : (
+										<div class="cat-card-img-placeholder">
+											<span>C</span>
+										</div>
+									)}
+								</div>
+								<div class="cat-card-body">
+									<h2 class="cat-card-title">{page.titulo}</h2>
+									<span class="cat-card-cta">
+										Saiba mais
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+											<line x1="5" y1="12" x2="19" y2="12"></line>
+											<polyline points="12 5 19 12 12 19"></polyline>
+										</svg>
+									</span>
+								</div>
+							</a>
+						);
+					})}
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:root {
+		--bg-primary: #FFFFFF;
+		--bg-surface: #F7F9FC;
+		--border-subtle: #E2E8F0;
+		--accent-red: #E31937;
+		--accent-red-glow: #FF2D4B;
+		--text-primary: #1A1A2E;
+		--text-secondary: #4A5568;
+		--text-muted: #718096;
+	}
+
+	/* === Breadcrumb === */
+	.breadcrumb {
+		background: var(--bg-surface);
+		border-bottom: 1px solid var(--border-subtle);
+		padding: 0.75rem 0;
+	}
+
+	.breadcrumb-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.breadcrumb-container a {
+		color: var(--text-muted);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.breadcrumb-container a:hover { color: var(--accent-red); }
+	.breadcrumb-sep { color: var(--border-subtle); }
+
+	.breadcrumb-container [aria-current="page"] {
+		color: var(--text-primary);
+		font-weight: 500;
+	}
+
+	/* === Header === */
+	.cat-header {
+		background: var(--bg-primary);
+		padding: 2.5rem 0 2rem;
+	}
+
+	.cat-header-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.cat-header-content { padding: 0 2rem; }
+	}
+
+	.cat-header-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 800;
+		font-size: clamp(2rem, 5vw, 3rem);
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		line-height: 1;
+		color: var(--text-primary);
+		margin: 0 0 0.5rem;
+	}
+
+	.cat-header-title::after {
+		content: '';
+		display: block;
+		width: 48px;
+		height: 3px;
+		background: var(--accent-red);
+		margin-top: 0.75rem;
+		border-radius: 2px;
+	}
+
+	.cat-header-sub {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 1rem;
+		color: var(--text-muted);
+		margin: 1rem 0 0;
+		max-width: 60ch;
+	}
+
+	/* === Grid === */
+	.cat-grid-section {
+		background: var(--bg-primary);
+		padding: 1.5rem 0 4rem;
+	}
+
+	.cat-grid {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
+	@media (min-width: 640px) {
+		.cat-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.cat-grid {
+			grid-template-columns: repeat(3, 1fr);
+			padding: 0 2rem;
+		}
+	}
+
+	/* === Card === */
+	.cat-card {
+		display: flex;
+		flex-direction: column;
+		background: var(--bg-primary);
+		border: 1px solid var(--border-subtle);
+		border-radius: 6px;
+		overflow: hidden;
+		text-decoration: none;
+		color: inherit;
+		transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+	}
+
+	.cat-card:hover {
+		border-color: var(--accent-red);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(10, 15, 30, 0.08);
+	}
+
+	.cat-card-img-wrap {
+		aspect-ratio: 3 / 2;
+		background: var(--bg-surface);
+		overflow: hidden;
+	}
+
+	.cat-card-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.4s ease;
+	}
+
+	.cat-card:hover .cat-card-img {
+		transform: scale(1.04);
+	}
+
+	.cat-card-img-placeholder {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 800;
+		font-size: 4rem;
+		color: var(--border-subtle);
+	}
+
+	.cat-card-body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		padding: 1.25rem 1.5rem 1.5rem;
+		flex: 1;
+	}
+
+	.cat-card-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1.4rem;
+		text-transform: uppercase;
+		letter-spacing: -0.01em;
+		line-height: 1.15;
+		color: var(--text-primary);
+		margin: 0;
+	}
+
+	.cat-card-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		margin-top: auto;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--accent-red);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		transition: gap 0.25s ease;
+	}
+
+	.cat-card:hover .cat-card-cta {
+		gap: 0.75rem;
+		color: var(--accent-red-glow);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cat-card,
+		.cat-card-img,
+		.cat-card-cta {
+			transition: none;
+		}
+		.cat-card:hover {
+			transform: none;
+		}
+	}
+</style>

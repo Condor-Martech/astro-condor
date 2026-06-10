@@ -3,27 +3,31 @@ export const prerender = false;
 
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { fetchDirectus, assetUrl } from '../../lib/directus';
 import '../../styles/global.css';
 
-const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+interface Noticia {
+	id: string;
+	titulo: string;
+	slug: string;
+	resumo: string | null;
+	content: string | null;
+	image: string | null;
+	data_publicacao: string | null;
+}
+
 const { slug } = Astro.params;
 
-const res = await fetch(
-	`${DIRECTUS_URL}/items/noticias?filter[slug][_eq]=${slug}&filter[status][_eq]=published&fields=id,titulo,slug,resumo,content,image,data_publicacao&limit=1`
+const noticias = await fetchDirectus<Noticia>(
+	`/items/noticias?filter[slug][_eq]=${slug}&filter[status][_eq]=published&fields=id,titulo,slug,resumo,content,image,data_publicacao&limit=1`
 );
-const { data } = await res.json();
 
-if (!data || data.length === 0) {
+if (noticias.length === 0) {
 	return Astro.redirect('/404');
 }
 
-const noticia = data[0];
-const heroImage = noticia.image
-	? `${DIRECTUS_URL}/assets/${noticia.image}?width=1200&height=480&fit=cover`
-	: null;
-const thumbImage = noticia.image
-	? `${DIRECTUS_URL}/assets/${noticia.image}?width=600&height=400&fit=cover`
-	: null;
+const noticia = noticias[0];
+const heroImage = assetUrl(noticia.image, { width: 1200, height: 480, fit: 'cover' }, '') || null;
 
 const dataPublicacao = noticia.data_publicacao
 	? new Date(noticia.data_publicacao).toLocaleDateString('pt-BR', {

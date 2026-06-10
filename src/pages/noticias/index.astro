@@ -3,17 +3,39 @@ export const prerender = false;
 
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { DIRECTUS_URL, fetchDirectus, assetUrl } from '../../lib/directus';
 import '../../styles/global.css';
 
-const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+interface NoticiaListItem {
+	id: string;
+	titulo: string;
+	slug: string;
+	resumo: string | null;
+	image: string | null;
+	data_publicacao: string | null;
+}
+
 const PAGE_SIZE = 12;
 
-const res = await fetch(
-	`${DIRECTUS_URL}/items/noticias?filter[status][_eq]=published&fields=id,titulo,slug,resumo,image,data_publicacao&sort=-data_publicacao&limit=${PAGE_SIZE}&meta=filter_count`
+const noticias = await fetchDirectus<NoticiaListItem>(
+	`/items/noticias?filter[status][_eq]=published&fields=id,titulo,slug,resumo,image,data_publicacao&sort=-data_publicacao&limit=${PAGE_SIZE}`
 );
-const json = await res.json();
-const noticias = json.data || [];
-const totalCount = json.meta?.filter_count || 0;
+
+// Separate count query — uses meta=filter_count for a clean number response
+const totalCount = noticias.length < PAGE_SIZE ? noticias.length : await (async () => {
+	try {
+		const res = await fetch(
+			`${DIRECTUS_URL}/items/noticias?filter[status][_eq]=published&limit=1&fields=id&meta=filter_count`,
+			{ headers: import.meta.env.DIRECTUS_TOKEN ? { Authorization: `Bearer ${import.meta.env.DIRECTUS_TOKEN}` } : {} }
+		);
+		if (!res.ok) return noticias.length;
+		const json = await res.json();
+		const count = Number(json.meta?.filter_count);
+		return Number.isFinite(count) && count > 0 ? count : noticias.length;
+	} catch {
+		return noticias.length;
+	}
+})();
 const hasMore = totalCount > PAGE_SIZE;
 ---
 
@@ -55,13 +77,38 @@ const hasMore = totalCount > PAGE_SIZE;
 				</div>
 			</section>
 
+			<!-- Search -->
+			<section class="news-search-section">
+				<div class="news-search-wrap">
+					<div class="news-search-input-wrap">
+						<svg class="news-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="11" cy="11" r="8"></circle>
+							<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+						</svg>
+						<input
+							type="search"
+							id="news-search-input"
+							class="news-search-input"
+							placeholder="Buscar notícias por título ou resumo..."
+							aria-label="Buscar notícias"
+							autocomplete="off"
+						/>
+						<button type="button" class="news-search-clear" id="news-search-clear" hidden aria-label="Limpar busca">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<line x1="18" y1="6" x2="6" y2="18"></line>
+								<line x1="6" y1="6" x2="18" y2="18"></line>
+							</svg>
+						</button>
+					</div>
+					<p class="news-search-status" id="news-search-status" hidden></p>
+				</div>
+			</section>
+
 			<!-- Grid -->
 			<section class="news-grid-section">
 				<div class="news-grid" id="news-grid">
-					{noticias && noticias.map((noticia: any) => {
-						const thumb = noticia.image
-							? `${DIRECTUS_URL}/assets/${noticia.image}?width=600&height=400&fit=cover`
-							: null;
+					{noticias.map((noticia) => {
+						const thumb = assetUrl(noticia.image, { width: 600, height: 400, fit: 'cover' }, '') || null;
 						const dataStr = noticia.data_publicacao
 							? new Date(noticia.data_publicacao).toLocaleDateString('pt-BR', {
 									day: '2-digit',
@@ -90,25 +137,33 @@ const hasMore = totalCount > PAGE_SIZE;
 					})}
 				</div>
 
+				<!-- Empty state -->
+				<div class="news-empty" id="news-empty" hidden>
+					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="11" cy="11" r="8"></circle>
+						<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+					</svg>
+					<p class="news-empty-title">Nenhuma notícia encontrada</p>
+					<p class="news-empty-sub">Tente buscar com outras palavras.</p>
+				</div>
+
 				<!-- Load more -->
-				{hasMore && (
-					<div class="news-load-more" id="load-more-wrap">
-						<button class="news-load-more-btn" id="load-more-btn" type="button">
-							Ver mais notícias
-						</button>
-						<div class="news-load-more-spinner" id="load-more-spinner" hidden>
-							<span class="spinner"></span>
-						</div>
+				<div class="news-load-more" id="load-more-wrap" hidden={!hasMore}>
+					<button class="news-load-more-btn" id="load-more-btn" type="button">
+						Ver mais notícias
+					</button>
+					<div class="news-load-more-spinner" id="load-more-spinner" hidden>
+						<span class="spinner"></span>
 					</div>
-				)}
+				</div>
 
 				<!-- Sentinel for infinite scroll on mobile -->
-				{hasMore && <div id="scroll-sentinel" aria-hidden="true"></div>}
+				<div id="scroll-sentinel" aria-hidden="true"></div>
 			</section>
 		</main>
 		<Footer />
 
-		<!-- Client-side pagination script -->
+		<!-- Client-side search + pagination script -->
 		<script define:vars={{ DIRECTUS_URL, PAGE_SIZE, totalCount }}>
 			(function () {
 				const grid = document.getElementById('news-grid');
@@ -116,12 +171,19 @@ const hasMore = totalCount > PAGE_SIZE;
 				const spinner = document.getElementById('load-more-spinner');
 				const sentinel = document.getElementById('scroll-sentinel');
 				const loadMoreWrap = document.getElementById('load-more-wrap');
+				const searchInput = document.getElementById('news-search-input');
+				const searchClear = document.getElementById('news-search-clear');
+				const searchStatus = document.getElementById('news-search-status');
+				const emptyState = document.getElementById('news-empty');
 
-				if (!grid || !btn) return;
+				if (!grid || !btn || !searchInput) return;
 
 				let offset = PAGE_SIZE;
+				let total = totalCount;
+				let currentQuery = '';
 				let loading = false;
-				const total = totalCount;
+				let searchTimer = null;
+				let searchSeq = 0;
 
 				function formatDate(dateStr) {
 					if (!dateStr) return null;
@@ -132,31 +194,90 @@ const hasMore = totalCount > PAGE_SIZE;
 					});
 				}
 
+				function escapeHtml(str) {
+					if (str == null) return '';
+					return String(str)
+						.replace(/&/g, '&amp;')
+						.replace(/</g, '&lt;')
+						.replace(/>/g, '&gt;')
+						.replace(/"/g, '&quot;')
+						.replace(/'/g, '&#039;');
+				}
+
 				function createCard(noticia) {
 					const thumb = noticia.image
 						? `${DIRECTUS_URL}/assets/${noticia.image}?width=600&height=400&fit=cover`
 						: null;
 					const dataStr = formatDate(noticia.data_publicacao);
+					const titulo = escapeHtml(noticia.titulo);
+					const resumo = noticia.resumo ? escapeHtml(noticia.resumo) : null;
+					const slug = encodeURIComponent(noticia.slug);
 
 					const card = document.createElement('a');
-					card.href = `/noticias/${noticia.slug}`;
+					card.href = `/noticias/${slug}`;
 					card.className = 'news-card';
 
 					card.innerHTML = `
 						<div class="news-card-img-wrap">
 							${thumb
-								? `<img src="${thumb}" alt="${noticia.titulo}" class="news-card-img" width="600" height="400" loading="lazy" decoding="async" />`
+								? `<img src="${thumb}" alt="${titulo}" class="news-card-img" width="600" height="400" loading="lazy" decoding="async" />`
 								: `<div class="news-card-img-placeholder"><span>C</span></div>`
 							}
 						</div>
 						<div class="news-card-body">
 							${dataStr ? `<time class="news-card-date">${dataStr}</time>` : ''}
-							<h2 class="news-card-title">${noticia.titulo}</h2>
-							${noticia.resumo ? `<p class="news-card-excerpt">${noticia.resumo}</p>` : ''}
+							<h2 class="news-card-title">${titulo}</h2>
+							${resumo ? `<p class="news-card-excerpt">${resumo}</p>` : ''}
 						</div>
 					`;
 
 					return card;
+				}
+
+				function buildFilter(query) {
+					if (!query) return { status: { _eq: 'published' } };
+					return {
+						_and: [
+							{ status: { _eq: 'published' } },
+							{
+								_or: [
+									{ titulo: { _contains: query } },
+									{ resumo: { _contains: query } },
+								],
+							},
+						],
+					};
+				}
+
+				function buildUrl(query, offsetValue, includeCount) {
+					const params = new URLSearchParams();
+					params.set('filter', JSON.stringify(buildFilter(query)));
+					params.set('fields', 'id,titulo,slug,resumo,image,data_publicacao');
+					params.set('sort', '-data_publicacao');
+					params.set('limit', String(PAGE_SIZE));
+					params.set('offset', String(offsetValue));
+					if (includeCount) params.set('meta', 'filter_count');
+					return `${DIRECTUS_URL}/items/noticias?${params.toString()}`;
+				}
+
+				function updateUiVisibility() {
+					const hasItems = grid.children.length > 0;
+					const hasMore = offset < total;
+
+					if (emptyState) emptyState.hidden = hasItems;
+					if (loadMoreWrap) loadMoreWrap.hidden = !hasItems || !hasMore;
+					if (sentinel) sentinel.style.display = hasItems && hasMore ? '' : 'none';
+				}
+
+				function updateStatus(message) {
+					if (!searchStatus) return;
+					if (message) {
+						searchStatus.textContent = message;
+						searchStatus.hidden = false;
+					} else {
+						searchStatus.textContent = '';
+						searchStatus.hidden = true;
+					}
 				}
 
 				async function loadMore() {
@@ -167,8 +288,7 @@ const hasMore = totalCount > PAGE_SIZE;
 					spinner.hidden = false;
 
 					try {
-						const url = `${DIRECTUS_URL}/items/noticias?filter[status][_eq]=published&fields=id,titulo,slug,resumo,image,data_publicacao&sort=-data_publicacao&limit=${PAGE_SIZE}&offset=${offset}`;
-						const res = await fetch(url);
+						const res = await fetch(buildUrl(currentQuery, offset, false));
 						const json = await res.json();
 						const items = json.data || [];
 
@@ -177,39 +297,111 @@ const hasMore = totalCount > PAGE_SIZE;
 						}
 
 						offset += items.length;
-
-						if (offset >= total || items.length < PAGE_SIZE) {
-							// No more items
-							if (loadMoreWrap) loadMoreWrap.hidden = true;
-							if (sentinel) sentinel.remove();
-						} else {
-							btn.hidden = false;
-						}
 					} catch (err) {
 						console.error('Error loading more news:', err);
-						btn.hidden = false;
 					} finally {
 						spinner.hidden = true;
+						btn.hidden = false;
 						loading = false;
+						updateUiVisibility();
 					}
 				}
 
-				// Button click
-				btn.addEventListener('click', loadMore);
+				async function runSearch(query) {
+					const seq = ++searchSeq;
+					currentQuery = query;
+					loading = true;
 
-				// Infinite scroll on mobile via IntersectionObserver
+					grid.innerHTML = '';
+					spinner.hidden = false;
+					btn.hidden = true;
+					if (emptyState) emptyState.hidden = true;
+					if (loadMoreWrap) loadMoreWrap.hidden = true;
+
+					try {
+						const res = await fetch(buildUrl(query, 0, true));
+						const json = await res.json();
+
+						// Discard stale responses
+						if (seq !== searchSeq) return;
+
+						const items = json.data || [];
+						const filterCount = Number(json.meta?.filter_count);
+						total = Number.isFinite(filterCount) ? filterCount : items.length;
+						offset = items.length;
+
+						for (const item of items) {
+							grid.appendChild(createCard(item));
+						}
+
+						if (query) {
+							updateStatus(
+								total === 0
+									? `Nenhum resultado para "${query}"`
+									: `${total} ${total === 1 ? 'resultado' : 'resultados'} para "${query}"`
+							);
+						} else {
+							updateStatus('');
+						}
+					} catch (err) {
+						console.error('Error searching news:', err);
+						updateStatus('Erro ao buscar. Tente novamente.');
+					} finally {
+						if (seq === searchSeq) {
+							spinner.hidden = true;
+							btn.hidden = false;
+							loading = false;
+							updateUiVisibility();
+						}
+					}
+				}
+
+				function syncUrl(query) {
+					const url = new URL(window.location.href);
+					if (query) url.searchParams.set('q', query);
+					else url.searchParams.delete('q');
+					window.history.replaceState({}, '', url);
+				}
+
+				function handleInput() {
+					const value = searchInput.value.trim();
+					searchClear.hidden = value.length === 0;
+
+					clearTimeout(searchTimer);
+					searchTimer = setTimeout(() => {
+						syncUrl(value);
+						runSearch(value);
+					}, 300);
+				}
+
+				btn.addEventListener('click', loadMore);
+				searchInput.addEventListener('input', handleInput);
+				searchClear.addEventListener('click', () => {
+					searchInput.value = '';
+					searchClear.hidden = true;
+					syncUrl('');
+					runSearch('');
+					searchInput.focus();
+				});
+
+				// Initialize from URL ?q=...
+				const initialQuery = new URL(window.location.href).searchParams.get('q')?.trim() || '';
+				if (initialQuery) {
+					searchInput.value = initialQuery;
+					searchClear.hidden = false;
+					runSearch(initialQuery);
+				} else {
+					updateUiVisibility();
+				}
+
 				if (sentinel && 'IntersectionObserver' in window) {
 					const isMobile = () => window.innerWidth < 768;
-
 					const observer = new IntersectionObserver(
 						(entries) => {
-							if (entries[0].isIntersecting && isMobile()) {
-								loadMore();
-							}
+							if (entries[0].isIntersecting && isMobile()) loadMore();
 						},
 						{ rootMargin: '200px' }
 					);
-
 					observer.observe(sentinel);
 				}
 			})();
@@ -217,7 +409,7 @@ const hasMore = totalCount > PAGE_SIZE;
 	</body>
 </html>
 
-<style>
+<style is:global>
 	:root {
 		--bg-primary: #FFFFFF;
 		--bg-surface: #F7F9FC;
@@ -309,6 +501,130 @@ const hasMore = totalCount > PAGE_SIZE;
 		font-size: 1rem;
 		color: var(--text-muted);
 		margin: 1rem 0 0;
+	}
+
+	/* === Search === */
+	.news-search-section {
+		background: var(--bg-primary);
+		padding: 0 0 1.5rem;
+	}
+
+	.news-search-wrap {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 1024px) {
+		.news-search-wrap {
+			padding: 0 2rem;
+		}
+	}
+
+	.news-search-input-wrap {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	.news-search-icon {
+		position: absolute;
+		left: 1rem;
+		color: var(--text-muted);
+		pointer-events: none;
+	}
+
+	.news-search-input {
+		width: 100%;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.95rem;
+		color: var(--text-primary);
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: 6px;
+		padding: 0.85rem 3rem 0.85rem 3rem;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+		-webkit-appearance: none;
+		appearance: none;
+	}
+
+	.news-search-input::-webkit-search-decoration,
+	.news-search-input::-webkit-search-cancel-button,
+	.news-search-input::-webkit-search-results-button,
+	.news-search-input::-webkit-search-results-decoration {
+		display: none;
+	}
+
+	.news-search-input::placeholder {
+		color: var(--text-muted);
+	}
+
+	.news-search-input:focus {
+		outline: none;
+		border-color: var(--accent-red);
+		background: var(--bg-primary);
+		box-shadow: 0 0 0 3px rgba(227, 25, 55, 0.12);
+	}
+
+	.news-search-clear {
+		position: absolute;
+		right: 0.75rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		background: transparent;
+		border: none;
+		border-radius: 50%;
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: background 0.2s ease, color 0.2s ease;
+	}
+
+	.news-search-clear:hover {
+		background: var(--border-subtle);
+		color: var(--text-primary);
+	}
+
+	.news-search-status {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin: 0.75rem 0 0;
+	}
+
+	/* === Empty state === */
+	.news-empty {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 3rem 1.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		color: var(--text-muted);
+	}
+
+	.news-empty svg {
+		color: var(--border-subtle);
+		margin-bottom: 1rem;
+	}
+
+	.news-empty-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1.25rem;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+		color: var(--text-primary);
+		margin: 0 0 0.25rem;
+	}
+
+	.news-empty-sub {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.9rem;
+		margin: 0;
 	}
 
 	/* === Grid === */

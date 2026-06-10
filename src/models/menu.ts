@@ -51,10 +51,14 @@ function mapItems(items: DirectusMenuItem[]): Menu[] {
   });
 }
 
-export async function getMenuByPosition(position: string): Promise<Menu[]> {
-  const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
-  const DIRECTUS_TOKEN = import.meta.env.DIRECTUS_TOKEN;
+import { fetchDirectus } from '../lib/directus';
 
+export interface MenuWithMeta {
+  name: string;
+  items: Menu[];
+}
+
+async function fetchMenuByPosition(position: string): Promise<DirectusMenu | null> {
   const fields = [
     'id', 'name', 'position',
     'items.id', 'items.label', 'items.url', 'items.target',
@@ -63,17 +67,24 @@ export async function getMenuByPosition(position: string): Promise<Menu[]> {
     'items.children.target', 'items.children.sort', 'items.children.status',
   ].join(',');
 
-  const url = `${DIRECTUS_URL}/items/menus?filter[position][_eq]=${position}&filter[status][_eq]=published&fields=${fields}&limit=1`;
+  const menus = await fetchDirectus<DirectusMenu>(
+    `/items/menus?filter[position][_eq]=${position}&filter[status][_eq]=published&fields=${fields}&limit=1`
+  );
 
-  const headers: Record<string, string> = {};
-  if (DIRECTUS_TOKEN) {
-    headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
-  }
+  return menus[0] ?? null;
+}
 
-  const res = await fetch(url, { headers });
-  const { data } = await res.json() as { data: DirectusMenu[] };
+export async function getMenuByPosition(position: string): Promise<Menu[]> {
+  const menu = await fetchMenuByPosition(position);
+  if (!menu?.items) return [];
+  return mapItems(menu.items);
+}
 
-  if (!data || data.length === 0) return [];
-
-  return mapItems(data[0].items);
+export async function getMenuMetaByPosition(position: string): Promise<MenuWithMeta | null> {
+  const menu = await fetchMenuByPosition(position);
+  if (!menu) return null;
+  return {
+    name: menu.name,
+    items: menu.items ? mapItems(menu.items) : [],
+  };
 }

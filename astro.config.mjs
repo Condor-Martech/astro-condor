@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import node from '@astrojs/node';
+import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,5 +18,5 @@ export default defineConfig({
     },
   },
 
-  integrations: [react()]
+  integrations: [react(), icon({ include: { 'fa6-brands': ['*'] } })]
 });

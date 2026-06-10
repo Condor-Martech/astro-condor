@@ -1,0 +1,152 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Condor - Ir para a página inicial" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "Condor" [ref=e5]
+      - navigation "Menu principal" [ref=e6]:
+        - menubar [ref=e7]:
+          - menuitem "Início" [ref=e8] [cursor=pointer]
+          - menuitem "Empresa" [ref=e9] [cursor=pointer]:
+            - text: Empresa
+            - img [ref=e10]
+          - menuitem "Nossas Lojas" [ref=e12] [cursor=pointer]
+          - menuitem "Notícias" [ref=e13] [cursor=pointer]
+          - menuitem "Sobre" [ref=e14] [cursor=pointer]
+          - menuitem "Contato" [ref=e15] [cursor=pointer]:
+            - text: Contato
+            - img [ref=e16]
+      - link "Condor em Casa" [ref=e18] [cursor=pointer]:
+        - /url: https://www.condoremcasa.com.br/
+        - img [ref=e19]
+        - text: Condor em Casa
+  - main [ref=e23]:
+    - navigation "Breadcrumb" [ref=e24]:
+      - generic [ref=e25]:
+        - link "Início" [ref=e26] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e27]: /
+        - link "Acoes-condor" [ref=e28] [cursor=pointer]:
+          - /url: /acoes-condor
+        - generic [ref=e29]: /
+        - generic [ref=e30]: Instituto Joanir Zonta
+    - img "Instituto Joanir Zonta" [ref=e32]
+    - heading "Instituto Joanir Zonta" [level=1] [ref=e35]
+    - article [ref=e36]:
+      - generic [ref=e37]:
+        - paragraph [ref=e38]:
+          - text: O Instituto Joanir Zonta, que surgiu em 2008, tem seus projetos direcionados para as áreas educacionais, sociais e ambientais, alinhados aos Objetivos de Desenvolvimento Sustentável (ODS) da Agenda 2030 da Organização das Nações Unidas e aos objetivos estratégicos do Grupo Zonta. Da criação até hoje, já são
+          - strong [ref=e39]: 1.150 instituições
+          - text: e
+          - strong [ref=e40]: 85 mil pessoas atendidas
+          - text: .
+        - heading "Pilar Educacional" [level=2] [ref=e41]
+        - paragraph [ref=e42]: Pensando no ser humano como um ser biopsicossocial, a forma de educar e adquirir conhecimento vem de várias direções. Assim, este pilar visa desenvolver ações para a população, como divulgação de conhecimento cultural referente às suas respectivas regiões e ações educacionais para o lazer, proporcionando saúde e bem-estar, incentivo à prática desportiva de alto rendimento e a promoção de educação formal para crianças, jovens e adultos, dando o suporte necessário para que se tornem cidadãos ativos e transformadores da sociedade.
+        - heading "Pilar Social" [level=2] [ref=e43]
+        - paragraph [ref=e44]: Este pilar viabiliza e realiza ações que proporcionem acessibilidade, interação, transformação e desenvolvimento da sociedade, de acordo com as necessidades regionais.
+        - heading "Pilar Ambiental" [level=2] [ref=e45]
+        - paragraph [ref=e46]: Ações voltadas ao desenvolvimento sustentável do planeta, visando à geração de conhecimento e ao estímulo de atitudes da população para o cuidado com o meio ambiente, sem comprometer o futuro das próximas gerações.
+        - paragraph [ref=e47]:
+          - text: Além de realizar e apoiar diversos projetos que beneficiem a sociedade, o Instituto Joanir Zonta também realiza o
+          - strong [ref=e48]: Programa Voluntariado Empresarial
+          - text: ", com o intuito de incentivar os nossos colaboradores a participarem de forma mais ativa na construção de uma sociedade mais justa."
+        - heading "Missão" [level=2] [ref=e49]
+        - paragraph [ref=e50]: Intervir na sociedade, proporcionando a mudança de atitude da população, visando ao seu bem-estar por meio da educação, programas culturais, sociais, ambientais e de esporte e lazer e formando cidadãos mais dignos e comprometidos com o desenvolvimento social.
+        - heading "Visão" [level=2] [ref=e51]
+        - paragraph [ref=e52]: Ser reconhecido como um instituto de referência pelas ações que proporciona para o desenvolvimento da comunidade, nas áreas educacional, social e ambiental.
+        - heading "Objetivo" [level=2] [ref=e53]
+        - paragraph [ref=e54]: Fomentar ações de desenvolvimento social e atuar diretamente nas comunidades onde o Grupo Zonta está presente.
+        - blockquote [ref=e55]:
+          - paragraph [ref=e56]: “Proporcionar o desenvolvimento social e contribuir para escrever uma nova história de muitas famílias é exercer a cidadania de forma mais ativa, assumindo um papel transformador perante a sociedade. A responsabilidade social é um dos meios para a construção de um mundo melhor para todos.”
+          - paragraph [ref=e57]:
+            - text: —
+            - strong [ref=e58]: Sandra Zonta
+            - text: Presidente do Instituto Joanir Zonta
+        - paragraph [ref=e59]:
+          - text: Entre em contato conosco pelo e-mail
+          - strong [ref=e60]: institutojoanirzonta.condor@gmail.com
+          - text: e conheça nossos projetos.
+  - contentinfo [ref=e61]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - link "Condor" [ref=e66] [cursor=pointer]:
+            - /url: /
+            - img "Condor" [ref=e67]
+          - paragraph [ref=e68]: Soluciones logísticas que conectan destinos. Sin límites.
+          - generic [ref=e69]:
+            - link "Facebook" [ref=e70] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e71]
+            - link "Instagram" [ref=e73] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e74]
+            - link "LinkedIn" [ref=e76] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e77]
+            - link "X (Twitter)" [ref=e79] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e80]
+        - navigation "Footer navigation" [ref=e82]:
+          - generic [ref=e83]:
+            - heading "Servicios" [level=3] [ref=e84]
+            - list [ref=e85]:
+              - listitem [ref=e86]:
+                - link "Transporte Nacional" [ref=e87] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e88]:
+                - link "Logística Internacional" [ref=e89] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e90]:
+                - link "Almacenamiento" [ref=e91] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e92]:
+                - link "Distribución" [ref=e93] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e94]:
+            - heading "Empresa" [level=3] [ref=e95]
+            - list [ref=e96]:
+              - listitem [ref=e97]:
+                - link "Sobre Nosotros" [ref=e98] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e99]:
+                - link "Trabaja con Nosotros" [ref=e100] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e101]:
+                - link "Novedades" [ref=e102] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e103]:
+                - link "Contacto" [ref=e104] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e105]:
+            - heading "Contacto" [level=3] [ref=e106]
+            - list [ref=e107]:
+              - listitem [ref=e108]:
+                - img [ref=e109]
+                - text: Buenos Aires, Argentina
+              - listitem [ref=e112]:
+                - img [ref=e113]
+                - text: +54 11 1234-5678
+              - listitem [ref=e115]:
+                - img [ref=e116]
+                - text: info@condor.com.ar
+      - generic [ref=e120]:
+        - paragraph [ref=e121]: © 2026 Condor. Todos los derechos reservados.
+        - generic [ref=e122]:
+          - link "Términos y Condiciones" [ref=e123] [cursor=pointer]:
+            - /url: "#"
+          - link "Política de Privacidad" [ref=e125] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e128]:
+    - button "Menu" [ref=e129]:
+      - img [ref=e131]
+      - generic: Menu
+    - button "Inspect" [ref=e135]:
+      - img [ref=e137]
+      - generic: Inspect
+    - button "Audit" [ref=e139]:
+      - img [ref=e141]
+      - generic: Audit
+    - button "Settings" [ref=e144]:
+      - img [ref=e146]
+      - generic: Settings

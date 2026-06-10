@@ -1,0 +1,300 @@
+---
+export const prerender = false;
+
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { fetchDirectus } from '../../lib/directus';
+import '../../styles/global.css';
+
+interface PageItem {
+	id: string;
+	titulo: string;
+	slug: string;
+	categoria: string | null;
+}
+
+const CATEGORIA_LABELS: Record<string, string> = {
+	institucional: 'Institucional',
+	'acoes-condor': 'Ações Condor',
+	'para-sua-empresa': 'Para Sua Empresa',
+	'servicos-financeiros': 'Serviços Financeiros',
+};
+
+const labelFor = (key: string | null) => {
+	if (!key) return 'Outras Páginas';
+	return CATEGORIA_LABELS[key] ?? key.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+};
+
+const pages = await fetchDirectus<PageItem>(
+	`/items/pages?filter[status][_eq]=published&fields=id,titulo,slug,categoria&sort=categoria,titulo&limit=200`
+);
+
+// Group by categoria, preserving order from CATEGORIA_LABELS first
+const grouped = pages.reduce<Record<string, PageItem[]>>((acc, p) => {
+	const key = p.categoria ?? '_root';
+	(acc[key] ??= []).push(p);
+	return acc;
+}, {});
+
+const orderedKeys = [
+	...Object.keys(CATEGORIA_LABELS).filter((k) => grouped[k]?.length),
+	...Object.keys(grouped).filter((k) => !(k in CATEGORIA_LABELS)),
+];
+
+const hrefFor = (p: PageItem) => (p.categoria ? `/${p.categoria}/${p.slug}` : `/${p.slug}`);
+---
+
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content="Índice institucional da Rede Condor: nossa história, ações sociais, ambientais e demais conteúdos do Grupo." />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<title>Institucional — Condor</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Breadcrumb -->
+			<nav class="breadcrumb" aria-label="Breadcrumb">
+				<div class="breadcrumb-container">
+					<a href="/">Início</a>
+					<span class="breadcrumb-sep" aria-hidden="true">/</span>
+					<span aria-current="page">Institucional</span>
+				</div>
+			</nav>
+
+			<!-- Header -->
+			<section class="idx-header">
+				<div class="idx-header-content">
+					<h1 class="idx-header-title">Institucional</h1>
+					<p class="idx-header-sub">Conheça os conteúdos institucionais da Rede Condor.</p>
+				</div>
+			</section>
+
+			<!-- Index -->
+			<section class="idx-section">
+				<div class="idx-wrap">
+					{orderedKeys.length === 0 ? (
+						<p class="idx-empty">Nenhuma página publicada ainda.</p>
+					) : (
+						orderedKeys.map((key) => (
+							<article class="idx-group" aria-labelledby={`group-${key}`}>
+								<h2 class="idx-group-title" id={`group-${key}`}>{labelFor(key)}</h2>
+								<ul class="idx-list">
+									{grouped[key].map((p) => (
+										<li class="idx-item">
+											<a href={hrefFor(p)} class="idx-link">
+												<span class="idx-link-title">{p.titulo}</span>
+												<svg class="idx-link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+													<line x1="5" y1="12" x2="19" y2="12"></line>
+													<polyline points="12 5 19 12 12 19"></polyline>
+												</svg>
+											</a>
+										</li>
+									))}
+								</ul>
+							</article>
+						))
+					)}
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:root {
+		--bg-primary: #FFFFFF;
+		--bg-surface: #F7F9FC;
+		--border-subtle: #E2E8F0;
+		--accent-red: #E31937;
+		--accent-red-glow: #FF2D4B;
+		--text-primary: #1A1A2E;
+		--text-secondary: #4A5568;
+		--text-muted: #718096;
+	}
+
+	/* === Breadcrumb === */
+	.breadcrumb {
+		background: var(--bg-surface);
+		border-bottom: 1px solid var(--border-subtle);
+		padding: 0.75rem 0;
+	}
+
+	.breadcrumb-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.breadcrumb-container a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+	.breadcrumb-container a:hover { color: var(--accent-red); }
+	.breadcrumb-sep { color: var(--border-subtle); }
+	.breadcrumb-container [aria-current="page"] { color: var(--text-primary); font-weight: 500; }
+
+	/* === Header === */
+	.idx-header {
+		background: var(--bg-primary);
+		padding: 2.5rem 0 2rem;
+	}
+
+	.idx-header-content {
+		max-width: 780px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.idx-header-content { padding: 0 2rem; }
+	}
+
+	.idx-header-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 800;
+		font-size: clamp(2rem, 5vw, 3rem);
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		line-height: 1;
+		color: var(--text-primary);
+		margin: 0 0 0.5rem;
+	}
+
+	.idx-header-title::after {
+		content: '';
+		display: block;
+		width: 48px;
+		height: 3px;
+		background: var(--accent-red);
+		margin-top: 0.75rem;
+		border-radius: 2px;
+	}
+
+	.idx-header-sub {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 1rem;
+		color: var(--text-muted);
+		margin: 1rem 0 0;
+		max-width: 60ch;
+	}
+
+	/* === Index === */
+	.idx-section {
+		background: var(--bg-primary);
+		padding: 1.5rem 0 4rem;
+	}
+
+	.idx-wrap {
+		max-width: 780px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.idx-wrap { padding: 0 2rem; }
+	}
+
+	.idx-empty {
+		font-family: 'DM Sans', system-ui, sans-serif;
+		color: var(--text-muted);
+		text-align: center;
+		padding: 3rem 0;
+	}
+
+	.idx-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.idx-group-title {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--text-primary);
+		margin: 0 0 0.75rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	.idx-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.idx-item { margin: 0; }
+
+	.idx-link {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.85rem 0.25rem;
+		font-family: 'DM Sans', system-ui, sans-serif;
+		font-size: 1rem;
+		color: var(--text-secondary);
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition: color 0.2s ease, border-color 0.2s ease, padding-left 0.25s ease;
+	}
+
+	.idx-link:hover {
+		color: var(--accent-red);
+		padding-left: 0.75rem;
+		border-bottom-color: var(--border-subtle);
+	}
+
+	.idx-link:focus-visible {
+		outline: 2px solid var(--accent-red);
+		outline-offset: 2px;
+		border-radius: 2px;
+	}
+
+	.idx-link-title {
+		flex: 1;
+	}
+
+	.idx-link-arrow {
+		flex-shrink: 0;
+		color: var(--text-muted);
+		transition: color 0.2s ease, transform 0.25s ease;
+	}
+
+	.idx-link:hover .idx-link-arrow {
+		color: var(--accent-red);
+		transform: translateX(3px);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.idx-link,
+		.idx-link-arrow {
+			transition: none;
+		}
+	}
+</style>

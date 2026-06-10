@@ -1,43 +1,20 @@
 ---
-interface Store {
-  name: string;
-  city: string;
+import { fetchDirectus, assetUrl } from '../lib/directus';
+
+interface Loja {
+  id: string;
+  nome: string;
+  slug: string;
+  cidade: string | null;
+  image: string | null;
 }
 
-const allStores: Store[] = [
-  { name: 'Loja Shopping Estação', city: 'Curitiba' },
-  { name: 'Loja Cabral', city: 'Curitiba' },
-  { name: 'Loja Campo Comprido', city: 'Curitiba' },
-  { name: 'Loja Batel', city: 'Curitiba' },
-  { name: 'Loja Centro Cívico', city: 'Curitiba' },
-  { name: 'Loja Pinhais', city: 'Pinhais' },
-  { name: 'Loja São José dos Pinhais', city: 'São José dos Pinhais' },
-  { name: 'Loja Colombo', city: 'Colombo' },
-  { name: 'Loja Londrina', city: 'Londrina' },
-  { name: 'Loja Maringá', city: 'Maringá' },
-  { name: 'Loja Ponta Grossa', city: 'Ponta Grossa' },
-  { name: 'Loja Cascavel', city: 'Cascavel' },
-  { name: 'Loja Joinville', city: 'Joinville' },
-  { name: 'Loja Florianópolis', city: 'Florianópolis' },
-  { name: 'Loja Blumenau', city: 'Blumenau' },
-  { name: 'Loja Itajaí', city: 'Itajaí' },
-  { name: 'Loja Guarapuava', city: 'Guarapuava' },
-  { name: 'Loja Paranaguá', city: 'Paranaguá' },
-  { name: 'Loja Araucária', city: 'Araucária' },
-  { name: 'Loja Campo Largo', city: 'Campo Largo' },
-];
+const allLojas = await fetchDirectus<Loja>(
+  '/items/lojas?filter[status][_eq]=published&fields=id,nome,slug,cidade,image&limit=-1'
+);
 
-const shuffled = [...allStores].sort(() => Math.random() - 0.5);
-const stores = shuffled.slice(0, 10);
-
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-}
+const totalLojas = allLojas.length;
+const stores = [...allLojas].sort(() => Math.random() - 0.5).slice(0, 10);
 ---
 
 <section class="store-showcase" aria-label="Nossa rede de lojas">
@@ -57,26 +34,30 @@ function slugify(name: string): string {
       >
         <div class="store-carousel-viewport">
           {stores.map((store, i) => {
-            const slug = slugify(store.name);
-            const imgUrl = `https://picsum.photos/seed/${slug}/800/500`;
+            const imgUrl = assetUrl(
+              store.image,
+              { width: 800, height: 500, fit: 'cover' },
+              `https://picsum.photos/seed/${store.slug}/800/500`
+            );
+            const cidade = store.cidade ?? '';
             return (
               <div
                 class={`store-slide ${i === 0 ? 'store-slide--active' : ''}`}
                 role="tabpanel"
                 id={`store-slide-${i}`}
-                aria-label={`${store.name} — ${store.city}`}
+                aria-label={cidade ? `${store.nome} — ${cidade}` : store.nome}
                 aria-hidden={i !== 0 ? 'true' : 'false'}
               >
                 <img
                   src={imgUrl}
-                  alt={`Fachada da ${store.name} em ${store.city}`}
+                  alt={cidade ? `Fachada da ${store.nome} em ${cidade}` : `Fachada da ${store.nome}`}
                   class="store-slide-img"
                   loading={i === 0 ? 'eager' : 'lazy'}
                   width="800"
                   height="500"
                 />
                 <div class="store-slide-gradient" aria-hidden="true"></div>
-                <span class="store-slide-name">{store.name} — {store.city}</span>
+                <span class="store-slide-name">{cidade ? `${store.nome} — ${cidade}` : store.nome}</span>
               </div>
             );
           })}
@@ -90,7 +71,7 @@ function slugify(name: string): string {
               role="tab"
               class={`store-dot ${i === 0 ? 'store-dot--active' : ''}`}
               aria-selected={i === 0 ? 'true' : 'false'}
-              aria-label={`Ver ${store.name}`}
+              aria-label={`Ver ${store.nome}`}
               aria-controls={`store-slide-${i}`}
               data-index={i}
             ></button>
@@ -102,7 +83,7 @@ function slugify(name: string): string {
       <div class="store-info">
         <div class="store-info-content">
           <span class="store-info-label">Nossa Rede</span>
-          <span class="store-info-number">67</span>
+          <span class="store-info-number">{totalLojas}</span>
           <span class="store-info-headline">Lojas para te atender</span>
           <p class="store-info-desc">
             Encontre a unidade mais próxima em Paraná, Santa Catarina e São Paulo

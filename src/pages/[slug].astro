@@ -3,35 +3,38 @@ export const prerender = false;
 
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { fetchDirectus, assetUrl } from '../lib/directus';
 import '../styles/global.css';
 
-const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+interface Page {
+	id: string;
+	titulo: string;
+	slug: string;
+	categoria: string | null;
+	content: string | null;
+	image: string | null;
+}
+
 const { slug } = Astro.params;
 
-const res = await fetch(
-	`${DIRECTUS_URL}/items/pages?filter[slug][_eq]=${slug}&filter[status][_eq]=published&fields=id,titulo,slug,categoria,content,image&limit=1`
+const pages = await fetchDirectus<Page>(
+	`/items/pages?filter[slug][_eq]=${slug}&filter[status][_eq]=published&fields=id,titulo,slug,categoria,content,image&limit=1`
 );
-const { data } = await res.json();
 
-if (!data || data.length === 0) {
+if (pages.length === 0) {
 	return Astro.redirect('/404');
 }
 
-const page = data[0];
-const heroImage = page.image
-	? `${DIRECTUS_URL}/assets/${page.image}?width=1200&height=480&fit=cover`
-	: null;
+const page = pages[0];
+const heroImage = assetUrl(page.image, { width: 1200, height: 480, fit: 'cover' }, '') || null;
 
-// Hub page detection: slug matches its own categoria → fetch ALL categorized pages
 const isHub = page.categoria && page.slug === page.categoria;
 let categorizedPages: Record<string, { label: string; pages: { titulo: string; slug: string; categoria: string }[] }> = {};
 
 if (isHub) {
-	const allRes = await fetch(
-		`${DIRECTUS_URL}/items/pages?filter[categoria][_nnull]=true&filter[status][_eq]=published&fields=titulo,slug,categoria&sort=categoria,titulo&limit=-1`
+	const allPages = await fetchDirectus<{ titulo: string; slug: string; categoria: string }>(
+		'/items/pages?filter[categoria][_nnull]=true&filter[status][_eq]=published&fields=titulo,slug,categoria&sort=categoria,titulo&limit=-1'
 	);
-	const allData = await allRes.json();
-	const allPages: { titulo: string; slug: string; categoria: string }[] = allData.data || [];
 
 	for (const p of allPages) {
 		if (!categorizedPages[p.categoria]) {

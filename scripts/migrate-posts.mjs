@@ -99,17 +99,52 @@ function decodeHtmlEntities(str) {
 }
 
 /**
+ * Strip dangerous tags WITH their content (scripts, iframes, styles, etc.)
+ * and obfuscated payload patterns commonly injected by WordPress malware.
+ * Must run BEFORE any tag-stripping that only removes brackets.
+ */
+function sanitizeDangerous(html) {
+  let s = html;
+
+  // Tags whose CONTENT must also be removed (not just the brackets)
+  s = s.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+  s = s.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '');
+  s = s.replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, '');
+  s = s.replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, '');
+  s = s.replace(/<object\b[^>]*>[\s\S]*?<\/object>/gi, '');
+  s = s.replace(/<embed\b[^>]*\/?>/gi, '');
+  s = s.replace(/<applet\b[^>]*>[\s\S]*?<\/applet>/gi, '');
+
+  // Orphaned obfuscated payloads (defense-in-depth, in case the malware
+  // is emitted as plain text by a buggy WP plugin or sanitizer)
+  // Hex-encoded strings: \x68\x74\x74... or x68x74x74...
+  s = s.replace(/(?:\\?x[0-9a-fA-F]{2}){6,}/g, '');
+  // Obfuscated identifiers: _0x4a3f, _0x9e23
+  s = s.replace(/_0x[0-9a-fA-F]{3,}/g, '');
+  // javascript: hrefs/srcs
+  s = s.replace(/(href|src)\s*=\s*["']\s*javascript:[^"']*["']/gi, '$1="#"');
+  // Inline event handlers (onclick, onload, onerror, etc.)
+  s = s.replace(/\s+on[a-z]+\s*=\s*"[^"]*"/gi, '');
+  s = s.replace(/\s+on[a-z]+\s*=\s*'[^']*'/gi, '');
+
+  return s;
+}
+
+/**
  * Strip all HTML tags and return plain text, trimmed.
+ * Runs sanitizeDangerous first so the inner JS code does not leak into excerpts.
  */
 function stripHtml(html) {
-  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  return sanitizeDangerous(html).replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 }
 
 /**
  * Clean Elementor wrapper divs from content, keeping only semantic HTML.
  */
 function cleanContent(html) {
-  let content = html;
+  // CRITICAL: sanitize injected malware payloads FIRST, before any other
+  // tag manipulation. Without this, <script>...</script> contents leak as plain text.
+  let content = sanitizeDangerous(html);
 
   // Remove Elementor data attributes and wrapper divs
   // Strategy: iteratively strip outer non-semantic wrappers

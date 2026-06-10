@@ -1,0 +1,313 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Condor - Ir para a página inicial" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "Condor" [ref=e5]
+      - navigation "Menu principal" [ref=e6]:
+        - menubar [ref=e7]:
+          - menuitem "Início" [ref=e8] [cursor=pointer]
+          - menuitem "Empresa" [ref=e9] [cursor=pointer]:
+            - text: Empresa
+            - img [ref=e10]
+          - menuitem "Nossas Lojas" [ref=e12] [cursor=pointer]
+          - menuitem "Notícias" [ref=e13] [cursor=pointer]
+          - menuitem "Sobre" [ref=e14] [cursor=pointer]
+          - menuitem "Contato" [ref=e15] [cursor=pointer]:
+            - text: Contato
+            - img [ref=e16]
+      - link "Condor em Casa" [ref=e18] [cursor=pointer]:
+        - /url: https://www.condoremcasa.com.br/
+        - img [ref=e19]
+        - text: Condor em Casa
+  - main [ref=e23]:
+    - region "Banner principal" [ref=e25]:
+      - group "Slide 1 de 2" [ref=e26]:
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: Encontre as melhores ofertas em uma loja Condor perto de você.
+          - heading "Tudo o que você precisa" [level=2] [ref=e31]
+          - link "Ver ofertas" [ref=e33] [cursor=pointer]:
+            - /url: /ofertas
+            - text: Ver ofertas
+            - img [ref=e34]
+      - button "Slide anterior" [ref=e36] [cursor=pointer]:
+        - img [ref=e37]
+      - button "Slide siguiente" [ref=e39] [cursor=pointer]:
+        - img [ref=e40]
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - button "Ir al slide 1" [ref=e44] [cursor=pointer]
+          - button "Ir al slide 2" [ref=e46] [cursor=pointer]
+        - generic [ref=e47]:
+          - generic [ref=e48]: "01"
+          - generic [ref=e49]: /
+          - generic [ref=e50]: "02"
+    - region "Serviços Condor" [ref=e51]:
+      - generic [ref=e53]:
+        - link "Ofertas da semana — Conferir ofertas" [ref=e54] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/ofertas/
+          - generic [ref=e55]:
+            - img [ref=e57]
+            - heading "Ofertas da semana" [level=3] [ref=e61]
+            - paragraph [ref=e62]: Até 40% de desconto em centenas de produtos — atualizadas toda segunda
+            - generic [ref=e63]:
+              - text: Conferir ofertas
+              - img [ref=e64]
+        - link "Condor Premia — Quero concorrer" [ref=e66] [cursor=pointer]:
+          - /url: https://premia.condor.com.br/
+          - generic [ref=e67]:
+            - heading "Condor Premia" [level=3] [ref=e68]
+            - paragraph [ref=e69]: Concorra a R$ 500 mil todo mês e a R$ 1 milhão — cada compra é uma nova chance
+            - generic [ref=e70]:
+              - text: Quero concorrer
+              - img [ref=e71]
+        - link "Auto Posto Condor — Encontrar posto" [ref=e73] [cursor=pointer]:
+          - /url: https://institucional.condor.com.br/institucional/autoposto/
+          - generic [ref=e74]:
+            - img [ref=e76]
+            - heading "Auto Posto Condor" [level=3] [ref=e79]
+            - paragraph [ref=e80]: Combustível com controle de qualidade e a conveniência de abastecer onde você já faz suas compras
+            - generic [ref=e81]:
+              - text: Encontrar posto
+              - img [ref=e82]
+        - link "Z-ON Soluções — Conhecer a Z-ON" [ref=e84] [cursor=pointer]:
+          - /url: https://zonsolucoes.com.br/
+          - generic [ref=e85]:
+            - img [ref=e87]
+            - heading "Z-ON Soluções" [level=3] [ref=e88]
+            - paragraph [ref=e89]: Cartão, conta digital e crédito em um só app — do mesmo grupo que você já confia
+            - generic [ref=e90]:
+              - text: Conhecer a Z-ON
+              - img [ref=e91]
+    - region "Nossa rede de lojas" [ref=e95]:
+      - generic [ref=e97]:
+        - region "Fotos das lojas Condor" [ref=e98]:
+          - generic [ref=e99]:
+            - tabpanel "Super Condor Piraquara — Piraquara" [ref=e100]:
+              - img "Fachada da Super Condor Piraquara em Piraquara" [ref=e101]
+              - generic [ref=e102]: Super Condor Piraquara — Piraquara
+            - tabpanel [ref=e103]:
+              - img [ref=e104]
+              - generic [ref=e105]: Hipermercado Condor JK — Cidade Industrial
+            - tabpanel [ref=e106]:
+              - img [ref=e107]
+              - generic [ref=e108]: Hiper Condor Campo Largo São José — Campo Largo
+            - tabpanel [ref=e109]:
+              - img [ref=e110]
+              - generic [ref=e111]: Hiper Condor São José dos Pinhais Centro — São José dos Pinhais
+            - tabpanel [ref=e112]:
+              - img [ref=e113]
+              - generic [ref=e114]: Hiper Condor Nilo Peçanha — Curitiba
+            - tabpanel [ref=e115]:
+              - img [ref=e116]
+              - generic [ref=e117]: Super Condor Rio Negrinho — Rio Negrinho
+            - tabpanel [ref=e118]:
+              - img [ref=e119]
+              - generic [ref=e120]: Super Condor Av. Brasília — Curitiba, Paraná
+            - tabpanel [ref=e121]:
+              - img [ref=e122]
+              - generic [ref=e123]: Supermercado Condor Merces — Curitiba
+            - tabpanel [ref=e124]:
+              - img [ref=e125]
+              - generic [ref=e126]: Supermercado Condor São José dos Pinhais Rui Barbosa — São José dos Pinhais
+            - tabpanel [ref=e127]:
+              - img [ref=e128]
+              - generic [ref=e129]: Supermercado Condor Rio Negro — Rio Negro
+          - tablist "Navegar pelas fotos das lojas" [ref=e130]:
+            - tab "Ver Super Condor Piraquara" [selected] [ref=e131] [cursor=pointer]
+            - tab "Ver Hipermercado Condor JK" [ref=e132] [cursor=pointer]
+            - tab "Ver Hiper Condor Campo Largo São José" [ref=e133] [cursor=pointer]
+            - tab "Ver Hiper Condor São José dos Pinhais Centro" [ref=e134] [cursor=pointer]
+            - tab "Ver Hiper Condor Nilo Peçanha" [ref=e135] [cursor=pointer]
+            - tab "Ver Super Condor Rio Negrinho" [ref=e136] [cursor=pointer]
+            - tab "Ver Super Condor Av. Brasília" [ref=e137] [cursor=pointer]
+            - tab "Ver Supermercado Condor Merces" [ref=e138] [cursor=pointer]
+            - tab "Ver Supermercado Condor São José dos Pinhais Rui Barbosa" [ref=e139] [cursor=pointer]
+            - tab "Ver Supermercado Condor Rio Negro" [ref=e140] [cursor=pointer]
+        - generic [ref=e142]:
+          - generic [ref=e143]: Nossa Rede
+          - generic [ref=e144]: "73"
+          - generic [ref=e145]: Lojas para te atender
+          - paragraph [ref=e146]: Encontre a unidade mais próxima em Paraná, Santa Catarina e São Paulo
+          - link "Encontrar loja mais próxima" [ref=e147] [cursor=pointer]:
+            - /url: /nossas-lojas
+            - text: Encontrar loja mais próxima
+            - img [ref=e148]
+    - region "Cashback, descontos e prêmios na palma da sua mão." [ref=e150]:
+      - generic [ref=e152]:
+        - generic [ref=e153]:
+          - generic [ref=e154]:
+            - img "Clube Condor" [ref=e155]
+            - text: Aplicativo gratuito
+          - heading "Cashback, descontos e prêmios na palma da sua mão." [level=2] [ref=e156]:
+            - text: Cashback, descontos
+            - text: e prêmios na palma
+            - text: da sua mão.
+          - paragraph [ref=e157]: "O app do Clube Condor reúne tudo: ofertas exclusivas, dinheiro de volta nas suas compras e participação automática nas campanhas mensais."
+          - list [ref=e158]:
+            - listitem [ref=e159]:
+              - img [ref=e161]
+              - generic [ref=e163]: Cashback em todas as compras
+            - listitem [ref=e164]:
+              - img [ref=e166]
+              - generic [ref=e168]: Descontos exclusivos para membros
+            - listitem [ref=e169]:
+              - img [ref=e171]
+              - generic [ref=e173]: Concorra a prêmios todos os meses
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - link "Baixar na App Store" [ref=e176] [cursor=pointer]:
+                - /url: https://apps.apple.com/br/app/novo-app-clube-condor/id6446367529
+                - img [ref=e177]
+                - generic [ref=e179]:
+                  - generic [ref=e180]: Baixar na
+                  - generic [ref=e181]: App Store
+              - link "Baixar na Google Play" [ref=e182] [cursor=pointer]:
+                - /url: https://play.google.com/store/apps/details?id=com.bankeiro.zon&hl=pt_BR
+                - img [ref=e183]
+                - generic [ref=e188]:
+                  - generic [ref=e189]: Disponível no
+                  - generic [ref=e190]: Google Play
+            - generic [ref=e191]:
+              - img "QR Code para baixar o aplicativo" [ref=e192]
+              - generic [ref=e193]: Escaneie e baixe
+        - img "Aplicativo Clube Condor mostrando ofertas exclusivas e cashback" [ref=e195]
+    - link "Radar de Ofertas – Receba as melhores promoções" [ref=e198] [cursor=pointer]:
+      - /url: https://radardeofertas.condor.com.br/
+      - generic [ref=e212]:
+        - paragraph [ref=e213]: Fique por dentro das promoções
+        - paragraph [ref=e214]: Radar de Ofertas
+      - generic [ref=e216]:
+        - text: Acessar agora
+        - img [ref=e217]
+    - region "Blog Condor" [ref=e219]:
+      - generic [ref=e220]:
+        - generic [ref=e221]:
+          - generic [ref=e224]: Blog
+          - heading "Últimas novidades" [level=2] [ref=e225]
+          - paragraph [ref=e226]: Dicas, tendências e novidades do mundo Condor
+        - generic [ref=e227]:
+          - 'link "Dicas de Primavera: como começar seu jardim? 6 de nov. de 2025 Dicas de Primavera: como começar seu jardim? Leia mais" [ref=e228] [cursor=pointer]':
+            - /url: https://blog.condor.com.br/dicas-de-primavera-como-comecar-seu-jardim/
+            - 'img "Dicas de Primavera: como começar seu jardim?" [ref=e230]'
+            - generic [ref=e231]:
+              - time [ref=e232]: 6 de nov. de 2025
+              - 'heading "Dicas de Primavera: como começar seu jardim?" [level=3] [ref=e233]'
+              - generic [ref=e234]:
+                - text: Leia mais
+                - img [ref=e235]
+          - link "Por que tantas marcas varejistas fazem aniversário no último trimestre do ano? 24 de out. de 2025 Por que tantas marcas varejistas fazem aniversário no último trimestre do ano? Leia mais" [ref=e237] [cursor=pointer]:
+            - /url: https://blog.condor.com.br/por-que-tantas-marcas-varejistas-fazem-aniversario-no-ultimo-trimestre-do-ano/
+            - img "Por que tantas marcas varejistas fazem aniversário no último trimestre do ano?" [ref=e239]
+            - generic [ref=e240]:
+              - time [ref=e241]: 24 de out. de 2025
+              - heading "Por que tantas marcas varejistas fazem aniversário no último trimestre do ano?" [level=3] [ref=e242]
+              - generic [ref=e243]:
+                - text: Leia mais
+                - img [ref=e244]
+          - 'link "Drinks para Aquecer no Inverno: receitas e dicas 5 de ago. de 2025 Drinks para Aquecer no Inverno: receitas e dicas Leia mais" [ref=e246] [cursor=pointer]':
+            - /url: https://blog.condor.com.br/drinks-para-aquecer-no-inverno-receitas-e-dicas/
+            - 'img "Drinks para Aquecer no Inverno: receitas e dicas" [ref=e248]'
+            - generic [ref=e249]:
+              - time [ref=e250]: 5 de ago. de 2025
+              - 'heading "Drinks para Aquecer no Inverno: receitas e dicas" [level=3] [ref=e251]'
+              - generic [ref=e252]:
+                - text: Leia mais
+                - img [ref=e253]
+          - 'link "Hambúrguer com cerveja: a harmonização perfeita 5 de ago. de 2025 Hambúrguer com cerveja: a harmonização perfeita Leia mais" [ref=e255] [cursor=pointer]':
+            - /url: https://blog.condor.com.br/hamburguer-com-cerveja/
+            - 'img "Hambúrguer com cerveja: a harmonização perfeita" [ref=e257]'
+            - generic [ref=e258]:
+              - time [ref=e259]: 5 de ago. de 2025
+              - 'heading "Hambúrguer com cerveja: a harmonização perfeita" [level=3] [ref=e260]'
+              - generic [ref=e261]:
+                - text: Leia mais
+                - img [ref=e262]
+        - link "Ver todas as postagens" [ref=e265] [cursor=pointer]:
+          - /url: https://blog.condor.com.br
+          - text: Ver todas as postagens
+          - img [ref=e266]
+  - contentinfo [ref=e268]:
+    - generic [ref=e270]:
+      - generic [ref=e271]:
+        - generic [ref=e272]:
+          - link "Condor" [ref=e273] [cursor=pointer]:
+            - /url: /
+            - img "Condor" [ref=e274]
+          - paragraph [ref=e275]: Soluciones logísticas que conectan destinos. Sin límites.
+          - generic [ref=e276]:
+            - link "Facebook" [ref=e277] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e278]
+            - link "Instagram" [ref=e280] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e281]
+            - link "LinkedIn" [ref=e283] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e284]
+            - link "X (Twitter)" [ref=e286] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e287]
+        - navigation "Footer navigation" [ref=e289]:
+          - generic [ref=e290]:
+            - heading "Servicios" [level=3] [ref=e291]
+            - list [ref=e292]:
+              - listitem [ref=e293]:
+                - link "Transporte Nacional" [ref=e294] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e295]:
+                - link "Logística Internacional" [ref=e296] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e297]:
+                - link "Almacenamiento" [ref=e298] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e299]:
+                - link "Distribución" [ref=e300] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e301]:
+            - heading "Empresa" [level=3] [ref=e302]
+            - list [ref=e303]:
+              - listitem [ref=e304]:
+                - link "Sobre Nosotros" [ref=e305] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e306]:
+                - link "Trabaja con Nosotros" [ref=e307] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e308]:
+                - link "Novedades" [ref=e309] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e310]:
+                - link "Contacto" [ref=e311] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e312]:
+            - heading "Contacto" [level=3] [ref=e313]
+            - list [ref=e314]:
+              - listitem [ref=e315]:
+                - img [ref=e316]
+                - text: Buenos Aires, Argentina
+              - listitem [ref=e319]:
+                - img [ref=e320]
+                - text: +54 11 1234-5678
+              - listitem [ref=e322]:
+                - img [ref=e323]
+                - text: info@condor.com.ar
+      - generic [ref=e327]:
+        - paragraph [ref=e328]: © 2026 Condor. Todos los derechos reservados.
+        - generic [ref=e329]:
+          - link "Términos y Condiciones" [ref=e330] [cursor=pointer]:
+            - /url: "#"
+          - link "Política de Privacidad" [ref=e332] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e335]:
+    - button "Menu" [ref=e336]:
+      - img [ref=e338]
+      - generic: Menu
+    - button "Inspect" [ref=e342]:
+      - img [ref=e344]
+      - generic: Inspect
+    - button "Audit" [ref=e346]:
+      - img [ref=e348]
+      - generic: Audit
+    - button "Settings" [ref=e351]:
+      - img [ref=e353]
+      - generic: Settings

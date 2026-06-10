@@ -3,27 +3,39 @@ export const prerender = false;
 
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { fetchDirectus, assetUrl } from '../../lib/directus';
 import '../../styles/global.css';
 
-const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+interface Loja {
+	id: string;
+	nome: string;
+	slug: string;
+	cidade: string | null;
+	telefone: string | null;
+	horarios: string | null;
+	link_maps: string | null;
+	latitude: string | null;
+	longitude: string | null;
+	image: string | null;
+	setores: string | null;
+	servicos: string | null;
+}
+
 const { slug } = Astro.params;
 
-const res = await fetch(
-	`${DIRECTUS_URL}/items/lojas?filter[slug][_eq]=${slug}&filter[status][_eq]=published&fields=*&limit=1`
+const lojas = await fetchDirectus<Loja>(
+	`/items/lojas?filter[slug][_eq]=${slug}&filter[status][_eq]=published&fields=*&limit=1`
 );
-const { data } = await res.json();
 
-if (!data || data.length === 0) {
+if (lojas.length === 0) {
 	return Astro.redirect('/404');
 }
 
-const loja = data[0];
-const heroImage = loja.image
-	? `${DIRECTUS_URL}/assets/${loja.image}?width=1200&height=480&fit=cover`
-	: null;
+const loja = lojas[0];
+const heroImage = assetUrl(loja.image, { width: 1200, height: 480, fit: 'cover' }, '') || null;
 
-const setoresList = loja.setores ? loja.setores.split(',').map((s: string) => s.trim()).filter(Boolean) : [];
-const servicosList = loja.servicos ? loja.servicos.split(',').map((s: string) => s.trim()).filter(Boolean) : [];
+const setoresList = loja.setores ? loja.setores.split(',').map((s) => s.trim()).filter(Boolean) : [];
+const servicosList = loja.servicos ? loja.servicos.split(',').map((s) => s.trim()).filter(Boolean) : [];
 ---
 
 <html lang="pt-BR">

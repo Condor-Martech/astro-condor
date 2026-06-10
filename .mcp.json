@@ -4,8 +4,8 @@
       "command": "npx",
       "args": ["@directus/content-mcp@latest"],
       "env": {
-        "DIRECTUS_URL": "http://localhost:8055",
-        "DIRECTUS_TOKEN": "DIRECTUS_TOKEN"
+        "DIRECTUS_URL": "https://condor.cndr.me",
+        "DIRECTUS_TOKEN": "UN7VAEMvQN5Y5nCiJ9ydAqG16FHI8LlE"
       }
     }
   }

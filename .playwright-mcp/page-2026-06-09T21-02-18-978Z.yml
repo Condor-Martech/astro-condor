@@ -1,0 +1,206 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Condor - Ir para a página inicial" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "Condor" [ref=e5]
+      - navigation "Menu principal" [ref=e6]:
+        - menubar [ref=e7]:
+          - menuitem "Início" [ref=e8] [cursor=pointer]
+          - menuitem "Empresa" [ref=e9] [cursor=pointer]:
+            - text: Empresa
+            - img [ref=e10]
+          - menuitem "Nossas Lojas" [ref=e12] [cursor=pointer]
+          - menuitem "Notícias" [ref=e13] [cursor=pointer]
+          - menuitem "Sobre" [ref=e14] [cursor=pointer]
+          - menuitem "Contato" [ref=e15] [cursor=pointer]:
+            - text: Contato
+            - img [ref=e16]
+      - link "Condor em Casa" [ref=e18] [cursor=pointer]:
+        - /url: https://www.condoremcasa.com.br/
+        - img [ref=e19]
+        - text: Condor em Casa
+  - main [ref=e23]:
+    - navigation "Breadcrumb" [ref=e24]:
+      - generic [ref=e25]:
+        - link "Início" [ref=e26] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e27]: /
+        - generic [ref=e28]: Notícias
+    - generic [ref=e30]:
+      - heading "Notícias" [level=1] [ref=e31]
+      - paragraph [ref=e32]: Comunicação oficial da Rede Condor
+    - generic [ref=e35]:
+      - img
+      - searchbox "Buscar notícias" [ref=e36]
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - link "C 01 de jun. de 2026 Nova loja Condor abre as portas em Curitiba A Rede Condor inaugura sua mais nova unidade no bairro Batel, com 2.000m² de área de vendas." [ref=e39] [cursor=pointer]:
+          - /url: /noticias/nova-loja-curitiba
+          - generic [ref=e42]: C
+          - generic [ref=e43]:
+            - time [ref=e44]: 01 de jun. de 2026
+            - heading "Nova loja Condor abre as portas em Curitiba" [level=2] [ref=e45]
+            - paragraph [ref=e46]: A Rede Condor inaugura sua mais nova unidade no bairro Batel, com 2.000m² de área de vendas.
+        - link "C 20 de mai. de 2026 Clube Condor ultrapassa 100 mil membros O programa de fidelidade da rede registra crescimento de 40% em 2026." [ref=e47] [cursor=pointer]:
+          - /url: /noticias/clube-condor-100-mil
+          - generic [ref=e50]: C
+          - generic [ref=e51]:
+            - time [ref=e52]: 20 de mai. de 2026
+            - heading "Clube Condor ultrapassa 100 mil membros" [level=2] [ref=e53]
+            - paragraph [ref=e54]: O programa de fidelidade da rede registra crescimento de 40% em 2026.
+        - link "Passeio Ciclístico Condor reúne milhares de pessoas em comemoração dupla no último domingo (24) 25 de mar. de 2024 Passeio Ciclístico Condor reúne milhares de pessoas em comemoração dupla no último domingo (24) O tradicional Passeio Ciclístico do Condor foi a ocasião perfeita para comemorar os 331 anos de Curitiba e começar as celebrações dos 50 anos da rede de supermercados mais amada dos paranaenses. “Foi gratificante ver tantas pessoas reunidas nesse momento “, afirma o diretor de marketing do Condor..." [ref=e55] [cursor=pointer]:
+          - /url: /noticias/passeio-ciclistico-condor-reune-milhares-de-pessoas-em-comemoracao-dupla-no-ultimo-domingo-24
+          - img "Passeio Ciclístico Condor reúne milhares de pessoas em comemoração dupla no último domingo (24)" [ref=e57]
+          - generic [ref=e58]:
+            - time [ref=e59]: 25 de mar. de 2024
+            - heading "Passeio Ciclístico Condor reúne milhares de pessoas em comemoração dupla no último domingo (24)" [level=2] [ref=e60]
+            - paragraph [ref=e61]: O tradicional Passeio Ciclístico do Condor foi a ocasião perfeita para comemorar os 331 anos de Curitiba e começar as celebrações dos 50 anos da rede de supermercados mais amada dos paranaenses. “Foi gratificante ver tantas pessoas reunidas nesse momento “, afirma o diretor de marketing do Condor...
+        - link "Natal Mágico Condor promove espetáculo musical inclusivo gratuito aos clientes 05 de dez. de 2023 Natal Mágico Condor promove espetáculo musical inclusivo gratuito aos clientes O Natal Mágico Condor está de volta com o espetáculo natalino “O Auto da Trupe de Natal”, um musical emocionante que promete encantar crianças e adultos. O projeto, do Instituto Joanir Zonta, é realizado em parceria com a Rede Condor e trará um espetáculo inclusivo, com tradução em Libras e audio..." [ref=e62] [cursor=pointer]:
+          - /url: /noticias/natal-magico-condor-promove-espetaculo-musical-inclusivo-gratuito-aos-clientes
+          - img "Natal Mágico Condor promove espetáculo musical inclusivo gratuito aos clientes" [ref=e64]
+          - generic [ref=e65]:
+            - time [ref=e66]: 05 de dez. de 2023
+            - heading "Natal Mágico Condor promove espetáculo musical inclusivo gratuito aos clientes" [level=2] [ref=e67]
+            - paragraph [ref=e68]: O Natal Mágico Condor está de volta com o espetáculo natalino “O Auto da Trupe de Natal”, um musical emocionante que promete encantar crianças e adultos. O projeto, do Instituto Joanir Zonta, é realizado em parceria com a Rede Condor e trará um espetáculo inclusivo, com tradução em Libras e audio...
+        - link "Condor Umbará reinaugura com ampliação no quadro de colaboradores 29 de nov. de 2023 Condor Umbará reinaugura com ampliação no quadro de colaboradores O Condor Umbará reinaugura nesta quinta-feira (30), às 8h, após passar por uma série de mudanças para oferecer aos clientes uma experiência de compras ainda mais agradável e satisfatória. Com uma equipe formada por 250 colaboradores diretos, o Condor Umbará expandiu seu quadro de colaboradores ap..." [ref=e69] [cursor=pointer]:
+          - /url: /noticias/condor-umbara-reinaugura-com-ampliacao-no-quadro-de-colaboradores
+          - img "Condor Umbará reinaugura com ampliação no quadro de colaboradores" [ref=e71]
+          - generic [ref=e72]:
+            - time [ref=e73]: 29 de nov. de 2023
+            - heading "Condor Umbará reinaugura com ampliação no quadro de colaboradores" [level=2] [ref=e74]
+            - paragraph [ref=e75]: O Condor Umbará reinaugura nesta quinta-feira (30), às 8h, após passar por uma série de mudanças para oferecer aos clientes uma experiência de compras ainda mais agradável e satisfatória. Com uma equipe formada por 250 colaboradores diretos, o Condor Umbará expandiu seu quadro de colaboradores ap...
+        - link "Nota de pesar 19 de nov. de 2023 Nota de pesar É com profundo pesar que recebi a triste notícia do falecimento do meu estimado amigo Sr. Jacob Pankratz, fundador da Rede Jacomar de Supermercados. Hoje, perdemos um grande visionário e empreendedor, cujo legado estará eternamente marcado no setor varejista. Neste momento de dor e tristeza, gost..." [ref=e76] [cursor=pointer]:
+          - /url: /noticias/nota-de-pesar
+          - img "Nota de pesar" [ref=e78]
+          - generic [ref=e79]:
+            - time [ref=e80]: 19 de nov. de 2023
+            - heading "Nota de pesar" [level=2] [ref=e81]
+            - paragraph [ref=e82]: É com profundo pesar que recebi a triste notícia do falecimento do meu estimado amigo Sr. Jacob Pankratz, fundador da Rede Jacomar de Supermercados. Hoje, perdemos um grande visionário e empreendedor, cujo legado estará eternamente marcado no setor varejista. Neste momento de dor e tristeza, gost...
+        - link "Campanha de Aniversário Condor tem 11 mil prêmios instantâneos, cashback, combos e promoções 27 de set. de 2023 Campanha de Aniversário Condor tem 11 mil prêmios instantâneos, cashback, combos e promoções Para comemorar os seus 49 anos, o Condor preparou uma campanha de aniversário com uma série de ações promocionais e 11 mil prêmios instantâneos. Até o dia 5 de novembro, a cada R$150,00 em compras, os clientes Clube Condor têm direito de girar a roleta direto no App e concorrer instantaneamente a..." [ref=e83] [cursor=pointer]:
+          - /url: /noticias/campanha-de-aniversario-condor-tem-11-mil-premios-instantaneos-cashback-combos-e-promocoes
+          - img "Campanha de Aniversário Condor tem 11 mil prêmios instantâneos, cashback, combos e promoções" [ref=e85]
+          - generic [ref=e86]:
+            - time [ref=e87]: 27 de set. de 2023
+            - heading "Campanha de Aniversário Condor tem 11 mil prêmios instantâneos, cashback, combos e promoções" [level=2] [ref=e88]
+            - paragraph [ref=e89]: Para comemorar os seus 49 anos, o Condor preparou uma campanha de aniversário com uma série de ações promocionais e 11 mil prêmios instantâneos. Até o dia 5 de novembro, a cada R$150,00 em compras, os clientes Clube Condor têm direito de girar a roleta direto no App e concorrer instantaneamente a...
+        - link "Condor inicia 2023 com campanhas de ofertas e Promoção Verão Premiado 04 de jan. de 2023 Condor inicia 2023 com campanhas de ofertas e Promoção Verão Premiado Para que os clientes do Condor já comecem 2023 com diversas oportunidades de economia, a rede realiza até o dia 8 de janeiro o seu Super Saldão, com ofertas de vários setores das lojas. O Condor também iniciou as suas campanhas de Verão e de Volta às Aulas com um mix completo, preços competitivos..." [ref=e90] [cursor=pointer]:
+          - /url: /noticias/condor-inicia-2023-com-campanhas-de-ofertas-e-promocao-verao-premiado
+          - img "Condor inicia 2023 com campanhas de ofertas e Promoção Verão Premiado" [ref=e92]
+          - generic [ref=e93]:
+            - time [ref=e94]: 04 de jan. de 2023
+            - heading "Condor inicia 2023 com campanhas de ofertas e Promoção Verão Premiado" [level=2] [ref=e95]
+            - paragraph [ref=e96]: Para que os clientes do Condor já comecem 2023 com diversas oportunidades de economia, a rede realiza até o dia 8 de janeiro o seu Super Saldão, com ofertas de vários setores das lojas. O Condor também iniciou as suas campanhas de Verão e de Volta às Aulas com um mix completo, preços competitivos...
+        - link "C 20 de dez. de 2022 Natal Solidário de Ponta Grossa recebe 200 cestas básicas de ação do Condor Com o objetivo de contribuir com o Natal Solidário de Ponta Grossa, o Condor uniu forças com os seus clientes em uma ação de três dias que arrecadou 150 cestas básicas. A rede fez a doação de mais 50 para totalizar 200 unidades entregues para famílias em situação de vulnerabilidade cadastradas no..." [ref=e97] [cursor=pointer]:
+          - /url: /noticias/natal-solidario-de-ponta-grossa-recebe-200-cestas-basicas-de-acao-do-condor
+          - generic [ref=e100]: C
+          - generic [ref=e101]:
+            - time [ref=e102]: 20 de dez. de 2022
+            - heading "Natal Solidário de Ponta Grossa recebe 200 cestas básicas de ação do Condor" [level=2] [ref=e103]
+            - paragraph [ref=e104]: Com o objetivo de contribuir com o Natal Solidário de Ponta Grossa, o Condor uniu forças com os seus clientes em uma ação de três dias que arrecadou 150 cestas básicas. A rede fez a doação de mais 50 para totalizar 200 unidades entregues para famílias em situação de vulnerabilidade cadastradas no...
+        - link "Condor realiza último mutirão de emprego de 2022 20 de dez. de 2022 Condor realiza último mutirão de emprego de 2022 O Condor Super Center realiza o último mutirão de emprego de 2022, nesta quinta-feira, dia 22 de dezembro, das 9h às 16h. Durante a ação, que será realizada na matriz, anexa à loja do Pinheirinho (Winston Churchill, 2.222), a rede vai distribuir 300 senhas para as vagas de operador de caixa, enca..." [ref=e105] [cursor=pointer]:
+          - /url: /noticias/condor-realiza-ultimo-mutirao-de-emprego-de-2022
+          - img "Condor realiza último mutirão de emprego de 2022" [ref=e107]
+          - generic [ref=e108]:
+            - time [ref=e109]: 20 de dez. de 2022
+            - heading "Condor realiza último mutirão de emprego de 2022" [level=2] [ref=e110]
+            - paragraph [ref=e111]: O Condor Super Center realiza o último mutirão de emprego de 2022, nesta quinta-feira, dia 22 de dezembro, das 9h às 16h. Durante a ação, que será realizada na matriz, anexa à loja do Pinheirinho (Winston Churchill, 2.222), a rede vai distribuir 300 senhas para as vagas de operador de caixa, enca...
+        - link "Condor doa mais de R$ 500 mil para 26 instituições do PR e SC 14 de dez. de 2022 Condor doa mais de R$ 500 mil para 26 instituições do PR e SC O sonho de 26 instituições beneficentes de encerrar o ano com a garantia de um valor significativo para as comemorações de Natal e para o planejamento de 2023 será realizado graças à Campanha Solidária Condor, que fará a entrega de R$520 mil para os representantes das entidades neste dia 15 de de..." [ref=e112] [cursor=pointer]:
+          - /url: /noticias/condor-doa-mais-de-r-500-mil-para-26-instituicoes-do-pr-e-sc
+          - img "Condor doa mais de R$ 500 mil para 26 instituições do PR e SC" [ref=e114]
+          - generic [ref=e115]:
+            - time [ref=e116]: 14 de dez. de 2022
+            - heading "Condor doa mais de R$ 500 mil para 26 instituições do PR e SC" [level=2] [ref=e117]
+            - paragraph [ref=e118]: O sonho de 26 instituições beneficentes de encerrar o ano com a garantia de um valor significativo para as comemorações de Natal e para o planejamento de 2023 será realizado graças à Campanha Solidária Condor, que fará a entrega de R$520 mil para os representantes das entidades neste dia 15 de de...
+        - 'link "Condor lança campanha emotiva e familiar para o Natal 12 de dez. de 2022 Condor lança campanha emotiva e familiar para o Natal A campanha de Natal do Condor traz um vídeo que celebra a união familiar e o encanto desta época do ano. Com o conceito: “Natal Condor. Onde tem família, tem amor, magia e sempre muito mais”, o vídeo foca no emocional de maneira lúdica e com linguagem visual para sensibilizar pessoas de todas as ..." [ref=e119] [cursor=pointer]':
+          - /url: /noticias/condor-lanca-campanha-emotiva-e-familiar-para-o-natal
+          - img "Condor lança campanha emotiva e familiar para o Natal" [ref=e121]
+          - generic [ref=e122]:
+            - time [ref=e123]: 12 de dez. de 2022
+            - heading "Condor lança campanha emotiva e familiar para o Natal" [level=2] [ref=e124]
+            - paragraph [ref=e125]: "A campanha de Natal do Condor traz um vídeo que celebra a união familiar e o encanto desta época do ano. Com o conceito: “Natal Condor. Onde tem família, tem amor, magia e sempre muito mais”, o vídeo foca no emocional de maneira lúdica e com linguagem visual para sensibilizar pessoas de todas as ..."
+      - button "Ver mais notícias" [ref=e127] [cursor=pointer]
+  - contentinfo [ref=e129]:
+    - generic [ref=e131]:
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - link "Condor" [ref=e134] [cursor=pointer]:
+            - /url: /
+            - img "Condor" [ref=e135]
+          - paragraph [ref=e136]: Soluciones logísticas que conectan destinos. Sin límites.
+          - generic [ref=e137]:
+            - link "Facebook" [ref=e138] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e139]
+            - link "Instagram" [ref=e141] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e142]
+            - link "LinkedIn" [ref=e144] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e145]
+            - link "X (Twitter)" [ref=e147] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e148]
+        - navigation "Footer navigation" [ref=e150]:
+          - generic [ref=e151]:
+            - heading "Servicios" [level=3] [ref=e152]
+            - list [ref=e153]:
+              - listitem [ref=e154]:
+                - link "Transporte Nacional" [ref=e155] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e156]:
+                - link "Logística Internacional" [ref=e157] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e158]:
+                - link "Almacenamiento" [ref=e159] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e160]:
+                - link "Distribución" [ref=e161] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e162]:
+            - heading "Empresa" [level=3] [ref=e163]
+            - list [ref=e164]:
+              - listitem [ref=e165]:
+                - link "Sobre Nosotros" [ref=e166] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e167]:
+                - link "Trabaja con Nosotros" [ref=e168] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e169]:
+                - link "Novedades" [ref=e170] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e171]:
+                - link "Contacto" [ref=e172] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e173]:
+            - heading "Contacto" [level=3] [ref=e174]
+            - list [ref=e175]:
+              - listitem [ref=e176]:
+                - img [ref=e177]
+                - text: Buenos Aires, Argentina
+              - listitem [ref=e180]:
+                - img [ref=e181]
+                - text: +54 11 1234-5678
+              - listitem [ref=e183]:
+                - img [ref=e184]
+                - text: info@condor.com.ar
+      - generic [ref=e188]:
+        - paragraph [ref=e189]: © 2026 Condor. Todos los derechos reservados.
+        - generic [ref=e190]:
+          - link "Términos y Condiciones" [ref=e191] [cursor=pointer]:
+            - /url: "#"
+          - link "Política de Privacidad" [ref=e193] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e196]:
+    - button "Menu" [ref=e197]:
+      - img [ref=e199]
+      - generic: Menu
+    - button "Inspect" [ref=e203]:
+      - img [ref=e205]
+      - generic: Inspect
+    - button "Audit" [ref=e207]:
+      - img [ref=e209]
+      - generic: Audit
+    - button "Settings" [ref=e212]:
+      - img [ref=e214]
+      - generic: Settings

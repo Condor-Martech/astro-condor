@@ -1,0 +1,124 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Condor - Ir para a página inicial" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "Condor" [ref=e5]
+      - navigation "Menu principal" [ref=e6]:
+        - menubar [ref=e7]:
+          - menuitem "Início" [ref=e8] [cursor=pointer]
+          - menuitem "Institucional" [ref=e9] [cursor=pointer]:
+            - text: Institucional
+            - img [ref=e10]
+          - menuitem "Nossas Lojas" [ref=e12] [cursor=pointer]
+          - menuitem "Notícias" [ref=e13] [cursor=pointer]
+          - menuitem "Sobre" [ref=e14] [cursor=pointer]
+          - menuitem "Contato" [ref=e15] [cursor=pointer]:
+            - text: Contato
+            - img [ref=e16]
+      - link "Condor em Casa" [ref=e18] [cursor=pointer]:
+        - /url: https://www.condoremcasa.com.br/
+        - img [ref=e19]
+        - text: Condor em Casa
+  - main [ref=e23]:
+    - navigation "Breadcrumb" [ref=e24]:
+      - generic [ref=e25]:
+        - link "Início" [ref=e26] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e27]: /
+        - generic [ref=e28]: Ações Condor
+    - generic [ref=e30]:
+      - heading "Ações Condor" [level=1] [ref=e31]
+      - paragraph [ref=e32]: Iniciativas culturais, sociais, ambientais e educacionais do Grupo.
+    - link "Instituto Joanir Zonta Instituto Joanir Zonta Saiba mais" [ref=e35] [cursor=pointer]:
+      - /url: /acoes-condor/instituto-joanir-zonta
+      - img "Instituto Joanir Zonta" [ref=e37]
+      - generic [ref=e38]:
+        - heading "Instituto Joanir Zonta" [level=2] [ref=e39]
+        - generic [ref=e40]:
+          - text: Saiba mais
+          - img [ref=e41]
+  - contentinfo [ref=e43]:
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - link "Condor" [ref=e48] [cursor=pointer]:
+            - /url: /
+            - img "Condor" [ref=e49]
+          - paragraph [ref=e50]: Soluciones logísticas que conectan destinos. Sin límites.
+          - generic [ref=e51]:
+            - link "Facebook" [ref=e52] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e53]
+            - link "Instagram" [ref=e55] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e56]
+            - link "LinkedIn" [ref=e58] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e59]
+            - link "X (Twitter)" [ref=e61] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e62]
+        - navigation "Footer navigation" [ref=e64]:
+          - generic [ref=e65]:
+            - heading "Servicios" [level=3] [ref=e66]
+            - list [ref=e67]:
+              - listitem [ref=e68]:
+                - link "Transporte Nacional" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e70]:
+                - link "Logística Internacional" [ref=e71] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e72]:
+                - link "Almacenamiento" [ref=e73] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e74]:
+                - link "Distribución" [ref=e75] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e76]:
+            - heading "Empresa" [level=3] [ref=e77]
+            - list [ref=e78]:
+              - listitem [ref=e79]:
+                - link "Sobre Nosotros" [ref=e80] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e81]:
+                - link "Trabaja con Nosotros" [ref=e82] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e83]:
+                - link "Novedades" [ref=e84] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e85]:
+                - link "Contacto" [ref=e86] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e87]:
+            - heading "Contacto" [level=3] [ref=e88]
+            - list [ref=e89]:
+              - listitem [ref=e90]:
+                - img [ref=e91]
+                - text: Buenos Aires, Argentina
+              - listitem [ref=e94]:
+                - img [ref=e95]
+                - text: +54 11 1234-5678
+              - listitem [ref=e97]:
+                - img [ref=e98]
+                - text: info@condor.com.ar
+      - generic [ref=e102]:
+        - paragraph [ref=e103]: © 2026 Condor. Todos los derechos reservados.
+        - generic [ref=e104]:
+          - link "Términos y Condiciones" [ref=e105] [cursor=pointer]:
+            - /url: "#"
+          - link "Política de Privacidad" [ref=e107] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e110]:
+    - button "Menu" [ref=e111]:
+      - img [ref=e113]
+      - generic: Menu
+    - button "Inspect" [ref=e117]:
+      - img [ref=e119]
+      - generic: Inspect
+    - button "Audit" [ref=e121]:
+      - img [ref=e123]
+      - generic: Audit
+    - button "Settings" [ref=e126]:
+      - img [ref=e128]
+      - generic: Settings

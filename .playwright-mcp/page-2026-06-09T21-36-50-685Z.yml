@@ -1,0 +1,238 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Condor - Ir para a página inicial" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "Condor" [ref=e5]
+      - navigation "Menu principal" [ref=e6]:
+        - menubar [ref=e7]:
+          - menuitem "Início" [ref=e8] [cursor=pointer]
+          - menuitem "Institucional" [ref=e9] [cursor=pointer]:
+            - text: Institucional
+            - img [ref=e10]
+          - menuitem "Nossas Lojas" [ref=e12] [cursor=pointer]
+          - menuitem "Sobre" [ref=e13] [cursor=pointer]
+          - menuitem "Contato" [ref=e14] [cursor=pointer]:
+            - text: Contato
+            - img [ref=e15]
+      - link "Condor em Casa" [ref=e17] [cursor=pointer]:
+        - /url: https://www.condoremcasa.com.br/
+        - img [ref=e18]
+        - text: Condor em Casa
+  - main [ref=e22]:
+    - navigation "Breadcrumb" [ref=e23]:
+      - generic [ref=e24]:
+        - link "Início" [ref=e25] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e26]: /
+        - generic [ref=e27]: Institucional
+    - generic [ref=e29]:
+      - heading "Institucional" [level=1] [ref=e30]
+      - paragraph [ref=e31]: Conheça os conteúdos institucionais da Rede Condor.
+    - generic [ref=e33]:
+      - article "Institucional" [ref=e34]:
+        - heading "Institucional" [level=2] [ref=e35]
+        - list [ref=e36]:
+          - listitem [ref=e37]:
+            - link "ESG" [ref=e38] [cursor=pointer]:
+              - /url: /institucional/esg
+              - generic [ref=e39]: ESG
+              - img [ref=e40]
+          - listitem [ref=e42]:
+            - link "Institucional" [ref=e43] [cursor=pointer]:
+              - /url: /institucional/institucional
+              - generic [ref=e44]: Institucional
+              - img [ref=e45]
+          - listitem [ref=e47]:
+            - link "Nossa estrutura" [ref=e48] [cursor=pointer]:
+              - /url: /institucional/nossa-estrutura
+              - generic [ref=e49]: Nossa estrutura
+              - img [ref=e50]
+          - listitem [ref=e52]:
+            - link "Nossa História" [ref=e53] [cursor=pointer]:
+              - /url: /institucional/nossa-historia
+              - generic [ref=e54]: Nossa História
+              - img [ref=e55]
+          - listitem [ref=e57]:
+            - link "O Condor e seu fundador" [ref=e58] [cursor=pointer]:
+              - /url: /institucional/o-condor-e-seu-fundador
+              - generic [ref=e59]: O Condor e seu fundador
+              - img [ref=e60]
+          - listitem [ref=e62]:
+            - link "Prêmios" [ref=e63] [cursor=pointer]:
+              - /url: /institucional/premios
+              - generic [ref=e64]: Prêmios
+              - img [ref=e65]
+      - article "Ações Condor" [ref=e67]:
+        - heading "Ações Condor" [level=2] [ref=e68]
+        - list [ref=e69]:
+          - listitem [ref=e70]:
+            - link "Ações Condor" [ref=e71] [cursor=pointer]:
+              - /url: /acoes-condor/acoes-condor
+              - generic [ref=e72]: Ações Condor
+              - img [ref=e73]
+          - listitem [ref=e75]:
+            - link "Campanha Solidária Condor" [ref=e76] [cursor=pointer]:
+              - /url: /acoes-condor/campanha-solidaria-condor
+              - generic [ref=e77]: Campanha Solidária Condor
+              - img [ref=e78]
+          - listitem [ref=e80]:
+            - link "Cultura e Lazer" [ref=e81] [cursor=pointer]:
+              - /url: /acoes-condor/cultura-e-lazer
+              - generic [ref=e82]: Cultura e Lazer
+              - img [ref=e83]
+          - listitem [ref=e85]:
+            - link "Instituto Joanir Zonta" [ref=e86] [cursor=pointer]:
+              - /url: /acoes-condor/instituto-joanir-zonta
+              - generic [ref=e87]: Instituto Joanir Zonta
+              - img [ref=e88]
+          - listitem [ref=e90]:
+            - link "Política de Privacidade" [ref=e91] [cursor=pointer]:
+              - /url: /acoes-condor/politica-de-privacidade
+              - generic [ref=e92]: Política de Privacidade
+              - img [ref=e93]
+          - listitem [ref=e95]:
+            - link "Sustentabilidade" [ref=e96] [cursor=pointer]:
+              - /url: /acoes-condor/sustentabilidade
+              - generic [ref=e97]: Sustentabilidade
+              - img [ref=e98]
+          - listitem [ref=e100]:
+            - link "Universidade Corporativa Condor" [ref=e101] [cursor=pointer]:
+              - /url: /acoes-condor/universidade-corporativa-condor
+              - generic [ref=e102]: Universidade Corporativa Condor
+              - img [ref=e103]
+      - article "Para Sua Empresa" [ref=e105]:
+        - heading "Para Sua Empresa" [level=2] [ref=e106]
+        - list [ref=e107]:
+          - listitem [ref=e108]:
+            - link "Cartão Condor Card Mais Alimentação" [ref=e109] [cursor=pointer]:
+              - /url: /para-sua-empresa/cartao-condor-card-mais-alimentacao
+              - generic [ref=e110]: Cartão Condor Card Mais Alimentação
+              - img [ref=e111]
+          - listitem [ref=e113]:
+            - link "Cartão Condor Card Mais Convênio" [ref=e114] [cursor=pointer]:
+              - /url: /para-sua-empresa/cartao-condor-card-mais-convenio
+              - generic [ref=e115]: Cartão Condor Card Mais Convênio
+              - img [ref=e116]
+          - listitem [ref=e118]:
+            - link "Cartão Condor Card Mais Empresa" [ref=e119] [cursor=pointer]:
+              - /url: /para-sua-empresa/cartao-condor-card-mais-empresa
+              - generic [ref=e120]: Cartão Condor Card Mais Empresa
+              - img [ref=e121]
+          - listitem [ref=e123]:
+            - link "Cartão-presente Condor" [ref=e124] [cursor=pointer]:
+              - /url: /para-sua-empresa/cartao-presente-condor
+              - generic [ref=e125]: Cartão-presente Condor
+              - img [ref=e126]
+          - listitem [ref=e128]:
+            - link "Para sua empresa" [ref=e129] [cursor=pointer]:
+              - /url: /para-sua-empresa/para-sua-empresa
+              - generic [ref=e130]: Para sua empresa
+              - img [ref=e131]
+      - article "Servicos Financeiros" [ref=e133]:
+        - heading "Servicos Financeiros" [level=2] [ref=e134]
+        - list [ref=e135]:
+          - listitem [ref=e136]:
+            - link "CPF na nota" [ref=e137] [cursor=pointer]:
+              - /url: /servicos-financeiros/cpf-na-nota
+              - generic [ref=e138]: CPF na nota
+              - img [ref=e139]
+          - listitem [ref=e141]:
+            - link "Formas de pagamento" [ref=e142] [cursor=pointer]:
+              - /url: /servicos-financeiros/formas-de-pagamento
+              - generic [ref=e143]: Formas de pagamento
+              - img [ref=e144]
+          - listitem [ref=e146]:
+            - link "Megafacilidades Condor" [ref=e147] [cursor=pointer]:
+              - /url: /servicos-financeiros/megafacilidades-condor
+              - generic [ref=e148]: Megafacilidades Condor
+              - img [ref=e149]
+          - listitem [ref=e151]:
+            - link "Serviços financeiros" [ref=e152] [cursor=pointer]:
+              - /url: /servicos-financeiros/servicos-financeiros
+              - generic [ref=e153]: Serviços financeiros
+              - img [ref=e154]
+  - contentinfo [ref=e156]:
+    - generic [ref=e158]:
+      - generic [ref=e159]:
+        - generic [ref=e160]:
+          - link "Condor" [ref=e161] [cursor=pointer]:
+            - /url: /
+            - img "Condor" [ref=e162]
+          - paragraph [ref=e163]: Soluciones logísticas que conectan destinos. Sin límites.
+          - generic [ref=e164]:
+            - link "Facebook" [ref=e165] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e166]
+            - link "Instagram" [ref=e168] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e169]
+            - link "LinkedIn" [ref=e171] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e172]
+            - link "X (Twitter)" [ref=e174] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e175]
+        - navigation "Footer navigation" [ref=e177]:
+          - generic [ref=e178]:
+            - heading "Servicios" [level=3] [ref=e179]
+            - list [ref=e180]:
+              - listitem [ref=e181]:
+                - link "Transporte Nacional" [ref=e182] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e183]:
+                - link "Logística Internacional" [ref=e184] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e185]:
+                - link "Almacenamiento" [ref=e186] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e187]:
+                - link "Distribución" [ref=e188] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e189]:
+            - heading "Empresa" [level=3] [ref=e190]
+            - list [ref=e191]:
+              - listitem [ref=e192]:
+                - link "Sobre Nosotros" [ref=e193] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e194]:
+                - link "Trabaja con Nosotros" [ref=e195] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e196]:
+                - link "Novedades" [ref=e197] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e198]:
+                - link "Contacto" [ref=e199] [cursor=pointer]:
+                  - /url: "#"
+          - generic [ref=e200]:
+            - heading "Contacto" [level=3] [ref=e201]
+            - list [ref=e202]:
+              - listitem [ref=e203]:
+                - img [ref=e204]
+                - text: Buenos Aires, Argentina
+              - listitem [ref=e207]:
+                - img [ref=e208]
+                - text: +54 11 1234-5678
+              - listitem [ref=e210]:
+                - img [ref=e211]
+                - text: info@condor.com.ar
+      - generic [ref=e215]:
+        - paragraph [ref=e216]: © 2026 Condor. Todos los derechos reservados.
+        - generic [ref=e217]:
+          - link "Términos y Condiciones" [ref=e218] [cursor=pointer]:
+            - /url: "#"
+          - link "Política de Privacidad" [ref=e220] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e223]:
+    - button "Menu" [ref=e224]:
+      - img [ref=e226]
+      - generic: Menu
+    - button "Inspect" [ref=e230]:
+      - img [ref=e232]
+      - generic: Inspect
+    - button "Audit" [ref=e234]:
+      - img [ref=e236]
+      - generic: Audit
+    - button "Settings" [ref=e239]:
+      - img [ref=e241]
+      - generic: Settings

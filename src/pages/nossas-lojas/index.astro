@@ -3,14 +3,24 @@ export const prerender = false;
 
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { fetchDirectus } from '../../lib/directus';
 import '../../styles/global.css';
 
-const DIRECTUS_URL = import.meta.env.DIRECTUS_URL || 'http://localhost:8055';
+interface Loja {
+	id: string;
+	nome: string;
+	slug: string;
+	cidade: string | null;
+	telefone: string | null;
+	horarios: string | null;
+	link_maps: string | null;
+	latitude: string | null;
+	longitude: string | null;
+}
 
-const res = await fetch(
-	`${DIRECTUS_URL}/items/lojas?filter[status][_eq]=published&fields=id,nome,slug,cidade,telefone,horarios,link_maps,latitude,longitude&sort=cidade,nome&limit=-1`
+const lojas = await fetchDirectus<Loja>(
+	'/items/lojas?filter[status][_eq]=published&fields=id,nome,slug,cidade,telefone,horarios,link_maps,latitude,longitude&sort=cidade,nome&limit=-1'
 );
-const { data: lojas } = await res.json();
 
 // Extract closing time from horarios HTML
 function extractFechamento(html: string | null): string {
