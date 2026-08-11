@@ -45,7 +45,7 @@
 
   .tv-shell {
     position: relative; z-index: 1; display: grid;
-    grid-template-rows: auto 1fr auto; width: 100%; height: 100%;
+    grid-template-rows: auto 1fr auto; width: 100%; height: 100%; min-height: 0;
     animation: tv-in .28s cubic-bezier(.2,.8,.2,1);
   }
   @keyframes tv-in { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
@@ -63,8 +63,8 @@
   .tv-dl { font-size: 1.2rem; }
 
   .tv-stage { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; min-height: 0; padding: 0 .4rem; }
-  .tv-scroll { height: 100%; overflow: auto; display: grid; place-items: center; padding: 1rem clamp(.25rem, 3vw, 3rem) 1.6rem; }
-  .tv-book { transform: scale(var(--tv-zoom, 1)); transform-origin: center top; transition: transform .22s ease; }
+  .tv-scroll { height: 100%; min-height: 0; overflow: hidden; display: grid; place-items: center; padding: 1rem clamp(.25rem, 3vw, 3rem) 1.6rem; }
+  .tv-book { transform: scale(var(--tv-zoom, 1)); transform-origin: center center; transition: transform .22s ease; }
   /* páginas: papel com sombra profunda de encarte */
   .tv-book :global(.tv-page) { background: #fff; box-shadow: 0 24px 60px -18px rgba(0,0,0,.65); overflow: hidden; }
   .tv-book :global(.tv-page canvas) { display: block; width: 100%; height: 100%; }
@@ -131,6 +131,22 @@
 
     const destroyFlip = () => { try { flip?.destroy(); } catch {} flip = null; bookEl.innerHTML = ''; };
 
+    // Calcula dimensiones del libro que entran en .tv-scroll manteniendo aspect ratio.
+    // Evita desbordes verticales (PDFs A4 en pantallas chicas) sin distorsionar páginas.
+    const computeBookSize = (baseW: number, baseH: number) => {
+      const r = scrollEl.getBoundingClientRect();
+      const cs = getComputedStyle(scrollEl);
+      const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+      const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      const availW = Math.max(120, r.width - padX);
+      const availH = Math.max(120, r.height - padY);
+      const aspect = baseW / baseH;
+      let w: number, h: number;
+      if (availW / availH > aspect) { h = availH; w = h * aspect; }
+      else { w = availW; h = w / aspect; }
+      return { w: Math.round(w), h: Math.round(h) };
+    };
+
     const close = () => {
       modal.setAttribute('hidden', '');
       modal.setAttribute('aria-hidden', 'true');
@@ -190,10 +206,10 @@
         }
 
         const { PageFlip } = flipMod as any;
+        const { w: bookW, h: bookH } = computeBookSize(baseW || 420, baseH || 560);
         flip = new PageFlip(bookEl, {
-          width: baseW || 420, height: baseH || 560,
-          size: 'stretch',
-          minWidth: 260, maxWidth: 1400, minHeight: 340, maxHeight: 1900,
+          width: bookW, height: bookH,
+          size: 'fixed',
           maxShadowOpacity: 0.5, showCover: true, mobileScrollSupport: false,
           useMouseEvents: true, flippingTime: reduce ? 0 : 700, drawShadow: !reduce,
         });
