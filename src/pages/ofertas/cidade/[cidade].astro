@@ -7,7 +7,7 @@ import TabloideViewer from '../../../components/TabloideViewer.astro';
 import TabloideCard from '../../../components/TabloideCard.astro';
 import VideoRegiao from '../../../components/VideoRegiao.astro';
 import OfertasGrid from '../../../components/OfertasGrid.astro';
-import { getCidadesFull, getTabloides, getBanners, getCarroselOfertas, assetUrl } from '../../../lib/directus';
+import { getCidadesFull, getTabloides, getBanners, getCarroselOfertas, getGlobal, assetUrl } from '../../../lib/directus';
 import type { Cidade, Tabloide, Banner } from '../../../lib/types';
 
 export const getStaticPaths = (async () => {
@@ -54,7 +54,9 @@ const videoEmbed = toYouTubeEmbed(regiao?.video_url ?? null);
 //   ≤2 → mesma linha do vídeo; 3-4 → uma linha; >4 → carrossel (vídeo abaixo).
 const n = tabloides.length;
 
+// Texto legal vem do singleton `global` (editável no Directus); fallback embutido.
 const DISCLAIMER =
+  (await getGlobal())?.ofertas_disclaimer?.trim() ||
   'Todos os valores/preços apresentados nesta página são exclusivamente para referência da loja física. ' +
   'Ofertas válidas nas datas indicadas em cada encarte ou enquanto durarem os estoques. ' +
   'Imagens meramente ilustrativas.';
@@ -138,8 +140,6 @@ const DISCLAIMER =
       {n === 0 && (
         <p class="text-muted text-center pt-12">Nenhum encarte disponível para esta região no momento.</p>
       )}
-
-      <p class="text-muted/80 text-xs leading-relaxed mt-10 max-w-3xl">{DISCLAIMER}</p>
     </div>
   </section>
 
@@ -147,5 +147,10 @@ const DISCLAIMER =
   <OfertasGrid imageIds={ofertasImgs} />
 
   <TabloideViewer />
+
+  <div class="mx-auto max-w-[1200px] px-6 py-10 text-center">
+    <p class="text-xs leading-relaxed text-muted/80 max-w-3xl mx-auto">{DISCLAIMER}</p>
+  </div>
+
   <Footer />
 </BaseLayout>

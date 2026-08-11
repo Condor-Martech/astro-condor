@@ -37,8 +37,11 @@ const promos = cards.map((c) => ({
 }));
 ---
 
-<BaseLayout title="Condor — A rede mais amada dos paranaenses">
+<BaseLayout title="Condor Supermercados — 50 anos no Paraná e Santa Catarina">
   <Header />
+
+  <!-- h1 semântico da home (hero é imagem pura, sem heading visível) -->
+  <h1 class="sr-only">Condor Supermercados no Paraná e Santa Catarina</h1>
 
   <!-- MODAL PROMOCIONAL (singleton modal_home) -->
   <ModalHome modal={modal} />
@@ -106,7 +109,7 @@ const promos = cards.map((c) => ({
             <p class="font-display font-extrabold leading-[.85] text-6xl md:text-7xl">
               {lojas.length || 73}<span class="block text-2xl md:text-3xl mt-2 font-bold">lojas para te atender</span>
             </p>
-            <p class="text-white/75 text-[.95rem] max-w-sm mt-1">A rede mais amada dos paranaenses, sempre pertinho de você. Encontre a Condor mais próxima e confira horários, serviços e como chegar.</p>
+            <p class="text-white/75 text-[.95rem] max-w-sm mt-1">Sempre pertinho de você. Encontre a Condor mais próxima e confira horários, serviços e como chegar.</p>
             <a href="/nossas-lojas" class="mt-4 inline-flex w-fit items-center gap-2 font-display font-bold text-navy bg-white px-6 py-3 rounded-full shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg hover:bg-white/90">
               Encontre a loja mais próxima
               <span aria-hidden="true">→</span>

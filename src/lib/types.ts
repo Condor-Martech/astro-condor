@@ -131,6 +131,7 @@ export interface Global {
   topbar_url: string | null; // link da faixa
   topbar_cor_fundo: string | null; // cor de fundo da faixa (hex)
   topbar_cor_texto: string | null; // cor do texto da faixa (hex)
+  ofertas_disclaimer: string | null; // texto legal do rodapé das páginas de ofertas por cidade
 }
 
 /** Singleton `integracoes` — tags/códigos de terceiros. Acesso restrito (não expor a editores). */

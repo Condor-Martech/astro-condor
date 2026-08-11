@@ -71,6 +71,7 @@ export function getGlobal(): Promise<Global | null> {
         fields: [
           'logo', 'favicon', 'seo',
           'topbar_ativo', 'topbar_texto', 'topbar_url', 'topbar_cor_fundo', 'topbar_cor_texto',
+          'ofertas_disclaimer',
         ],
       }),
     )
