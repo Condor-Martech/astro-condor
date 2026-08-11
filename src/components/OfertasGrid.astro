@@ -27,10 +27,10 @@ const { imageIds } = Astro.props as { imageIds: string[] };
 
     <!-- Lightbox nativo -->
     <dialog data-oferta-lightbox
-            class="backdrop:bg-black/80 backdrop:backdrop-blur-sm bg-transparent p-0 max-w-none w-full h-full m-0 max-h-none">
-      <div class="fixed inset-0 grid place-items-center p-4 sm:p-8">
+            class="fixed inset-0 m-0 p-0 w-screen h-screen max-w-none max-h-none border-0 bg-transparent backdrop:bg-black/80 backdrop:backdrop-blur-sm">
+      <div class="w-full h-full grid place-items-center p-4 sm:p-8">
         <img data-oferta-lightbox-img src="" alt="Oferta ampliada"
-             class="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-2xl" />
+             class="block max-w-[min(92vw,90rem)] max-h-[88vh] w-auto h-auto object-contain rounded-lg shadow-2xl" />
         <button type="button" data-oferta-close aria-label="Fechar"
                 class="fixed top-4 right-4 grid place-items-center w-11 h-11 rounded-full bg-white/90 text-ink text-2xl leading-none shadow-lg hover:bg-white transition-colors">
           &times;
