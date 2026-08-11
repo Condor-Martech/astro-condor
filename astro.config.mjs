@@ -12,5 +12,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     // ponytail: '.ngrok-free.app' cobre qualquer subdomínio do túnel (a URL free muda a cada sessão).
     server: { allowedHosts: ['.ngrok-free.app'] },
+    // ponytail: preview serve arquivos estáticos atrás do proxy do Coolify — allowedHosts irrelevante aqui.
+    preview: { allowedHosts: true },
   },
 });
