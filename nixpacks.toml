@@ -1,0 +1,4 @@
+# SSG: build gera dist/, servido estaticamente pelo próprio Astro (sirv).
+# ponytail: astro preview serve dist/ sem dep nova. Para prod pesada, trocar por Static/nginx.
+[start]
+cmd = "pnpm preview --host 0.0.0.0 --port 4321"
