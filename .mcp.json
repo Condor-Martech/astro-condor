@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "directus": {
+      "command": "npx",
+      "args": ["-y", "@directus/content-mcp@latest"],
+      "env": {
+        "DIRECTUS_URL": "https://condor.cndr.me",
+        "DIRECTUS_TOKEN": "NiiUlOWmGMc9oqz347GPZmi_HHtZa4Nj"
+      }
+    }
+  }
+}

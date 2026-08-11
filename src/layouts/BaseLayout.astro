@@ -1,0 +1,182 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import ConsentCore from '../components/ConsentCore.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { getGlobal, getIntegracoes, assetUrl } from '../lib/directus';
+import '../styles/global.css';
+// Fontes self-hosted (LGPD + perf) — sem CDN do Google.
+import '@fontsource/montserrat/latin-600.css';
+import '@fontsource/montserrat/latin-700.css';
+import '@fontsource/montserrat/latin-800.css';
+import '@fontsource/nunito/latin-400.css';
+import '@fontsource/nunito/latin-600.css';
+import '@fontsource/nunito/latin-700.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string | null;
+}
+
+const { title, description = 'Rede Condor de Supermercados — 50 anos ao seu lado.', image } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+
+const site = await getGlobal();
+// Favicon do CMS (global). fit=contain evita deformar logos não-quadrados. Fallback: svg local.
+const faviconUrl = assetUrl(site?.favicon, 'width=64&height=64&fit=contain&format=png');
+
+// Tags/códigos técnicos vivem no singleton `integracoes` (acesso restrito, separado
+// do `global` que os editores editam). Injetados em todo o site, mas SEMPRE atrás do
+// consentimento (LGPD) — nada carrega antes do opt-in.
+const integ = await getIntegracoes();
+
+// GTM (contêiner analítico + marketing). Carrega quando o usuário aceita QUALQUER
+// das duas categorias; empurra o estado granular ao dataLayer para que cada tag
+// dentro do GTM respeite sua categoria (triggers consent_analytics / consent_marketing).
+const gtmLoader = integ?.gtm_id
+  ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${integ.gtm_id}');`
+  : null;
+const gtmGated = gtmLoader
+  ? `(function(){var cc=window.condorConsent,loaded=false;function push(){(window.dataLayer=window.dataLayer||[]).push({consent_analytics:cc.categoria('analiticos'),consent_marketing:cc.categoria('marketing')});}function load(){if(loaded)return;loaded=true;push();${gtmLoader}}cc.onConsent('analiticos',load);cc.onConsent('marketing',load);cc.onChange(push);})();`
+  : null;
+
+// Emarsys Scarab (recomendação/marketing). Só com consentimento de marketing.
+const emarsysLoader = integ?.emarsys_merchant_id
+  ? `var ScarabQueue=window.ScarabQueue||[];(function(id){if(document.getElementById(id))return;var js=document.createElement('script');js.id=id;js.async=true;js.src='//cdn.scarabresearch.com/js/${integ.emarsys_merchant_id}/scarab-v2.js';var fs=document.getElementsByTagName('script')[0];fs.parentNode.insertBefore(js,fs);}('scarab-js-api'));`
+  : null;
+const emarsysGated = emarsysLoader
+  ? `window.condorConsent.onConsent('marketing',function(){${emarsysLoader}});`
+  : null;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* Motor de consentimento primeiro — precisa existir antes das tags de terceiros. */}
+    <ConsentCore />
+
+    {/* Tags (Directus), gated pelo consentimento. set:html: só editores de confiança. */}
+    {gtmGated && <script is:inline set:html={gtmGated} />}
+    {emarsysGated && <script is:inline set:html={emarsysGated} />}
+
+    {/* Tracking bruto (integracoes) — inerte em <template> até o opt-in da categoria. */}
+    {integ?.analytics_code && <template data-consent="analiticos" set:html={integ.analytics_code} />}
+    {integ?.marketing_code && <template data-consent="marketing" set:html={integ.marketing_code} />}
+
+    {/* head_code: SÓ código sem cookies (SEO, verificação, JSON-LD). Tracking → analytics_code/marketing_code. */}
+    {integ?.head_code && <Fragment set:html={integ.head_code} />}
+
+    {faviconUrl
+      ? <link rel="icon" type="image/png" href={faviconUrl} />
+      : <link rel="icon" type="image/svg+xml" href="/favicon.svg" />}
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {image && <meta property="og:image" content={image} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <ClientRouter />
+  </head>
+  <body>
+    {/* GTM noscript removido de propósito: sem JS não há como consentir → sem tracking (opt-in estrito). */}
+    {/* body_code: SÓ código sem cookies. Tracking → analytics_code/marketing_code. */}
+    {integ?.body_code && <Fragment set:html={integ.body_code} />}
+
+    <slot />
+
+    <CookieBanner />
+
+    <script>
+      // Reveal on scroll — reaplica após cada navegação (View Transitions).
+      const setupReveals = () => {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const els = document.querySelectorAll('.reveal:not(.is-visible)');
+        if (!('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('is-visible'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-visible');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px' },
+        );
+        els.forEach((el) => io.observe(el));
+      };
+      document.addEventListener('astro:page-load', setupReveals);
+
+      // Emarsys Web Extend + Web Channel (overlays / embedded banners).
+      // SPA (View Transitions): 'go' SÓ na 1ª carga. Nas navegações seguintes usa a
+      // Reload function do Web Personalization — 'go' repetido corromperia o reload,
+      // limparia as campanhas já renderizadas e dispararia "multiple go" (docs Emarsys).
+      // Tudo no-op se o Scarab não carregou (sem consentimento de marketing).
+      let emarsysStarted = false;
+      document.addEventListener('astro:page-load', () => {
+        const w = window as unknown as {
+          ScarabQueue?: unknown[][];
+          ScarabUtil?: {
+            loadedModules?: {
+              emarsys_webpersonalization?: { instance?: { reload?: () => void } };
+            };
+          };
+        };
+        if (!w.ScarabQueue) return;
+        if (!emarsysStarted) {
+          w.ScarabQueue.push(['go']); // 1ª página: inicializa Web Extend + Web Channel
+          emarsysStarted = true;
+        } else {
+          // Navegação SPA: re-renderiza campanhas sem corromper sessão/transações.
+          // Optional chaining: no-op se Web Personalization não estiver ativo na conta.
+          w.ScarabUtil?.loadedModules?.emarsys_webpersonalization?.instance?.reload?.();
+        }
+      });
+
+      // ---- GTM dataLayer ----
+      // dataLayer é só um array: empurrar é seguro mesmo antes do GTM/consentimento.
+      const dataLayer = () => {
+        const w = window as unknown as { dataLayer?: Record<string, unknown>[] };
+        return (w.dataLayer = w.dataLayer || []);
+      };
+
+      // Pageview virtual: View Transitions NÃO dispara o pageview nativo do GTM.
+      // No GTM: dispare a tag no evento custom 'page_view' (NÃO em "All Pages") p/ evitar duplicar.
+      document.addEventListener('astro:page-load', () => {
+        dataLayer().push({
+          event: 'page_view',
+          page_path: location.pathname + location.search,
+          page_title: document.title,
+        });
+      });
+
+      // Eventos de negócio declarativos: qualquer [data-track] vira um evento no dataLayer.
+      // Ex.: <a data-track="loja_como_chegar" data-track-loja="Batel"> → {event, loja}.
+      // Listener único no document (persiste entre navegações SPA).
+      document.addEventListener('click', (e) => {
+        const el = (e.target as HTMLElement).closest<HTMLElement>('[data-track]');
+        if (!el) return;
+        const props: Record<string, string> = {};
+        for (const [k, v] of Object.entries(el.dataset)) {
+          if (k.startsWith('track') && k !== 'track' && v != null) {
+            const name = k.slice(5).replace(/[A-Z]/g, (m) => '_' + m.toLowerCase()).replace(/^_/, '');
+            props[name] = v;
+          }
+        }
+        dataLayer().push({ event: el.dataset.track as string, ...props });
+      });
+    </script>
+  </body>
+</html>

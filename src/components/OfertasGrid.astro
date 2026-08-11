@@ -1,0 +1,70 @@
+---
+import { assetUrl } from '../lib/directus';
+// Grilla de imagens de ofertas (4 por linha) + lightbox nativo <dialog>. Zero deps.
+const { imageIds } = Astro.props as { imageIds: string[] };
+---
+
+{imageIds.length > 0 && (
+  <section class="bg-surface border-b border-line">
+    <div class="mx-auto max-w-[1200px] px-6 py-14 md:py-16">
+      <div class="mb-8 reveal">
+        <h2 class="font-display text-[.78rem] font-bold uppercase tracking-[.14em] text-red">Ofertas em destaque</h2>
+        <p class="font-display text-2xl md:text-3xl font-extrabold text-ink mt-1">Confira as promoções</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 reveal">
+        {imageIds.map((id, i) => (
+          <button type="button" data-oferta-zoom
+                  data-full={assetUrl(id, 'width=1600&format=webp&quality=88')}
+                  class="group relative aspect-square overflow-hidden rounded-xl border border-line bg-surface-2 cursor-zoom-in transition-shadow hover:shadow-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-navy/20">
+            <img src={assetUrl(id, 'width=520&height=520&fit=cover&format=webp&quality=82')}
+                 alt={`Oferta ${i + 1}`} loading="lazy" width="520" height="520"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Lightbox nativo -->
+    <dialog data-oferta-lightbox
+            class="backdrop:bg-black/80 backdrop:backdrop-blur-sm bg-transparent p-0 max-w-none w-full h-full m-0 max-h-none">
+      <div class="fixed inset-0 grid place-items-center p-4 sm:p-8">
+        <img data-oferta-lightbox-img src="" alt="Oferta ampliada"
+             class="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-2xl" />
+        <button type="button" data-oferta-close aria-label="Fechar"
+                class="fixed top-4 right-4 grid place-items-center w-11 h-11 rounded-full bg-white/90 text-ink text-2xl leading-none shadow-lg hover:bg-white transition-colors">
+          &times;
+        </button>
+      </div>
+    </dialog>
+  </section>
+)}
+
+<script>
+  const setup = () => {
+    const dialog = document.querySelector<HTMLDialogElement>('[data-oferta-lightbox]');
+    if (!dialog || dialog.dataset.bound) return;
+    dialog.dataset.bound = '1';
+    const img = dialog.querySelector<HTMLImageElement>('[data-oferta-lightbox-img]');
+
+    document.addEventListener('click', (e) => {
+      const zoom = (e.target as HTMLElement).closest('[data-oferta-zoom]') as HTMLElement | null;
+      if (zoom && img) {
+        img.src = zoom.dataset.full ?? '';
+        dialog.showModal();
+        return;
+      }
+      // fecha ao clicar no fundo (fora da imagem) ou no botão
+      if ((e.target as HTMLElement).closest('[data-oferta-close]') || e.target === dialog) dialog.close();
+    });
+    // clique no backdrop do <dialog> (área fora do conteúdo)
+    dialog.addEventListener('click', (e) => {
+      const box = img?.getBoundingClientRect();
+      if (!box) return;
+      const outside = e.clientX < box.left || e.clientX > box.right || e.clientY < box.top || e.clientY > box.bottom;
+      if (outside) dialog.close();
+    });
+    dialog.addEventListener('close', () => { if (img) img.src = ''; });
+  };
+  document.addEventListener('astro:page-load', setup);
+</script>

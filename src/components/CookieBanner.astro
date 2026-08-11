@@ -1,0 +1,107 @@
+---
+// Banner de consentimento de cookies (LGPD).
+// Bloqueia scripts de analytics/marketing ATÉ o opt-in explícito da categoria.
+// Registro client-side (localStorage) — nenhum dado pessoal vai ao servidor.
+//
+// Motor exposto em window.condorConsent:
+//   .categoria('analiticos'|'marketing'|'mapas') -> bool
+//   .onConsent('analiticos', cb)  -> roda cb agora (se consentido) ou quando consentir
+//   .open()                       -> reabre o painel de preferências (link no rodapé)
+// Para plugar um script (ex.: GA4), NUNCA carregue direto — use:
+//   window.condorConsent.onConsent('analiticos', () => { /* injeta o <script> do GA */ });
+---
+
+<div
+  id="cookie-banner"
+  transition:persist
+  hidden
+  role="dialog"
+  aria-label="Preferências de cookies"
+  aria-live="polite"
+  class="fixed inset-x-0 bottom-0 z-[9999] p-3 sm:p-5"
+>
+  <div class="mx-auto max-w-[1100px] bg-surface border border-line rounded-card shadow-2xl p-5 sm:p-6">
+    <h2 class="font-display font-bold text-lg text-ink">Sua privacidade</h2>
+    <p class="text-muted text-[.92rem] mt-1 max-w-[74ch]">
+      Usamos cookies para melhorar sua experiência, analisar o tráfego e personalizar conteúdo.
+      Os cookies necessários são sempre ativos; você decide sobre os demais.
+      <a href="/acoes-condor/politica-de-privacidade" class="text-navy font-semibold underline">Saiba mais</a>.
+    </p>
+
+    <!-- Preferências granulares (ocultas até "Personalizar" ou .open()) -->
+    <div data-prefs hidden class="grid gap-3 sm:grid-cols-3 border-t border-line mt-4 pt-4">
+      <label class="flex items-start gap-2.5 opacity-70">
+        <input type="checkbox" checked disabled class="mt-1 accent-navy" />
+        <span><b class="block text-ink text-sm">Necessários</b><small class="text-muted">Essenciais ao funcionamento. Sempre ativos.</small></span>
+      </label>
+      <label class="flex items-start gap-2.5 cursor-pointer">
+        <input type="checkbox" data-cat="analiticos" class="mt-1 accent-navy" />
+        <span><b class="block text-ink text-sm">Analíticos</b><small class="text-muted">Métricas de uso para melhorar o site.</small></span>
+      </label>
+      <label class="flex items-start gap-2.5 cursor-pointer">
+        <input type="checkbox" data-cat="marketing" class="mt-1 accent-navy" />
+        <span><b class="block text-ink text-sm">Marketing</b><small class="text-muted">Anúncios e conteúdo personalizados.</small></span>
+      </label>
+    </div>
+
+    <div class="flex flex-wrap gap-2.5 justify-end mt-4">
+      <button type="button" data-act="prefs" class="font-display font-semibold text-sm px-4 py-2.5 rounded-full border border-line text-ink hover:bg-surface-2 transition-colors">Personalizar</button>
+      <button type="button" data-act="reject" class="font-display font-semibold text-sm px-4 py-2.5 rounded-full border border-line text-ink hover:bg-surface-2 transition-colors">Rejeitar</button>
+      <button type="button" data-act="save" hidden class="font-display font-semibold text-sm px-5 py-2.5 rounded-full bg-navy text-white hover:bg-navy/90 transition-colors">Salvar preferências</button>
+      <button type="button" data-act="accept" class="font-display font-semibold text-sm px-5 py-2.5 rounded-full bg-navy text-white hover:bg-navy/90 transition-colors">Aceitar todos</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // UI do banner. O motor window.condorConsent vem de <ConsentCore> (no <head>).
+  (function () {
+    var CC = window.condorConsent;
+
+    function el() { return document.getElementById('cookie-banner'); }
+    function show(prefs) {
+      var b = el(); if (!b) return;
+      b.removeAttribute('hidden');
+      var p = b.querySelector('[data-prefs]');
+      var save = b.querySelector('[data-act="save"]');
+      if (prefs) {
+        p.removeAttribute('hidden');
+        save.removeAttribute('hidden');
+        var cur = CC.get() || {};
+        b.querySelectorAll('[data-cat]').forEach(function (i) { i.checked = !!cur[i.dataset.cat]; });
+      }
+    }
+    function hide() { var b = el(); if (b) b.setAttribute('hidden', ''); }
+    function decide(o) { o.decidido = true; CC.set(o); hide(); }
+
+    CC.open = function () { show(true); }; // rodapé: "Preferências de cookies"
+
+    function initBanner() {
+      var b = el();
+      if (!b || b.dataset.bound) {
+        // Já ligado, mas re-avalia visibilidade (nav SPA pode ter escondido/mostrado).
+        if (b && !CC.get()?.decidido) show(false);
+        return;
+      }
+      b.dataset.bound = '1';
+
+      b.querySelector('[data-act="prefs"]').addEventListener('click', function () { show(true); });
+      b.querySelector('[data-act="accept"]').addEventListener('click', function () {
+        decide({ analiticos: true, marketing: true, mapas: true });
+      });
+      b.querySelector('[data-act="reject"]').addEventListener('click', function () {
+        decide({ analiticos: false, marketing: false, mapas: false });
+      });
+      b.querySelector('[data-act="save"]').addEventListener('click', function () {
+        var o = { mapas: (CC.get() || {}).mapas || false };
+        b.querySelectorAll('[data-cat]').forEach(function (i) { o[i.dataset.cat] = i.checked; });
+        decide(o);
+      });
+
+      // Primeira visita (sem decisão) → mostra o banner colapsado.
+      if (!CC.get()?.decidido) show(false);
+    }
+
+    document.addEventListener('astro:page-load', initBanner);
+  })();
+</script>

@@ -1,0 +1,235 @@
+---
+// Visor de tabloide estilo revista (page-flip). Modal único; os cards da página
+// disparam via [data-folhear] com data-pdf/data-titulo/data-download.
+// pdf.js + page-flip carregam sob demanda (dynamic import) só ao abrir — zero peso no load.
+---
+
+<div id="tv-modal" class="tv" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Visualizador de tabloide">
+  <div class="tv-backdrop" data-tv-close></div>
+
+  <div class="tv-shell" role="document">
+    <header class="tv-bar">
+      <span class="tv-title font-display" data-tv-title>Tabloide</span>
+      <div class="tv-tools">
+        <button type="button" class="tv-btn" data-tv-zoom="-1" aria-label="Diminuir zoom">−</button>
+        <button type="button" class="tv-btn" data-tv-zoom="1" aria-label="Aumentar zoom">+</button>
+        <a class="tv-btn tv-dl" data-tv-download href="#" target="_blank" rel="noopener" aria-label="Baixar PDF">↓</a>
+        <button type="button" class="tv-btn tv-close" data-tv-close aria-label="Fechar visualizador">✕</button>
+      </div>
+    </header>
+
+    <div class="tv-stage">
+      <button type="button" class="tv-nav tv-prev" data-tv-prev aria-label="Página anterior">‹</button>
+      <div class="tv-scroll" data-tv-scroll>
+        <div id="tv-book" class="tv-book"></div>
+      </div>
+      <button type="button" class="tv-nav tv-next" data-tv-next aria-label="Próxima página">›</button>
+
+      <div class="tv-status" data-tv-status>
+        <span class="tv-spinner" aria-hidden="true"></span>
+        <span data-tv-status-text>Carregando encarte…</span>
+      </div>
+    </div>
+
+    <footer class="tv-foot font-display">
+      <span data-tv-counter>—</span>
+      <span class="tv-hint">use ‹ › ou arraste a página</span>
+    </footer>
+  </div>
+</div>
+
+<style>
+  .tv { position: fixed; inset: 0; z-index: 80; display: grid; }
+  .tv[hidden] { display: none; }
+  .tv-backdrop { position: absolute; inset: 0; background: radial-gradient(120% 120% at 50% 0%, #0a2038 0%, #05121f 60%, #020a12 100%); }
+
+  .tv-shell {
+    position: relative; z-index: 1; display: grid;
+    grid-template-rows: auto 1fr auto; width: 100%; height: 100%;
+    animation: tv-in .28s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes tv-in { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
+
+  .tv-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .85rem 1.1rem; color: #fff; }
+  .tv-title { font-weight: 800; font-size: 1rem; letter-spacing: .01em; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+  .tv-tools { display: flex; align-items: center; gap: .4rem; }
+  .tv-btn {
+    display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border-radius: 9999px;
+    background: rgba(255,255,255,.1); color: #fff; font-size: 1.15rem; line-height: 1; text-decoration: none;
+    border: 1px solid rgba(255,255,255,.14); transition: background .2s, transform .2s, border-color .2s;
+  }
+  .tv-btn:hover { background: rgba(255,255,255,.22); }
+  .tv-close:hover { background: var(--c-red); border-color: var(--c-red); }
+  .tv-dl { font-size: 1.2rem; }
+
+  .tv-stage { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; min-height: 0; padding: 0 .4rem; }
+  .tv-scroll { height: 100%; overflow: auto; display: grid; place-items: center; padding: 1rem clamp(.25rem, 3vw, 3rem) 1.6rem; }
+  .tv-book { transform: scale(var(--tv-zoom, 1)); transform-origin: center top; transition: transform .22s ease; }
+  /* páginas: papel com sombra profunda de encarte */
+  .tv-book :global(.tv-page) { background: #fff; box-shadow: 0 24px 60px -18px rgba(0,0,0,.65); overflow: hidden; }
+  .tv-book :global(.tv-page canvas) { display: block; width: 100%; height: 100%; }
+  .tv-book :global(.--right) { box-shadow: inset 6px 0 18px -10px rgba(0,0,0,.35), 0 24px 60px -18px rgba(0,0,0,.65); }
+  .tv-book :global(.--left) { box-shadow: inset -6px 0 18px -10px rgba(0,0,0,.35), 0 24px 60px -18px rgba(0,0,0,.65); }
+
+  .tv-nav {
+    z-index: 2; display: grid; place-items: center; width: 3rem; height: 3rem; margin: 0 .2rem; flex: none;
+    border-radius: 9999px; background: rgba(255,255,255,.12); color: #fff; font-size: 1.8rem; line-height: 1;
+    border: 1px solid rgba(255,255,255,.16); transition: background .2s, transform .2s;
+  }
+  .tv-nav:hover { background: var(--c-navy); border-color: rgba(255,255,255,.3); }
+  .tv-nav:disabled { opacity: .3; pointer-events: none; }
+
+  .tv-status {
+    position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: .9rem;
+    color: #cfe0f0; font-size: .95rem; pointer-events: none;
+  }
+  .tv-status[hidden] { display: none; }
+  .tv-spinner { width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 3px solid rgba(255,255,255,.25); border-top-color: #fff; animation: tv-spin .8s linear infinite; }
+  @keyframes tv-spin { to { transform: rotate(360deg); } }
+
+  .tv-foot { display: flex; align-items: center; justify-content: center; gap: 1rem; padding: .7rem 1rem 1rem; color: #bcd0e4; font-size: .82rem; }
+  .tv-foot [data-tv-counter] { font-weight: 800; color: #fff; letter-spacing: .04em; }
+  .tv-hint { opacity: .7; }
+  @media (max-width: 640px) { .tv-hint { display: none; } .tv-nav { width: 2.5rem; height: 2.5rem; font-size: 1.4rem; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tv-shell { animation: none; }
+    .tv-book { transition: none; }
+    .tv-spinner { animation-duration: 1.6s; }
+  }
+</style>
+
+<script>
+  const RENDER_SCALE = 2; // hi-dpi das páginas
+  const MAX_PAGES = 40; // trava de segurança
+  const ZOOM_STEP = 0.2, ZOOM_MIN = 0.6, ZOOM_MAX = 2.4;
+
+  const setupTabloideViewer = () => {
+    const modal = document.getElementById('tv-modal');
+    if (!modal || modal.dataset.bound) return;
+    modal.dataset.bound = '1';
+
+    const $ = (s: string) => modal.querySelector(s) as HTMLElement | null;
+    const bookEl = $('#tv-book') as HTMLElement;
+    const scrollEl = $('[data-tv-scroll]') as HTMLElement;
+    const statusEl = $('[data-tv-status]') as HTMLElement;
+    const statusText = $('[data-tv-status-text]') as HTMLElement;
+    const titleEl = $('[data-tv-title]') as HTMLElement;
+    const counterEl = $('[data-tv-counter]') as HTMLElement;
+    const dlEl = $('[data-tv-download]') as HTMLAnchorElement;
+    const prevBtn = $('[data-tv-prev]') as HTMLButtonElement;
+    const nextBtn = $('[data-tv-next]') as HTMLButtonElement;
+
+    let flip: any = null;
+    let zoom = 1;
+    let token = 0; // invalida renders de aberturas anteriores
+
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const setZoom = (z: number) => { zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z)); bookEl.style.setProperty('--tv-zoom', String(zoom)); };
+
+    const lockScroll = (on: boolean) => { document.documentElement.style.overflow = on ? 'hidden' : ''; };
+
+    const destroyFlip = () => { try { flip?.destroy(); } catch {} flip = null; bookEl.innerHTML = ''; };
+
+    const close = () => {
+      modal.setAttribute('hidden', '');
+      modal.setAttribute('aria-hidden', 'true');
+      token++; // cancela qualquer render em andamento
+      destroyFlip();
+      lockScroll(false);
+    };
+
+    const setCounter = () => {
+      if (!flip) { counterEl.textContent = '—'; return; }
+      const total = flip.getPageCount();
+      const cur = flip.getCurrentPageIndex() + 1;
+      counterEl.textContent = `${cur} / ${total}`;
+    };
+
+    async function open(pdfUrl: string, titulo: string, downloadUrl: string) {
+      const my = ++token;
+      titleEl.textContent = titulo;
+      dlEl.href = downloadUrl || pdfUrl;
+      setZoom(1);
+      destroyFlip();
+      statusText.textContent = 'Carregando encarte…';
+      statusEl.removeAttribute('hidden');
+      modal.removeAttribute('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      lockScroll(true);
+
+      try {
+        const [pdfjs, workerMod, flipMod] = await Promise.all([
+          import('pdfjs-dist'),
+          import('pdfjs-dist/build/pdf.worker.min.mjs?url'),
+          import('page-flip'),
+        ]);
+        if (my !== token) return; // fechou/reabriu enquanto carregava
+        pdfjs.GlobalWorkerOptions.workerSrc = (workerMod as any).default;
+
+        const doc = await pdfjs.getDocument({ url: pdfUrl }).promise;
+        if (my !== token) return;
+
+        const total = Math.min(doc.numPages, MAX_PAGES);
+        let baseW = 0, baseH = 0;
+
+        for (let i = 1; i <= total; i++) {
+          const page = await doc.getPage(i);
+          if (my !== token) return;
+          const vp = page.getViewport({ scale: RENDER_SCALE });
+          if (!baseW) { baseW = Math.round(vp.width / RENDER_SCALE); baseH = Math.round(vp.height / RENDER_SCALE); }
+          const canvas = document.createElement('canvas');
+          canvas.width = vp.width; canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext('2d')!, viewport: vp }).promise;
+          if (my !== token) return;
+          const pageDiv = document.createElement('div');
+          pageDiv.className = 'tv-page';
+          pageDiv.appendChild(canvas);
+          bookEl.appendChild(pageDiv);
+          statusText.textContent = `Renderizando página ${i} de ${total}…`;
+        }
+
+        const { PageFlip } = flipMod as any;
+        flip = new PageFlip(bookEl, {
+          width: baseW || 420, height: baseH || 560,
+          size: 'stretch',
+          minWidth: 260, maxWidth: 1400, minHeight: 340, maxHeight: 1900,
+          maxShadowOpacity: 0.5, showCover: true, mobileScrollSupport: false,
+          useMouseEvents: true, flippingTime: reduce ? 0 : 700, drawShadow: !reduce,
+        });
+        flip.loadFromHTML(bookEl.querySelectorAll('.tv-page'));
+        flip.on('flip', setCounter);
+        flip.on('changeState', setCounter);
+        statusEl.setAttribute('hidden', '');
+        setCounter();
+      } catch (err) {
+        if (my !== token) return;
+        console.error('[tabloide] falha ao abrir PDF:', err);
+        statusText.textContent = 'Não foi possível carregar o encarte. Use o botão ↓ para baixar o PDF.';
+      }
+    }
+
+    // Disparadores (cards da página)
+    document.addEventListener('click', (e) => {
+      const trigger = (e.target as HTMLElement).closest('[data-folhear]') as HTMLElement | null;
+      if (!trigger) return;
+      e.preventDefault();
+      open(trigger.dataset.pdf || '', trigger.dataset.titulo || 'Tabloide', trigger.dataset.download || trigger.dataset.pdf || '');
+    });
+
+    modal.querySelectorAll('[data-tv-close]').forEach((el) => el.addEventListener('click', close));
+    prevBtn.addEventListener('click', () => flip?.flipPrev());
+    nextBtn.addEventListener('click', () => flip?.flipNext());
+    modal.querySelectorAll('[data-tv-zoom]').forEach((el) =>
+      el.addEventListener('click', () => setZoom(zoom + ZOOM_STEP * Number((el as HTMLElement).dataset.tvZoom))));
+
+    document.addEventListener('keydown', (e) => {
+      if (modal.hasAttribute('hidden')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') flip?.flipPrev();
+      else if (e.key === 'ArrowRight') flip?.flipNext();
+    });
+  };
+
+  document.addEventListener('astro:page-load', setupTabloideViewer);
+</script>

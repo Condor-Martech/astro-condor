@@ -1,0 +1,61 @@
+---
+/* Hallmark · component: store-card · genre: editorial-refined · theme: Condor brand tokens
+ * states: default · hover · focus-visible · restyle: lighter, uniform height */
+import type { Loja } from '../lib/types';
+import { assetUrl } from '../lib/directus';
+
+interface Props { loja: Loja; }
+const { loja } = Astro.props;
+const img = assetUrl(loja.image, 'width=600&height=400&fit=cover');
+
+// tel: só com dígitos (fica clicável no mobile).
+const telHref = loja.telefone ? `tel:${loja.telefone.replace(/\D/g, '')}` : null;
+
+// "Como Chegar": prioriza link_maps do CMS, cai para lat/lng, e por fim busca por nome+cidade.
+const mapsHref =
+  loja.link_maps ||
+  (loja.latitude && loja.longitude
+    ? `https://www.google.com/maps/search/?api=1&query=${loja.latitude},${loja.longitude}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([loja.nome, loja.cidade].filter(Boolean).join(' '))}`);
+---
+<article class="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface transition-colors duration-200 hover:border-navy/40">
+  <div class="relative aspect-[3/2] overflow-hidden bg-surface-2">
+    {img ? (
+      <img src={img} alt={`Loja Condor ${loja.nome}`} loading="lazy" width="600" height="400"
+           class="h-full w-full object-cover" />
+    ) : (
+      <div class="grid h-full w-full place-items-center p-4 text-center font-display font-bold text-navy">
+        {loja.nome}
+      </div>
+    )}
+  </div>
+
+  <div class="flex flex-1 flex-col p-5">
+    {loja.cidade && (
+      <span class="mb-1.5 inline-flex items-center gap-1.5 font-display text-[.66rem] font-bold uppercase tracking-[.14em] text-muted">
+        <span class="h-1.5 w-1.5 rounded-full bg-red"></span>{loja.cidade}
+      </span>
+    )}
+
+    <h3 class="font-display text-[1.05rem] font-bold leading-snug text-ink">{loja.nome}</h3>
+
+    {loja.telefone && (
+      <a href={telHref} class="mt-2 inline-flex w-fit items-center gap-1.5 text-[.85rem] text-muted hover:text-navy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-[14px] w-[14px] shrink-0">
+          <path d="M4 5h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A18 18 0 013 7a2 2 0 011-2z" />
+        </svg>{loja.telefone}
+      </a>
+    )}
+
+    <a href={mapsHref} target="_blank" rel="noopener"
+       data-track="loja_como_chegar" data-track-loja={loja.nome} data-track-cidade={loja.cidade ?? ''}
+       aria-label={`Como chegar até a loja Condor ${loja.nome}`}
+       class="mt-auto inline-flex w-fit items-center gap-1.5 pt-4 font-display text-[.82rem] font-bold text-navy transition-colors hover:text-red group-hover:text-red">
+      Como Chegar
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           class="h-[14px] w-[14px] motion-safe:transition-transform motion-safe:group-hover:translate-x-0.5">
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    </a>
+  </div>
+</article>

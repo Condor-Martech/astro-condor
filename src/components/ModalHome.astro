@@ -1,0 +1,114 @@
+---
+import { assetUrl } from '../lib/directus';
+import type { ModalHome } from '../lib/types';
+
+interface Props {
+  modal: ModalHome | null;
+}
+
+const { modal } = Astro.props;
+const img = modal ? assetUrl(modal.imagem, 'width=900&fit=cover') : null;
+const external = modal?.url?.startsWith('http') ?? false;
+const Inner = modal?.url ? 'a' : 'div';
+---
+
+{modal && (
+  <dialog
+    id="modal-home"
+    class="p-0 w-[90vw] max-w-md rounded-card overflow-hidden shadow-2xl bg-surface backdrop:bg-black/70"
+  >
+    <button
+      type="button"
+      data-close
+      aria-label="Fechar"
+      class="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-black/40 text-white text-xl leading-none transition-colors hover:bg-black/70"
+    >
+      &times;
+    </button>
+
+    <Inner
+      href={modal.url ?? undefined}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener' : undefined}
+      data-track={modal.url ? 'modal_home_cta' : undefined}
+      data-track-url={modal.url ?? undefined}
+      class="block group"
+    >
+      {img && (
+        <img
+          src={img}
+          alt={modal.titulo ?? 'Destaque Condor'}
+          class="w-full aspect-[3/2] object-cover"
+        />
+      )}
+      {(modal.titulo || modal.descricao || modal.url) && (
+        <div class="p-6 text-center">
+          {modal.titulo && (
+            <h2 class="font-display text-xl md:text-2xl font-extrabold text-navy leading-tight">
+              {modal.titulo}
+            </h2>
+          )}
+          {modal.descricao && (
+            <p class="mt-2 text-muted leading-relaxed">{modal.descricao}</p>
+          )}
+          {modal.url && (
+            <span
+              class="mt-4 inline-flex items-center font-display font-bold px-6 py-2.5 rounded-full text-white transition-transform group-hover:-translate-y-0.5"
+              style={`background-color: ${modal.cta_cor ?? 'var(--color-red)'}`}
+            >
+              {modal.cta_label ?? 'Confira'}
+            </span>
+          )}
+        </div>
+      )}
+    </Inner>
+  </dialog>
+)}
+
+<script>
+  function setupModalHome() {
+    const html = document.documentElement;
+    html.style.overflow = ''; // limpa estado de navegações anteriores (View Transitions)
+
+    const dlg = document.getElementById('modal-home') as HTMLDialogElement | null;
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+
+    dlg.showModal(); // sempre que a Home carrega
+    // <dialog> nativo NÃO trava o scroll do fundo — travamos na mão.
+    html.style.overflow = 'hidden';
+    dlg.addEventListener('close', () => { html.style.overflow = ''; }, { once: true });
+
+    dlg
+      .querySelector('[data-close]')
+      ?.addEventListener('click', () => dlg.close());
+    // Clique no backdrop fecha (o alvo do clique é o próprio <dialog>).
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+  }
+
+  document.addEventListener('astro:page-load', setupModalHome);
+</script>
+
+<style>
+  /* O preflight do Tailwind zera margens → o <dialog> modal cola no top-left.
+     Restaura o margin:auto do UA (estilo scopeado do Astro vence em especificidade). */
+  dialog {
+    margin: auto;
+  }
+  /* Entrada suave; respeita quem pediu menos movimento. */
+  dialog[open] {
+    animation: modal-in 0.28s ease-out;
+  }
+  @keyframes modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    dialog[open] {
+      animation: none;
+    }
+  }
+</style>

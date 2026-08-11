@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import LojaCard from '../../components/LojaCard.astro';
+import { getLojas } from '../../lib/directus';
+
+const lojas = await getLojas();
+
+// Cidades derivadas dos dados (zero hardcode) para o select.
+const cidades = [...new Set(lojas.map((l) => l.cidade).filter(Boolean))].sort() as string[];
+
+const norm = (s: string) => s.toLowerCase();
+
+// Key pública (referrer-restricted no Google Cloud). Se ausente, o mapa é omitido e a página segue funcionando.
+const mapsKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
+---
+
+<BaseLayout title="Nossas Lojas — Condor" description="Encontre a loja Condor mais próxima de você. 73 lojas em Paraná e Santa Catarina.">
+  <Header />
+
+  <section class="bg-navy text-white py-12">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <span class="font-display text-[.72rem] font-bold tracking-[.14em] uppercase text-white/80">{lojas.length} lojas em Paraná e Santa Catarina</span>
+      <h1 class="text-3xl md:text-5xl font-extrabold mt-3">Nossas Lojas</h1>
+      <p class="text-white/80 mt-2 max-w-[52ch]">Filtre por cidade e serviços para encontrar a loja ideal.</p>
+    </div>
+  </section>
+
+  <section class="py-10">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <!-- MAPA (Google Maps JS API, pins sincronizados com a busca) -->
+      {mapsKey && (
+        <div id="map" data-key={mapsKey}
+             class="w-full h-[420px] rounded-card overflow-hidden border border-line shadow-sm mb-4 bg-surface-2 grid place-items-center text-muted">
+          Carregando mapa…
+        </div>
+      )}
+
+      <!-- FILTROS (abaixo do mapa) -->
+      <div class="flex flex-wrap items-center gap-3 bg-surface border border-line rounded-card p-4 shadow-sm mb-4">
+        <input id="q" type="search" placeholder="Buscar por nome ou cidade…" aria-label="Buscar loja"
+               class="flex-1 min-w-[200px] font-body text-[.95rem] px-3 py-2.5 rounded-[10px] border border-line bg-surface text-ink" />
+        <select id="cidade" aria-label="Cidade"
+                class="font-body text-[.95rem] px-3 py-2.5 rounded-[10px] border border-line bg-surface text-ink">
+          <option value="">Todas as cidades</option>
+          {cidades.map((c) => <option value={norm(c)}>{c}</option>)}
+        </select>
+      </div>
+
+      <div class="flex items-center justify-end mb-6 text-sm">
+        <button id="clear" class="font-display font-semibold text-red hover:underline hidden">Limpar filtros</button>
+      </div>
+
+      <!-- GRID 4-up -->
+      <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {lojas.map((l) => (
+          <div data-loja class="h-full"
+               data-nome={norm(l.nome)}
+               data-cidade={norm(l.cidade ?? '')}
+               data-lat={l.latitude ?? ''}
+               data-lng={l.longitude ?? ''}
+               data-title={l.nome}
+               data-city={l.cidade ?? ''}>
+            <LojaCard loja={l} />
+          </div>
+        ))}
+      </div>
+
+      <p id="empty" class="hidden text-center text-muted py-16">Nenhuma loja encontrada com esses filtros.</p>
+    </div>
+  </section>
+
+  <Footer />
+
+  <script>
+    // Carrega a Google Maps JS API uma vez (guard em window.google).
+    let mapsPromise: Promise<void> | undefined;
+    const loadMaps = (key: string) => {
+      if ((window as any).google?.maps) return Promise.resolve();
+      if (mapsPromise) return mapsPromise;
+      mapsPromise = new Promise<void>((res, rej) => {
+        const s = document.createElement('script');
+        s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&v=weekly`;
+        s.async = true;
+        s.onload = () => res();
+        s.onerror = () => rej(new Error('maps load failed'));
+        document.head.appendChild(s);
+      });
+      return mapsPromise;
+    };
+
+    const setup = () => {
+      const grid = document.getElementById('grid');
+      if (!grid || (grid as any).dataset.bound) return;
+      (grid as any).dataset.bound = '1';
+
+      const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-loja]'));
+      const q = document.getElementById('q') as HTMLInputElement;
+      const cidade = document.getElementById('cidade') as HTMLSelectElement;
+      const empty = document.getElementById('empty')!;
+      const clear = document.getElementById('clear') as HTMLButtonElement;
+
+      // Markers wired quando o mapa carrega; syncMap() reflete o estado dos filtros.
+      let gmap: any = null;
+      let markers: Array<{ card: HTMLElement; marker: any }> = [];
+      const syncMap = () => {
+        if (!gmap || !markers.length) return;
+        const g = (window as any).google;
+        const bounds = new g.maps.LatLngBounds();
+        let n = 0;
+        for (const { card, marker } of markers) {
+          const show = card.style.display !== 'none';
+          marker.setMap(show ? gmap : null);
+          if (show) { bounds.extend(marker.getPosition()); n++; }
+        }
+        if (n === 1) { gmap.setCenter(bounds.getCenter()); gmap.setZoom(14); }
+        else if (n > 1) gmap.fitBounds(bounds, 48);
+      };
+
+      const apply = () => {
+        const term = q.value.trim().toLowerCase();
+        const cid = cidade.value;
+        let shown = 0;
+        for (const card of cards) {
+          const nome = card.dataset.nome || '';
+          const ccid = card.dataset.cidade || '';
+          const okTerm = !term || nome.includes(term) || ccid.includes(term);
+          const okCid = !cid || ccid === cid;
+          const show = okTerm && okCid;
+          card.style.display = show ? '' : 'none';
+          if (show) shown++;
+        }
+        empty.classList.toggle('hidden', shown > 0);
+        clear.classList.toggle('hidden', !(term || cid));
+        syncMap();
+      };
+
+      // Mapa: constrói o Google Maps só após consentimento (LGPD) — click-to-load.
+      const mapEl = document.getElementById('map') as HTMLElement | null;
+      if (mapEl?.dataset.key) {
+        const key = mapEl.dataset.key;
+        const buildMap = () => {
+          mapEl.textContent = 'Carregando mapa…';
+          loadMaps(key).then(() => {
+            const g = (window as any).google;
+            mapEl.textContent = '';
+            gmap = new g.maps.Map(mapEl, {
+              center: { lat: -25.0, lng: -50.5 }, zoom: 7,
+              mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
+            });
+            const info = new g.maps.InfoWindow();
+            markers = cards.map((card) => {
+              const lat = parseFloat(card.dataset.lat || '');
+              const lng = parseFloat(card.dataset.lng || '');
+              if (!isFinite(lat) || !isFinite(lng)) return null;
+              // ponytail: google.maps.Marker (sem AdvancedMarkerElement) → não precisa de mapId. Migrar se Google remover.
+              const marker = new g.maps.Marker({ position: { lat, lng }, title: card.dataset.title });
+              marker.addListener('click', () => {
+                info.setContent(
+                  `<div style="font:400 14px/1.35 system-ui,sans-serif;color:#484848"><strong style="color:#01437D">${card.dataset.title || ''}</strong><br>${card.dataset.city || ''}</div>`,
+                );
+                info.open({ anchor: marker, map: gmap });
+              });
+              return { card, marker };
+            }).filter(Boolean) as Array<{ card: HTMLElement; marker: any }>;
+            syncMap();
+          }).catch(() => {
+            mapEl.textContent = 'Não foi possível carregar o mapa.';
+          });
+        };
+
+        const cc = (window as any).condorConsent;
+        if (cc?.categoria('mapas')) {
+          buildMap(); // já consentido (contextual ou "Aceitar todos")
+        } else {
+          // Placeholder: nenhum cookie do Google até o clique explícito.
+          mapEl.classList.remove('grid');
+          mapEl.innerHTML =
+            '<div class="h-full grid place-items-center text-center p-6"><div>' +
+            '<p class="text-muted text-sm max-w-[42ch] mx-auto">Este mapa é fornecido pelo Google Maps, que pode definir cookies. Carregue-o para ver as lojas no mapa.</p>' +
+            '<button type="button" data-load-map class="mt-4 font-display font-semibold text-sm px-5 py-2.5 rounded-full bg-navy text-white hover:bg-navy/90 transition-colors">Carregar mapa</button>' +
+            '</div></div>';
+          mapEl.querySelector('[data-load-map]')?.addEventListener('click', () => {
+            const o = cc?.get() || {};
+            o.mapas = true;
+            cc?.set(o); // lembra a escolha, sem marcar o banner como decidido
+            buildMap();
+          });
+        }
+      }
+
+      q.addEventListener('input', apply);
+      cidade.addEventListener('change', apply);
+      clear.addEventListener('click', () => {
+        q.value = '';
+        cidade.value = '';
+        apply();
+      });
+    };
+    document.addEventListener('astro:page-load', setup);
+  </script>
+</BaseLayout>

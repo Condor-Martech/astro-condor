@@ -1,0 +1,99 @@
+---
+import { assetUrl } from '../lib/directus';
+import type { HeroSlide } from '../lib/types';
+
+interface Props {
+  slides: HeroSlide[];
+}
+const { slides } = Astro.props;
+const multi = slides.length > 1;
+---
+
+{slides.length > 0 && (
+  <section class="hero-slider relative overflow-hidden bg-navy mb-12" aria-roledescription="carrossel" aria-label="Banners em destaque">
+    <div class="relative aspect-[1920/366]">
+      {slides.map((s, i) => {
+        const desktop = assetUrl(s.image_desktop, 'width=1920&format=webp&quality=82');
+        const mobile = assetUrl(s.image_mobile ?? s.image_desktop, 'width=1080&format=webp&quality=82');
+        const img = desktop && (
+          <picture>
+            {mobile && <source media="(max-width: 639px)" srcset={mobile} />}
+            <img src={desktop} alt={s.title ?? 'Destaque Condor'} width="1920" height="366"
+                 class="w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" fetchpriority={i === 0 ? 'high' : 'auto'} />
+          </picture>
+        );
+        return (
+          <div class="slide absolute inset-0" data-slide={i} data-active={i === 0 ? '' : undefined}
+               role="group" aria-roledescription="slide" aria-label={`${i + 1} de ${slides.length}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+            {s.url ? <a href={s.url} class="block w-full h-full" aria-label={s.title ?? undefined}>{img}</a> : img}
+          </div>
+        );
+      })}
+    </div>
+
+    {multi && (
+      <>
+        <button class="hs-prev absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-10 hidden sm:grid place-items-center w-11 h-11 rounded-full bg-black/30 text-white text-2xl hover:bg-black/55 transition-colors" aria-label="Banner anterior">‹</button>
+        <button class="hs-next absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-10 hidden sm:grid place-items-center w-11 h-11 rounded-full bg-black/30 text-white text-2xl hover:bg-black/55 transition-colors" aria-label="Próximo banner">›</button>
+        <div class="absolute left-1/2 -translate-x-1/2 bottom-4 flex gap-2 z-10">
+          {slides.map((_, i) => <button class="hs-dot" data-dot={i} data-active={i === 0 ? '' : undefined} aria-label={`Ir ao banner ${i + 1}`}></button>)}
+        </div>
+      </>
+    )}
+  </section>
+)}
+
+<style>
+  .slide { opacity: 0; transition: opacity .7s ease; }
+  .slide[data-active] { opacity: 1; }
+
+  .hs-dot {
+    width: .625rem; height: .625rem; border-radius: 9999px;
+    background: rgba(255, 255, 255, .5); transition: width .3s ease, background .3s ease;
+  }
+  .hs-dot[data-active] { width: 1.5rem; background: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: none; }
+    .hs-dot { transition: none; }
+  }
+</style>
+
+<script>
+  // Carrossel de banners: crossfade + autoplay + dots + setas. Rebind pós View Transitions.
+  const setupHeroSlider = () => {
+    document.querySelectorAll<HTMLElement>('.hero-slider').forEach((root) => {
+      if (root.dataset.bound) return;
+      root.dataset.bound = '1';
+
+      const slides = Array.from(root.querySelectorAll<HTMLElement>('.slide'));
+      const dots = Array.from(root.querySelectorAll<HTMLElement>('.hs-dot'));
+      if (slides.length < 2) return;
+
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let idx = Math.max(0, slides.findIndex((s) => s.hasAttribute('data-active')));
+      let timer: ReturnType<typeof setInterval> | null = null;
+
+      const render = () => {
+        slides.forEach((s, i) => {
+          s.toggleAttribute('data-active', i === idx);
+          s.setAttribute('aria-hidden', String(i !== idx));
+        });
+        dots.forEach((d, i) => d.toggleAttribute('data-active', i === idx));
+      };
+      const go = (n: number) => { idx = (n + slides.length) % slides.length; render(); };
+      const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
+      const play = () => { if (reduce) return; stop(); timer = setInterval(() => go(idx + 1), 5000); };
+
+      root.querySelector('.hs-next')?.addEventListener('click', () => { go(idx + 1); play(); });
+      root.querySelector('.hs-prev')?.addEventListener('click', () => { go(idx - 1); play(); });
+      dots.forEach((d, i) => d.addEventListener('click', () => { go(i); play(); }));
+      root.addEventListener('mouseenter', stop);
+      root.addEventListener('mouseleave', play);
+
+      render();
+      play();
+    });
+  };
+  document.addEventListener('astro:page-load', setupHeroSlider);
+</script>

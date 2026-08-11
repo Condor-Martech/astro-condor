@@ -1,0 +1,174 @@
+---
+import { getMenu, getRedesSociais, getGlobal, assetUrl } from '../lib/directus';
+import SocialIcon from './SocialIcon.astro';
+
+const [nav, redes, global] = await Promise.all([getMenu('header'), getRedesSociais(), getGlobal()]);
+// Logo do CMS (singleton global). O wordmark tem pastilha branca → lê bem sobre o navy.
+const logoUrl = assetUrl(global?.logo);
+const path = Astro.url.pathname;
+const isActive = (url: string | null) => !!url && (url === path || (url !== '/' && path.startsWith(url)));
+
+// Faixa de anúncio no topo (singleton global). Fina, some ao rolar (header é sticky).
+const topbarOn = global?.topbar_ativo && global?.topbar_texto;
+const topbarExt = !!global?.topbar_url?.startsWith('http');
+const TopbarTag = global?.topbar_url ? 'a' : 'div';
+---
+
+{topbarOn && (
+  <TopbarTag
+    href={global.topbar_url ?? undefined}
+    target={global.topbar_url ? (topbarExt ? '_blank' : '_self') : undefined}
+    rel={topbarExt ? 'noopener' : undefined}
+    class="block text-center text-[.78rem] md:text-[.85rem] font-display font-semibold px-4 py-1.5 hover:opacity-90 transition-opacity"
+    style={`background:${global.topbar_cor_fundo || '#c01100'};color:${global.topbar_cor_texto || '#ffffff'}`}
+  >
+    <span>{global.topbar_texto}</span>
+    {global.topbar_url && <span aria-hidden="true" class="ml-1.5">→</span>}
+  </TopbarTag>
+)}
+
+<!-- Header (barra primary/navy) -->
+<header class="sticky top-0 z-40 border-b border-white/10 bg-navy text-white">
+  <div class="mx-auto max-w-[1200px] px-6 h-[70px] flex items-center gap-6">
+    <a href="/" class="flex items-center gap-2.5 font-display font-extrabold text-2xl tracking-tight text-white" transition:name="brand" aria-label="Condor — página inicial">
+      {logoUrl ? (
+        <img src={logoUrl} alt="Condor" height="40" class="h-10 w-auto" />
+      ) : (
+        <>
+          <span class="grid place-items-center w-[34px] h-[34px] rounded-[9px] text-white bg-gradient-to-br from-navy to-red">C</span>
+          Condor
+        </>
+      )}
+    </a>
+
+    <nav class="hidden lg:flex gap-1 ml-auto">
+      {nav.map((item) => (
+        <div class="relative group">
+          <a href={item.url ?? '#'}
+             class:list={['font-display font-semibold text-[.93rem] px-3 py-2 rounded-lg hover:bg-white/10', isActive(item.url) && 'bg-white/10']}>
+            {item.label}
+          </a>
+          {item.children && item.children.length > 0 && (
+            <div class="absolute left-0 top-full pt-1 hidden group-hover:block group-focus-within:block min-w-[200px]">
+              <div class="rounded-xl border border-line bg-surface text-ink shadow-lg py-2">
+                {item.children.map((c) => (
+                  <a href={c.url ?? '#'} target={c.target ?? '_self'}
+                     class="block px-4 py-2 text-sm hover:bg-surface-2">{c.label}</a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </nav>
+
+    <a href="https://www.condor.com.br" target="_blank" class="ml-auto lg:ml-0 inline-flex items-center font-display font-bold text-[.95rem] px-4 sm:px-5 py-2.5 rounded-full text-white bg-red hover:bg-red-2 transition-transform hover:-translate-y-0.5">
+      Condor em casa
+    </a>
+
+    <!-- Hambúrguer (mobile) -->
+    <button id="menuBtn" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileNav"
+            class="lg:hidden grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Drawer mobile -->
+<div id="mobileNav" class="lg:hidden fixed inset-0 z-50 invisible" aria-hidden="true">
+  <div id="menuBackdrop" class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300 motion-reduce:transition-none"></div>
+  <aside class="absolute right-0 top-0 h-full w-[86%] max-w-[360px] bg-surface shadow-2xl translate-x-full transition-transform duration-300 motion-reduce:transition-none flex flex-col">
+    <div class="flex items-center justify-between h-[70px] px-5 border-b border-line flex-none">
+      <span class="font-display font-extrabold text-navy text-xl">Menu</span>
+      <button id="menuClose" type="button" aria-label="Fechar menu" class="grid place-items-center w-10 h-10 rounded-lg text-ink hover:bg-surface-2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto px-4 py-2">
+      {nav.map((item) => (
+        item.children && item.children.length > 0 ? (
+          <details class="group border-b border-line">
+            <summary class="flex items-center justify-between py-3.5 font-display font-semibold cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              {item.label}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-muted transition-transform group-open:rotate-180"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="flex flex-col pb-2">
+              {item.url && <a href={item.url} class="py-2 pl-3 text-sm text-muted hover:text-navy">Ver {item.label}</a>}
+              {item.children.map((c) => (
+                <a href={c.url ?? '#'} target={c.target ?? '_self'} class="py-2 pl-3 text-sm text-muted hover:text-navy">{c.label}</a>
+              ))}
+            </div>
+          </details>
+        ) : (
+          <a href={item.url ?? '#'}
+             class:list={['block py-3.5 font-display font-semibold border-b border-line', isActive(item.url) && 'text-navy']}>
+            {item.label}
+          </a>
+        )
+      ))}
+    </nav>
+
+    <div class="p-4 border-t border-line flex-none">
+      <a href="/clube" class="block text-center font-display font-bold py-3 rounded-full bg-red text-white hover:bg-red-2">Clube Condor</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+  let keydownBound = false;
+  const setupMobileNav = () => {
+    const btn = document.getElementById('menuBtn');
+    const panel = document.getElementById('mobileNav');
+    if (!btn || !panel || (btn as HTMLElement).dataset.bound) return;
+    (btn as HTMLElement).dataset.bound = '1';
+
+    const backdrop = panel.querySelector('#menuBackdrop') as HTMLElement;
+    const aside = panel.querySelector('aside') as HTMLElement;
+    const closeBtn = document.getElementById('menuClose');
+    const isOpen = () => !panel.classList.contains('invisible');
+
+    const open = () => {
+      panel.classList.remove('invisible');
+      panel.setAttribute('aria-hidden', 'false');
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => {
+        backdrop.classList.replace('opacity-0', 'opacity-100');
+        aside.classList.replace('translate-x-full', 'translate-x-0');
+      });
+      (closeBtn as HTMLElement)?.focus();
+    };
+
+    const close = () => {
+      backdrop.classList.replace('opacity-100', 'opacity-0');
+      aside.classList.replace('translate-x-0', 'translate-x-full');
+      btn.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        panel.classList.add('invisible');
+      } else {
+        const done = () => { panel.classList.add('invisible'); aside.removeEventListener('transitionend', done); };
+        aside.addEventListener('transitionend', done);
+      }
+      (btn as HTMLElement).focus();
+    };
+
+    btn.addEventListener('click', open);
+    closeBtn?.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+
+    if (!keydownBound) {
+      keydownBound = true;
+      document.addEventListener('keydown', (e) => {
+        const p = document.getElementById('mobileNav');
+        if (e.key === 'Escape' && p && !p.classList.contains('invisible')) {
+          (document.getElementById('menuClose') as HTMLElement)?.click();
+        }
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', setupMobileNav);
+</script>

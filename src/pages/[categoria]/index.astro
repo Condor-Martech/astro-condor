@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PageCard from '../../components/PageCard.astro';
+import { getPages } from '../../lib/directus';
+import { labelCategoria, descricaoCategoria } from '../../lib/format';
+import type { Page } from '../../lib/types';
+
+export const getStaticPaths = (async () => {
+  const pages = await getPages();
+  // 'institucional' tem hub dedicado em /institucional/index.astro → excluído aqui.
+  const cats = [...new Set(pages.map((p) => p.categoria).filter(Boolean))].filter(
+    (c) => c !== 'institucional',
+  ) as string[];
+  return cats.map((categoria) => ({
+    params: { categoria },
+    props: { categoria, pages: pages.filter((p) => p.categoria === categoria) },
+  }));
+}) satisfies GetStaticPaths;
+
+const { categoria, pages } = Astro.props as { categoria: string; pages: Page[] };
+const titulo = labelCategoria(categoria);
+const descricao = descricaoCategoria(categoria);
+---
+
+<BaseLayout title={`${titulo} — Condor`} description={descricao || `Conteúdo institucional da Rede Condor — ${titulo}.`}>
+  <Header />
+
+  <section class="bg-navy text-white py-14 md:py-20">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <a href="/institucional" class="text-white/70 hover:text-white text-sm font-display tracking-wide uppercase">← Institucional</a>
+      <h1 class="text-3xl md:text-5xl font-extrabold mt-3">{titulo}</h1>
+      {descricao && <p class="text-white/75 text-lg mt-4 max-w-2xl">{descricao}</p>}
+    </div>
+  </section>
+
+  <section class="py-12">
+    <div class="mx-auto max-w-[1200px] px-6">
+      {pages.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {pages.map((p) => <PageCard page={p} />)}
+        </div>
+      ) : (
+        <p class="text-muted text-center py-16">Sem conteúdo nesta seção.</p>
+      )}
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

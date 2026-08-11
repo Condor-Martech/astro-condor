@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getLojas, assetUrl } from '../../lib/directus';
+import { splitCsv } from '../../lib/types';
+import type { Loja } from '../../lib/types';
+
+export async function getStaticPaths() {
+  const lojas = await getLojas();
+  return lojas.map((loja) => ({ params: { slug: loja.slug }, props: { loja } }));
+}
+
+interface Props { loja: Loja; }
+const { loja } = Astro.props;
+const setores = splitCsv(loja.setores);
+const servicos = splitCsv(loja.servicos);
+const img = assetUrl(loja.image, 'width=1200&height=600&fit=cover');
+---
+
+<BaseLayout title={`${loja.nome} — Condor`} description={`Condor ${loja.cidade ?? ''}: horários, setores e serviços da loja ${loja.nome}.`}>
+  <Header />
+
+  <section class="bg-navy text-white py-10">
+    <div class="mx-auto max-w-[1000px] px-6">
+      <a href="/nossas-lojas" class="text-white/70 hover:text-white text-sm">← Nossas Lojas</a>
+      <h1 class="text-3xl md:text-5xl font-extrabold mt-3">{loja.nome}</h1>
+      {loja.cidade && <p class="text-white/80 mt-2 flex items-center gap-1.5">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path d="M12 21s-7-6-7-11a7 7 0 1114 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        {loja.cidade}
+      </p>}
+    </div>
+  </section>
+
+  <section class="py-10">
+    <div class="mx-auto max-w-[1000px] px-6 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+      <div class="flex flex-col gap-8">
+        {img && (
+          <img src={img} alt={loja.nome} width="1200" height="600"
+               class="w-full aspect-[2/1] object-cover rounded-card border border-line" />
+        )}
+
+        {loja.horarios && (
+          <div>
+            <h2 class="font-display text-xl font-bold mb-3">Horário de funcionamento</h2>
+            <div class="text-ink/90 leading-relaxed [&_strong]:font-semibold [&>div]:flex [&>div]:justify-between [&>div]:border-b [&>div]:border-line [&>div]:py-1.5 max-w-md" set:html={loja.horarios} />
+          </div>
+        )}
+
+        {setores.length > 0 && (
+          <div>
+            <h2 class="font-display text-xl font-bold mb-3">Setores</h2>
+            <div class="flex flex-wrap gap-2">
+              {setores.map((s) => <span class="text-sm bg-surface-2 text-ink/80 px-3 py-1 rounded-full">{s}</span>)}
+            </div>
+          </div>
+        )}
+
+        {servicos.length > 0 && (
+          <div>
+            <h2 class="font-display text-xl font-bold mb-3">Serviços</h2>
+            <div class="flex flex-wrap gap-2">
+              {servicos.map((s) => <span class="text-sm border border-line px-3 py-1 rounded-full">{s}</span>)}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <aside class="lg:sticky lg:top-24 h-fit flex flex-col gap-4 bg-surface border border-line rounded-card p-6 shadow-sm">
+        {loja.telefone && (
+          <div>
+            <div class="text-[.72rem] font-display font-bold uppercase tracking-wide text-muted">Telefone</div>
+            <a href={`tel:${loja.telefone.replace(/\s/g, '')}`} class="text-lg font-semibold text-navy">{loja.telefone}</a>
+          </div>
+        )}
+        {loja.link_maps && (
+          <a href={loja.link_maps} target="_blank" rel="noopener"
+             data-track="loja_como_chegar" data-track-loja={loja.nome} data-track-cidade={loja.cidade ?? ''}
+             class="inline-flex items-center justify-center gap-2 font-display font-bold px-5 py-3 rounded-full bg-red text-white hover:bg-red-2 transition-transform hover:-translate-y-0.5">
+            📍 Ver no mapa
+          </a>
+        )}
+        {(loja.latitude && loja.longitude) && (
+          <p class="text-xs text-muted">Lat {loja.latitude} · Lng {loja.longitude}</p>
+        )}
+      </aside>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

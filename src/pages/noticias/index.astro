@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import NoticiaCard from '../../components/NoticiaCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import { getAllNoticias } from '../../lib/directus';
+
+const PAGE_SIZE = 12;
+const all = await getAllNoticias();
+const items = all.slice(0, PAGE_SIZE);
+const last = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+---
+
+<BaseLayout title="Notícias — Condor" description="Fique por dentro das novidades da Rede Condor.">
+  <Header />
+
+  <section class="bg-navy text-white py-12">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <span class="font-display text-[.72rem] font-bold tracking-[.14em] uppercase text-white/80">Fique por dentro</span>
+      <h1 class="text-3xl md:text-5xl font-extrabold mt-3">Notícias</h1>
+      <p class="text-white/80 mt-2">{all.length} publicações da Rede Condor.</p>
+    </div>
+  </section>
+
+  <section class="py-12">
+    <div class="mx-auto max-w-[1200px] px-6">
+      {items.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {items.map((n) => <NoticiaCard noticia={n} />)}
+        </div>
+      ) : (
+        <p class="text-muted text-center py-16">Sem notícias no momento.</p>
+      )}
+      <Pagination current={1} last={last} basePath="/noticias" />
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,50 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getAllNoticiasFull, assetUrl } from '../../lib/directus';
+import { formatDate } from '../../lib/format';
+import type { Noticia } from '../../lib/types';
+
+export const getStaticPaths = (async () => {
+  const noticias = await getAllNoticiasFull();
+  return noticias.map((noticia) => ({ params: { slug: noticia.slug }, props: { noticia } }));
+}) satisfies GetStaticPaths;
+
+const { noticia } = Astro.props as { noticia: Noticia };
+const img = assetUrl(noticia.image, 'width=1600&height=800&fit=cover');
+const ogImg = assetUrl(noticia.image, 'width=1200&height=630&fit=cover');
+const data = formatDate(noticia.data_publicacao);
+---
+
+<BaseLayout title={`${noticia.titulo} — Condor`} description={noticia.resumo ?? undefined} image={ogImg}>
+  <Header />
+
+  <article>
+    <header class="bg-navy text-white py-12">
+      <div class="mx-auto max-w-[820px] px-6">
+        <a href="/noticias" class="text-white/70 hover:text-white text-sm">← Notícias</a>
+        {data && <p class="text-white/70 text-sm mt-4 font-display tracking-wide uppercase">{data}</p>}
+        <h1 class="text-3xl md:text-4xl font-extrabold mt-2 leading-tight">{noticia.titulo}</h1>
+        {noticia.resumo && <p class="text-lg text-white/85 mt-4">{noticia.resumo}</p>}
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-[820px] px-6 py-10">
+      {img && (
+        <img src={img} alt={noticia.titulo} width="1600" height="800"
+             class="w-full aspect-[2/1] object-cover rounded-card border border-line mb-10" />
+      )}
+      {noticia.content
+        ? <div class="prose-condor" set:html={noticia.content} />
+        : <p class="text-muted">Conteúdo indisponível.</p>}
+
+      <div class="mt-12 pt-8 border-t border-line">
+        <a href="/noticias" class="inline-flex items-center font-display font-bold px-5 py-2.5 rounded-full border border-line hover:border-navy hover:bg-surface-2 transition-colors">← Todas as notícias</a>
+      </div>
+    </div>
+  </article>
+
+  <Footer />
+</BaseLayout>

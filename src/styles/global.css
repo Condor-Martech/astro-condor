@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+/* Tokens semânticos → utilities do Tailwind (bg-bg, text-ink, font-display, …).
+   `inline` faz as utilities referenciarem as CSS vars vivas → troca de tema reativa. */
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-navy: var(--c-navy);
+  --color-navy-ink: var(--c-navy-ink);
+  --color-red: var(--c-red);
+  --color-red-2: var(--c-red-2);
+
+  --font-display: "Montserrat", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+
+  --radius-card: 14px;
+}
+
+/* Paleta única (light) — verificada no CSS real do site. Sem dark mode. */
+:root {
+  --c-bg: #f4f6f9;
+  --c-surface: #ffffff;
+  --c-surface-2: #eef2f7;
+  --c-ink: #17222e;
+  --c-muted: #54595f;
+  --c-line: #e1e5eb;
+  --c-navy: #01437d;
+  --c-navy-ink: #ffffff;
+  --c-red: #c01100;
+  --c-red-2: #d10404;
+}
+
+@layer base {
+  body { background: var(--c-bg); color: var(--c-ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { font-family: var(--font-display); text-wrap: balance; }
+  :focus-visible { outline: 3px solid color-mix(in oklab, var(--c-navy) 45%, transparent); outline-offset: 2px; }
+}
+
+/* Conteúdo HTML vindo do Directus (notícias, pages). Tipografia legível sem plugin. */
+.prose-condor { color: var(--c-ink); line-height: 1.75; max-width: 68ch; }
+.prose-condor > * + * { margin-top: 1.1rem; }
+.prose-condor h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-top: 2.2rem; }
+.prose-condor h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-top: 1.8rem; }
+.prose-condor h4 { font-family: var(--font-display); font-size: 1.08rem; font-weight: 700; color: var(--c-navy); margin-top: 1.6rem; }
+.prose-condor a { color: var(--c-navy); text-decoration: underline; text-underline-offset: 2px; }
+.prose-condor a:hover { color: var(--c-red); }
+.prose-condor img { border-radius: 12px; margin-block: 1.5rem; }
+.prose-condor ul, .prose-condor ol { padding-left: 1.4rem; }
+.prose-condor ul { list-style: disc; }
+.prose-condor ol { list-style: decimal; }
+.prose-condor li + li { margin-top: .4rem; }
+.prose-condor blockquote { border-left: 3px solid var(--c-red); padding-left: 1rem; color: var(--c-muted); font-style: italic; }
+.prose-condor strong { font-weight: 700; }
+
+/* Reveal on scroll — IntersectionObserver adiciona .is-visible. Respeita reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+}

@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getPages, getPublicacoes, assetUrl } from '../../lib/directus';
+import { labelCategoria } from '../../lib/format';
+
+const [pages, publicacoes] = await Promise.all([getPages(), getPublicacoes()]);
+
+// Ordem editorial das categorias; qualquer outra presente é anexada ao final.
+const ORDEM = ['institucional', 'servicos-financeiros', 'acoes-condor', 'para-sua-empresa'];
+
+const visiveis = pages.filter((p) => p.exibir_no_hub !== false && p.categoria);
+const cats = [...new Set(visiveis.map((p) => p.categoria))] as string[];
+const ordenadas = [
+  ...ORDEM.filter((c) => cats.includes(c)),
+  ...cats.filter((c) => !ORDEM.includes(c)),
+];
+const grupos = ordenadas.map((cat) => ({
+  cat,
+  label: labelCategoria(cat),
+  pages: visiveis.filter((p) => p.categoria === cat),
+}));
+
+const livros = publicacoes.filter((p) => p.tipo === 'livro');
+const documentos = publicacoes.filter((p) => p.tipo === 'relatorio' || p.tipo === 'link');
+---
+
+<BaseLayout title="Institucional — Condor" description="Conheça a Rede Condor: nossa história, estrutura, ações, serviços financeiros e publicações institucionais.">
+  <Header />
+
+  <section class="bg-navy text-white py-14 md:py-20">
+    <div class="mx-auto max-w-[1100px] px-6">
+      <span class="font-display text-[.72rem] font-bold tracking-[.16em] uppercase text-white/60">Rede Condor</span>
+      <h1 class="text-4xl md:text-6xl font-extrabold mt-3">Institucional</h1>
+      <p class="text-white/75 text-lg mt-4 max-w-2xl">Tudo sobre a Condor em um só lugar: nossa história, estrutura, ações, serviços financeiros e publicações.</p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1100px] px-6 py-14 md:py-16">
+    <!-- Diretório: categorias como listas de links (não cards) -->
+    <nav class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12 reveal">
+      {grupos.map((g) => (
+        <div>
+          <h2 class="font-display text-[.78rem] font-bold uppercase tracking-[.12em] text-red pb-3 mb-1 border-b-2 border-line">{g.label}</h2>
+          <ul>
+            {g.pages.map((p) => (
+              <li>
+                <a href={`/${p.categoria}/${p.slug}`}
+                   class="group flex items-center justify-between gap-2 py-2.5 border-b border-line/70 text-[.98rem] hover:text-navy transition-colors">
+                  <span>{p.titulo}</span>
+                  <span class="text-line transition-all group-hover:text-navy group-hover:translate-x-0.5" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </nav>
+
+    {livros.length > 0 && (
+      <section class="mt-16 pt-14 border-t border-line reveal">
+        <h2 class="font-display text-[.78rem] font-bold uppercase tracking-[.12em] text-red mb-7">Livros</h2>
+        <div class="flex flex-wrap gap-6 md:gap-8">
+          {livros.map((l) => {
+            const capa = assetUrl(l.imagem, 'width=400&height=533&fit=cover');
+            const pdf = l.arquivo ? assetUrl(l.arquivo) : l.url;
+            return (
+              <a href={pdf ?? '#'} target="_blank" rel="noopener"
+                 class="group grow basis-[calc(50%-0.75rem)] sm:basis-0 min-w-0">
+                <div class="aspect-[3/4] rounded-xl overflow-hidden border border-line shadow-sm bg-surface-2">
+                  {capa ? (
+                    <img src={capa} alt={l.titulo} loading="lazy" width="400" height="533"
+                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  ) : (
+                    <div class="w-full h-full grid place-items-center text-center p-4 text-white/90 font-display font-bold leading-tight bg-gradient-to-br from-navy to-red">{l.titulo}</div>
+                  )}
+                </div>
+                <p class="font-display font-bold text-[.95rem] leading-tight mt-3 line-clamp-2 group-hover:text-navy transition-colors">{l.titulo}</p>
+                {pdf && <span class="inline-flex items-center gap-1 text-[.82rem] text-red mt-1">Baixar PDF <span aria-hidden="true" class="transition-transform group-hover:translate-y-0.5">↓</span></span>}
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    {documentos.length > 0 && (
+      <section class="mt-16 pt-14 border-t border-line reveal">
+        <h2 class="font-display text-[.78rem] font-bold uppercase tracking-[.12em] text-red mb-5">Documentos e Links</h2>
+        <ul class="grid sm:grid-cols-2 gap-x-12">
+          {documentos.map((d) => {
+            const destino = d.url ?? (d.arquivo ? assetUrl(d.arquivo) : null);
+            if (!destino) return null;
+            const target = d.target ?? '_blank';
+            const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
+            const download = Boolean(d.arquivo && !d.url);
+            const icone = download ? '↓' : d.externo !== false ? '↗' : '→';
+            return (
+              <li>
+                <a href={destino} target={target} rel={rel}
+                   class="group flex items-center justify-between gap-3 py-3.5 border-b border-line hover:text-navy transition-colors">
+                  <span class="font-display font-semibold text-[.98rem]">{d.titulo}</span>
+                  <span class="flex-none text-line transition-all group-hover:text-navy group-hover:translate-x-0.5" aria-hidden="true">{icone}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    )}
+  </div>
+
+  <Footer />
+</BaseLayout>

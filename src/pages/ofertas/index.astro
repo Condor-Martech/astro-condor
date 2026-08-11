@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCidadesFull } from '../../lib/directus';
+
+const cidades = await getCidadesFull();
+
+// Agrupa por região (para os optgroups e o fallback sem-JS). O usuário escolhe CIDADE.
+const grupos = new Map<string, { slug: string; nome: string }[]>();
+for (const c of [...cidades].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))) {
+  const reg = c.regiao?.nome ?? 'Outras';
+  if (!grupos.has(reg)) grupos.set(reg, []);
+  grupos.get(reg)!.push({ slug: c.slug, nome: c.nome });
+}
+const regioesOrdenadas = [...grupos.keys()].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+const slugs = cidades.map((c) => c.slug);
+---
+
+<BaseLayout
+  title="Ofertas Condor — Selecione sua cidade"
+  description="Escolha sua cidade e confira os tabloides e ofertas da semana da Rede Condor."
+>
+  {/* Retorno rápido: se já tem cidade salva (e não veio de "trocar"), vai direto — antes de pintar. */}
+  <script is:inline define:vars={{ slugs }}>
+    try {
+      const saved = localStorage.getItem('condor_cidade');
+      const trocar = new URLSearchParams(location.search).has('trocar');
+      if (saved && !trocar && slugs.includes(saved)) location.replace('/ofertas/cidade/' + saved);
+    } catch (e) { /* storage indisponível → mostra o gate */ }
+  </script>
+
+  <Header />
+
+  <!-- GATE: backdrop escuro imersivo + seletor de cidade -->
+  <div class="tv-gate text-white">
+    <section class="relative grid place-items-center min-h-[82vh] px-6 py-16 text-center">
+      <div class="relative max-w-[820px] mx-auto">
+        <span class="inline-flex items-center gap-2 font-display text-[.72rem] font-bold tracking-[.2em] uppercase text-white/60">
+          <span class="w-6 h-[3px] rounded bg-red"></span>Ofertas da semana<span class="w-6 h-[3px] rounded bg-red"></span>
+        </span>
+        <h1 class="text-4xl md:text-6xl font-extrabold mt-6 leading-[1.05]">Qual é a sua cidade?</h1>
+        <p class="text-white/60 text-lg mt-4 max-w-md mx-auto">Cada cidade tem seus tabloides e ofertas. <br>Escolha a sua, a gente lembra na próxima.</p>
+
+        <form class="mt-9 flex flex-col sm:flex-row gap-3 max-w-xl mx-auto" data-cidade-form>
+          <label class="sr-only" for="cidade-select">Cidade</label>
+          <select id="cidade-select" data-cidade-select
+                  class="cidade-select flex-1 h-14 pl-6 pr-14 appearance-none rounded-full bg-white text-ink font-display font-semibold text-base shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25">
+            <option value="" selected disabled>Escolha sua cidade…</option>
+            {regioesOrdenadas.map((reg) => (
+              <optgroup label={reg}>
+                {grupos.get(reg)!.map((c) => <option value={c.slug}>{c.nome}</option>)}
+              </optgroup>
+            ))}
+          </select>
+          <button type="submit"
+                  class="h-14 px-8 rounded-full bg-red hover:bg-red-2 text-white font-display font-bold text-base transition-colors shadow-2xl">
+            Ver ofertas
+          </button>
+        </form>
+        <!-- <p class="text-white/40 text-sm mt-4">{cidades.length} cidades atendidas · <a href="#todas" class="underline underline-offset-2 hover:text-white/70">ver todas</a></p> -->
+      </div>
+    </section>
+
+    <!-- Fallback sem-JS + navegação alternativa: todas as cidades como links, por região -->
+    <!-- <section id="todas" class="border-t border-white/10">
+      <div class="mx-auto max-w-[1200px] px-6 py-14 md:py-16">
+        {regioesOrdenadas.map((reg) => (
+          <div class="mb-10 reveal">
+            <h2 class="font-display text-[.78rem] font-bold uppercase tracking-[.16em] text-white/50 pb-3 mb-4 border-b border-white/10">{reg}</h2>
+            <ul class="flex flex-wrap gap-2.5">
+              {grupos.get(reg)!.map((c) => (
+                <li>
+                  <a href={`/ofertas/cidade/${c.slug}`} data-cidade-link
+                     class="inline-flex items-center gap-1.5 bg-white/[.06] border border-white/12 rounded-full px-4 py-2 text-[.95rem] font-display font-semibold text-white/85 transition-all hover:bg-white/12 hover:border-white/30 hover:-translate-y-0.5">
+                    {c.nome}<span class="text-white/40" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section> -->
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .tv-gate { background: #0a2038; }
+  .cidade-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2301437D' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.25rem center;
+    background-size: 1.15rem;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'condor_cidade';
+  const save = (slug: string) => { try { localStorage.setItem(STORAGE_KEY, slug); } catch {} };
+
+  // Salva a cidade ao clicar em qualquer link /ofertas/cidade/* (uma vez, delegado no document).
+  if (!(window as any).__condorCidadeSave) {
+    (window as any).__condorCidadeSave = true;
+    document.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest('a[data-cidade-link]') as HTMLAnchorElement | null;
+      if (a) save(a.getAttribute('href')!.split('/').pop()!);
+    });
+  }
+
+  const setupGate = () => {
+    // Redireção no client-side nav (View Transitions): se já tem cidade salva, vai direto.
+    if (location.pathname.replace(/\/$/, '') === '/ofertas') {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        const trocar = new URLSearchParams(location.search).has('trocar');
+        if (saved && !trocar) {
+          const opts = document.querySelectorAll<HTMLOptionElement>('#cidade-select option');
+          const valid = Array.from(opts).some((o) => o.value === saved);
+          if (valid) { location.assign('/ofertas/cidade/' + saved); return; }
+        }
+      } catch {}
+    }
+
+    document.querySelectorAll<HTMLFormElement>('[data-cidade-form]').forEach((form) => {
+      if (form.dataset.bound) return;
+      form.dataset.bound = '1';
+      const select = form.querySelector<HTMLSelectElement>('[data-cidade-select]');
+      if (!select) return;
+      const go = () => { if (select.value) { save(select.value); location.assign('/ofertas/cidade/' + select.value); } };
+      form.addEventListener('submit', (e) => { e.preventDefault(); go(); });
+    });
+  };
+  document.addEventListener('astro:page-load', setupGate);
+</script>

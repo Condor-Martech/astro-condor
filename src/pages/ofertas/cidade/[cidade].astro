@@ -1,0 +1,151 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import TabloideViewer from '../../../components/TabloideViewer.astro';
+import TabloideCard from '../../../components/TabloideCard.astro';
+import VideoRegiao from '../../../components/VideoRegiao.astro';
+import OfertasGrid from '../../../components/OfertasGrid.astro';
+import { getCidadesFull, getTabloides, getBanners, getCarroselOfertas, assetUrl } from '../../../lib/directus';
+import type { Cidade, Tabloide, Banner } from '../../../lib/types';
+
+export const getStaticPaths = (async () => {
+  const [cidades, tabloides, banners, carrossel] = await Promise.all([
+    getCidadesFull(), getTabloides(), getBanners('ofertas-cidade'), getCarroselOfertas(),
+  ]);
+  const banner = banners[0] ?? null; // mesmo banner p/ todas as cidades (1 fetch, sem N+1)
+  // 1 fetch de cada → filtra em memória por região da cidade (sem N+1).
+  return cidades.map((cidade) => ({
+    params: { cidade: cidade.slug },
+    props: {
+      cidade,
+      tabloides: tabloides.filter((t) => t.regiao && t.regiao === cidade.regiao?.id),
+      banner,
+      // aplaina imagens das campanhas vigentes da região (ordem = ordem no editor)
+      ofertasImgs: carrossel
+        .filter((c) => c.regiao && c.regiao === cidade.regiao?.id)
+        .flatMap((c) => (c.imagens ?? []).map((i) => i.directus_files_id))
+        .filter(Boolean),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { cidade, tabloides, banner, ofertasImgs } = Astro.props as { cidade: Cidade; tabloides: Tabloide[]; banner: Banner | null; ofertasImgs: string[] };
+const regiao = cidade.regiao;
+const BannerTag = banner?.url ? 'a' : 'div'; // vira link só se tiver url
+
+// video_url pode ser watch?v=, youtu.be, playlist (?list=) ou embed pronto.
+function toYouTubeEmbed(url: string | null): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    const list = u.searchParams.get('list');
+    if (list) return `https://www.youtube.com/embed/videoseries?list=${list}`;
+    if (u.hostname.includes('youtu.be')) return `https://www.youtube.com/embed/${u.pathname.slice(1)}`;
+    const v = u.searchParams.get('v');
+    if (v) return `https://www.youtube.com/embed/${v}`;
+  } catch { /* pode já ser um embed */ }
+  return url;
+}
+const videoEmbed = toYouTubeEmbed(regiao?.video_url ?? null);
+
+// Layout dos tabloides depende da quantidade:
+//   ≤2 → mesma linha do vídeo; 3-4 → uma linha; >4 → carrossel (vídeo abaixo).
+const n = tabloides.length;
+
+const DISCLAIMER =
+  'Todos os valores/preços apresentados nesta página são exclusivamente para referência da loja física. ' +
+  'Ofertas válidas nas datas indicadas em cada encarte ou enquanto durarem os estoques. ' +
+  'Imagens meramente ilustrativas.';
+---
+
+<BaseLayout
+  title={`Ofertas em ${cidade.nome} — Condor`}
+  description={`Confira os tabloides e ofertas da semana da Condor em ${cidade.nome}. Encartes válidos por tempo limitado.`}
+>
+  <Header />
+
+  <!-- CABEÇALHO: título + trocar cidade -->
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-[1200px] px-6 py-10 md:pb-6 md:pt-12 flex items-center justify-between gap-4 flex-wrap">
+      <h1 class="text-3xl md:text-4xl font-extrabold leading-[1.05] text-ink">
+        Ofertas em <span class="text-navy">{cidade.nome}</span>
+      </h1>
+      <a href="/ofertas?trocar=1" class="shrink-0 inline-flex items-center gap-1.5 text-red text-sm font-display font-semibold tracking-wide transition-colors">
+        <span aria-hidden="true">←</span> Trocar cidade
+      </a>
+    </div>
+  </section>
+
+  <!-- BANNER PROMOCIONAL (collection banners, slot 'ofertas-cidade') -->
+  {banner?.imagem && (
+    <section class="mx-auto max-w-[1200px] px-6 py-4 md:py-6">
+      <BannerTag
+        href={banner.url ?? undefined}
+        target={banner.url ? (banner.target ?? '_self') : undefined}
+        rel={banner.target === '_blank' ? 'noopener' : undefined}
+        class="block rounded-card overflow-hidden shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg reveal"
+      >
+        <picture>
+          {banner.imagem_mobile && (
+            <source media="(max-width: 640px)" srcset={assetUrl(banner.imagem_mobile, 'width=900&format=webp&quality=82')} />
+          )}
+          <img src={assetUrl(banner.imagem, 'width=1200&format=webp&quality=82')} alt={banner.alt}
+               loading="lazy" class="w-full h-auto" />
+        </picture>
+      </BannerTag>
+    </section>
+  )}
+
+  <!-- TABLOIDES + VÍDEO (layout depende da quantidade: ≤2 mesma linha do vídeo, 3-4 uma linha, >4 carrossel) -->
+  <section class="bg-surface-2 border-y border-line">
+    <div class="mx-auto max-w-[1200px] px-6 py-14 md:py-16">
+      {n <= 2 ? (
+        /* ≤2 → tabloides pequenos à esquerda, vídeo grande à direita */
+        <div class="flex flex-col lg:flex-row gap-8 items-start reveal">
+          <div class="flex flex-wrap gap-5 shrink-0">
+            {tabloides.map((t) => (
+              <div class="w-[184px] sm:w-[216px]"><TabloideCard t={t} /></div>
+            ))}
+          </div>
+          <div class="w-full lg:flex-1">
+            <VideoRegiao videoEmbed={videoEmbed} nome={regiao?.nome ?? cidade.nome} />
+          </div>
+        </div>
+      ) : (
+        /* >2 → tabloides em cima (linha ou carrossel), vídeo embaixo */
+        <>
+          {n <= 4 ? (
+            <div class:list={['grid grid-cols-1 sm:grid-cols-2 gap-8 reveal', n === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3']}>
+              {tabloides.map((t) => <TabloideCard t={t} />)}
+            </div>
+          ) : (
+            <div class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 reveal [scrollbar-width:thin]">
+              {tabloides.map((t) => (
+                <div class="min-w-[250px] max-w-[280px] shrink-0 snap-start">
+                  <TabloideCard t={t} />
+                </div>
+              ))}
+            </div>
+          )}
+          <div class="mt-12 md:mt-16">
+            <VideoRegiao videoEmbed={videoEmbed} nome={regiao?.nome ?? cidade.nome} />
+          </div>
+        </>
+      )}
+
+      {n === 0 && (
+        <p class="text-muted text-center pt-12">Nenhum encarte disponível para esta região no momento.</p>
+      )}
+
+      <p class="text-muted/80 text-xs leading-relaxed mt-10 max-w-3xl">{DISCLAIMER}</p>
+    </div>
+  </section>
+
+  <!-- GRILLA DE OFERTAS (carrosel_ofertas, por região) + lightbox nativo -->
+  <OfertasGrid imageIds={ofertasImgs} />
+
+  <TabloideViewer />
+  <Footer />
+</BaseLayout>

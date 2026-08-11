@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NoticiaCard from '../components/NoticiaCard.astro';
+import PostCard from '../components/PostCard.astro';
+import HeroSlider from '../components/HeroSlider.astro';
+import ClubeBanner from '../components/ClubeBanner.astro';
+import ModalHome from '../components/ModalHome.astro';
+import { getHeroSlides, getNoticias, getLojas, getCardsHome, getBanners, getModalHome, assetUrl } from '../lib/directus';
+import { getBlogPosts } from '../lib/blog';
+
+const [slides, noticias, lojas, cards, bannersMeio, posts, modal] = await Promise.all([
+  getHeroSlides(),
+  getNoticias({ limit: 4 }),
+  getLojas(),
+  getCardsHome(),
+  getBanners('home-meio'),
+  getBlogPosts(4),
+  getModalHome(),
+]);
+const bannerMeio = bannersMeio[0] ?? null; // 1º publicado desse slot (ordenado por sort)
+const BannerTag = bannerMeio?.url ? 'a' : 'div'; // vira link só se tiver url
+// Bloco statement (estilo hipermais): número + CTA único + mosaico de fotos de lojas.
+// Pool completo (só com foto) → o cliente sorteia 10 a cada refresh.
+const lojasPool = lojas
+  .filter((l) => l.image)
+  .map((l) => ({ nome: l.nome, slug: l.slug, cidade: l.cidade ?? '', img: assetUrl(l.image, 'width=800&height=600&fit=cover') }));
+const lojasIniciais = lojasPool.slice(0, 10); // fallback SSR (sem JS): mostra as 10 primeiras.
+
+// Cards promocionais (collection `card_home` no Directus). Imagem real como fundo;
+// sem imagem → fallback navy. Gradiente escuro por cima garante leitura do título.
+const promos = cards.map((c) => ({
+  t: c.title,
+  href: c.url ?? '#',
+  img: assetUrl(c.image, 'width=600&height=400&fit=cover'),
+}));
+---
+
+<BaseLayout title="Condor — A rede mais amada dos paranaenses">
+  <Header />
+
+  <!-- MODAL PROMOCIONAL (singleton modal_home) -->
+  <ModalHome modal={modal} />
+
+  <!-- BANNER SLIDES (hero_slides) -->
+  <HeroSlider slides={slides} />
+  <!-- CARDS PROMOCIONAIS (collection card_home) -->
+  {promos.length > 0 && (
+    <section class="mx-auto max-w-[1200px] px-6 md:py-8">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 reveal">
+        {promos.map((p) => {
+          const external = p.href.startsWith('http');
+          return (
+            <a href={p.href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}
+               class="group relative overflow-hidden rounded-card shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl min-h-[124px] md:min-h-[140px] bg-navy">
+              {p.img && (
+                <img src={p.img} alt={p.t} loading="lazy" width="600" height="400"
+                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              )}
+              <span class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" aria-hidden="true"></span>
+              <span class="relative z-10 flex h-full flex-col justify-end p-5 md:p-6 text-white">
+                <b class="font-display block text-base md:text-lg leading-tight">{p.t}</b>
+              </span>
+              <span class="absolute top-4 right-4 z-10 opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0 text-white" aria-hidden="true">→</span>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  <!-- CONDOR PERTO DE VOCÊ (statement de lojas — estilo hipermais) -->
+  <section class="py-16 md:py-8">
+    <div class="mx-auto max-w-[1200px] px-6">
+      {lojasPool.length > 0 ? (
+        <div class="grid md:grid-cols-2 md:h-[400px] rounded-card overflow-hidden shadow-lg reveal">
+          <!-- Carrossel de lojas (sorteio no cliente a cada refresh) -->
+          <div class="relative h-[240px] md:h-full bg-navy overflow-hidden">
+            <div id="loja-carousel" class="absolute inset-0">
+              {lojasIniciais.map((l, i) => (
+                <a href={`/nossas-lojas/${l.slug}`}
+                   class:list={['loja-slide absolute inset-0 transition-opacity duration-700 ease-out', i === 0 ? 'opacity-100' : 'opacity-0']}>
+                  <img src={l.img} alt={l.nome} loading={i === 0 ? 'eager' : 'lazy'} width="800" height="600"
+                       class="w-full h-full object-cover" />
+                  <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-5 pt-12">
+                    <b class="block font-display font-bold text-white text-lg leading-tight">{l.nome}</b>
+                    {l.cidade && <small class="text-white/80">{l.cidade}</small>}
+                  </span>
+                </a>
+              ))}
+            </div>
+            <button type="button" data-carousel-prev aria-label="Loja anterior"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-10 h-10 rounded-full bg-white/85 text-navy shadow-md hover:bg-white transition-colors">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <button type="button" data-carousel-next aria-label="Próxima loja"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-10 h-10 rounded-full bg-white/85 text-navy shadow-md hover:bg-white transition-colors">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+            <div data-carousel-dots class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2"></div>
+          </div>
+          <!-- Painel statement (navy + branco) -->
+          <div class="bg-navy text-white flex flex-col justify-center gap-3 p-8 md:p-12">
+            <span class="font-display text-[.72rem] font-bold tracking-[.16em] uppercase text-white/60">Paraná e Santa Catarina</span>
+            <p class="font-display font-extrabold leading-[.85] text-6xl md:text-7xl">
+              {lojas.length || 73}<span class="block text-2xl md:text-3xl mt-2 font-bold">lojas para te atender</span>
+            </p>
+            <p class="text-white/75 text-[.95rem] max-w-sm mt-1">A rede mais amada dos paranaenses, sempre pertinho de você. Encontre a Condor mais próxima e confira horários, serviços e como chegar.</p>
+            <a href="/nossas-lojas" class="mt-4 inline-flex w-fit items-center gap-2 font-display font-bold text-navy bg-white px-6 py-3 rounded-full shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg hover:bg-white/90">
+              Encontre a loja mais próxima
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <p class="text-muted">Configure o Directus (.env) para carregar as lojas.</p>
+      )}
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ pool: lojasPool }}>
+    // SSG estático → sorteia 10 lojas no cliente e roda o carrossel.
+    // Com <ClientRouter/> o inline não re-roda na navegação SPA → re-ata tudo em astro:page-load.
+    var carTimer;
+    function initLojaCarousel() {
+      clearInterval(carTimer);
+      const track = document.getElementById('loja-carousel');
+      if (!track || !pool.length) return;
+      const pick = [...pool].sort(() => Math.random() - 0.5).slice(0, 10); // ponytail: sort-shuffle, viés irrelevante p/ decoração
+      track.replaceChildren(...pick.map((l, i) => {
+        const a = document.createElement('a');
+        a.href = `/nossas-lojas/${l.slug}`;
+        a.className = `loja-slide absolute inset-0 transition-opacity duration-700 ease-out ${i === 0 ? 'opacity-100' : 'opacity-0'}`;
+        const img = document.createElement('img');
+        img.src = l.img; img.alt = l.nome; img.loading = i === 0 ? 'eager' : 'lazy'; img.width = 800; img.height = 600;
+        img.className = 'w-full h-full object-cover';
+        const cap = document.createElement('span');
+        cap.className = 'absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-5 pt-12';
+        cap.innerHTML = `<b class="block font-display font-bold text-white text-lg leading-tight"></b>`;
+        cap.firstChild.textContent = l.nome;
+        if (l.cidade) { const s = document.createElement('small'); s.className = 'text-white/80'; s.textContent = l.cidade; cap.append(s); }
+        a.append(img, cap);
+        return a;
+      }));
+
+      // Navegação: setas + dots (indicadores) + auto-rotação que reinicia ao interagir.
+      const slides = [...track.querySelectorAll('.loja-slide')];
+      const wrap = track.parentElement;
+      let cur = 0;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const syncDots = () => dots.forEach((d, i) => {
+        d.className = `h-2 rounded-full transition-all ${i === cur ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'}`;
+      });
+      const show = (i) => {
+        slides[cur].classList.replace('opacity-100', 'opacity-0');
+        cur = (i + slides.length) % slides.length;
+        slides[cur].classList.replace('opacity-0', 'opacity-100');
+        syncDots();
+      };
+      const start = () => { if (!reduce && slides.length > 1) carTimer = setInterval(() => show(cur + 1), 4000); };
+      const reset = () => { clearInterval(carTimer); start(); };
+      // Dots: um por slide, clicáveis.
+      const dots = slides.map((_, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', `Ir para loja ${i + 1}`);
+        b.addEventListener('click', () => { show(i); reset(); });
+        return b;
+      });
+      wrap.querySelector('[data-carousel-dots]').replaceChildren(...dots);
+      syncDots();
+      wrap.querySelector('[data-carousel-prev]').addEventListener('click', () => { show(cur - 1); reset(); });
+      wrap.querySelector('[data-carousel-next]').addEventListener('click', () => { show(cur + 1); reset(); });
+      start();
+    }
+    if (!window.__lojaCarousel) {
+      window.__lojaCarousel = true;
+      document.addEventListener('astro:page-load', initLojaCarousel);
+      document.addEventListener('astro:before-swap', () => clearInterval(carTimer));
+    }
+  </script>
+
+  <!-- CLUBE CONDOR -->
+  <ClubeBanner />
+  
+  <!-- BANNER PROMOCIONAL (collection banners, slot 'home-meio') -->
+  {bannerMeio?.imagem && (
+    <section class="mx-auto max-w-[1200px] px-6 py-4 md:py-6">
+      <BannerTag
+        href={bannerMeio.url ?? undefined}
+        target={bannerMeio.url ? (bannerMeio.target ?? '_self') : undefined}
+        rel={bannerMeio.target === '_blank' ? 'noopener' : undefined}
+        class="block rounded-card overflow-hidden shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg reveal"
+      >
+        <picture>
+          {bannerMeio.imagem_mobile && (
+            <source media="(max-width: 640px)" srcset={assetUrl(bannerMeio.imagem_mobile, 'width=900&format=webp&quality=82')} />
+          )}
+          <img src={assetUrl(bannerMeio.imagem, 'width=1200&format=webp&quality=82')} alt={bannerMeio.alt}
+               loading="lazy" class="w-full h-auto" />
+        </picture>
+      </BannerTag>
+    </section>
+  )}
+
+  <!-- BLOG CONDOR (notícias) -->
+  <section class="py-16 md:py-8 bg-surface-2">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="flex items-end justify-between gap-4 mb-8 reveal">
+        <div>
+          <span class="font-display text-[.72rem] font-bold tracking-[.14em] uppercase text-red">Fique por dentro</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold mt-2">Blog Condor</h2>
+        </div>
+        <a href="https://blog.condor.com.br/" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center font-display font-bold px-5 py-2.5 rounded-full border border-line hover:border-navy hover:bg-surface transition-colors">Ver todos</a>
+      </div>
+      {posts.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 reveal">
+          {posts.map((p) => <PostCard post={p} />)}
+        </div>
+      ) : noticias.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 reveal">
+          {noticias.map((n) => <NoticiaCard noticia={n} />)}
+        </div>
+      ) : (
+        <p class="text-muted">Sem notícias no momento.</p>
+      )}
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

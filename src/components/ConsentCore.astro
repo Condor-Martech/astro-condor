@@ -1,0 +1,62 @@
+---
+// Núcleo de consentimento LGPD — define window.condorConsent o mais cedo possível
+// (no <head>, ANTES de qualquer tag de terceiros). Assim GTM/Emarsys se registram
+// via .onConsent() e NUNCA carregam antes do opt-in. Registro em localStorage;
+// nenhum dado pessoal vai ao servidor.
+---
+<script is:inline>
+  (function () {
+    if (window.condorConsent) return;
+    var KEY = 'condor_consent';
+    var V = 1; // suba a versão ao mudar a política → o banner reaparece.
+    var subs = [];
+    function read() {
+      try {
+        var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+        return o && o.v === V ? o : null;
+      } catch (e) { return null; }
+    }
+    function write(o) {
+      o.v = V;
+      try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {}
+      subs.forEach(function (cb) { try { cb(o); } catch (e) {} });
+    }
+    window.condorConsent = {
+      get: read,
+      categoria: function (c) { var o = read(); return !!(o && o[c]); },
+      set: write,
+      onChange: function (cb) { subs.push(cb); },
+      onConsent: function (c, cb) {
+        if (window.condorConsent.categoria(c)) { cb(); return; }
+        subs.push(function (o) { if (o && o[c]) cb(); });
+      },
+      open: function () {}, // sobrescrito pela UI (CookieBanner).
+    };
+
+    // Ativa <template data-consent="cat"> só quando a categoria for consentida.
+    // Recria os <script> (inertes dentro de <template>) para que executem.
+    var reg = {}, done = {};
+    function activateGated() {
+      document.querySelectorAll('template[data-consent]').forEach(function (t) {
+        var cat = t.getAttribute('data-consent');
+        if (reg[cat]) return; // registra o gate desta categoria uma vez só
+        reg[cat] = 1;
+        window.condorConsent.onConsent(cat, function () {
+          if (done[cat]) return;
+          done[cat] = 1;
+          var tpl = document.querySelector('template[data-consent="' + cat + '"]');
+          if (!tpl) return;
+          var frag = tpl.content.cloneNode(true);
+          frag.querySelectorAll('script').forEach(function (old) {
+            var s = document.createElement('script');
+            for (var a = 0; a < old.attributes.length; a++) s.setAttribute(old.attributes[a].name, old.attributes[a].value);
+            s.textContent = old.textContent;
+            old.parentNode.replaceChild(s, old);
+          });
+          (tpl.parentNode || document.head).insertBefore(frag, tpl);
+        });
+      });
+    }
+    document.addEventListener('astro:page-load', activateGated);
+  })();
+</script>

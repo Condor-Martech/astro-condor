@@ -1,0 +1,21 @@
+---
+// Bloco de vídeo da região (YouTube embed) — reutilizado inline (≤2 tabloides) ou abaixo (>2).
+const { videoEmbed, nome } = Astro.props as { videoEmbed: string | null; nome: string };
+---
+
+<div class="reveal">
+  {videoEmbed ? (
+    <div class="aspect-video rounded-card overflow-hidden shadow-lg border border-line bg-black">
+      <iframe class="w-full h-full" src={videoEmbed} title={`Vídeo — ${nome}`}
+              loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  ) : (
+    <div class="aspect-video rounded-card grid place-items-center text-center p-8 border-2 border-dashed border-line bg-surface-2">
+      <div>
+        <div class="mx-auto w-14 h-14 rounded-full bg-navy/10 grid place-items-center text-navy text-2xl">▶</div>
+        <p class="font-display font-bold text-navy mt-4">Espaço reservado para o vídeo da região</p>
+        <p class="text-muted text-sm mt-1 max-w-md mx-auto">Configure em Directus → <strong>Regiões</strong> → campo <code class="bg-white px-1.5 py-0.5 rounded text-[.8em]">video_url</code> (aceita playlist do YouTube).</p>
+      </div>
+    </div>
+  )}
+</div>

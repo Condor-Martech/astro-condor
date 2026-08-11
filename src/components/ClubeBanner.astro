@@ -1,0 +1,86 @@
+---
+import { assetUrl } from '../lib/directus';
+// Banner do Clube Condor — replica a "sectionOne" de clubecondor.com (site nosso).
+// Fundo pré-composto (azul + celular) self-hosted em /public/clube.
+// Posições verificadas no CSS real:
+//   - imgSecundary (SVG título): absolute top-right, pequeno
+//   - downloadContainer (badges + QR): absolute bottom-right (desktop) / bottom-left (mobile), ~150px
+//   - QR: só desktop
+
+const HREF = 'https://clubecondor.com/';
+const PLAY = 'https://play.google.com/store/apps/details?id=com.bankeiro.zon&hl=pt_BR';
+const APPLE = 'https://apps.apple.com/br/app/novo-app-clube-condor/id6446367529';
+
+// Assets no Directus Media (UUID fixo — brand estático, não vem de coleção).
+const tituloSvg = assetUrl('0df2018b-1d79-46f4-a19e-6854a78c2680'); // "Baixou, Ativou e Ganhou"
+const playSvg = assetUrl('ce9541e9-70da-45b7-8dbf-1012d2538720');   // Google Play
+const appleSvg = assetUrl('08033a10-44d1-4a89-ab58-7196f547b141');  // App Store
+const qrWebp = assetUrl('7594e415-649f-44a6-a598-ee4cf6076043', 'width=300&format=webp&quality=82'); // QR
+const logoGif = assetUrl('8116b092-2b5f-47b0-92d2-3f6882cc8839'); // Logo animado "Clube Condor" (sem transform → mantém animação)
+---
+
+<section class="mx-auto max-w-[1200px] px-4 sm:px-6 py-8 md:py-12">
+  <div class="relative overflow-hidden rounded-3xl bg-[#123fb5] text-white shadow-[inset_0_4px_8px_rgba(0,0,0,.25)] reveal">
+    <!-- Fundo: cena com o app -->
+    <img src="/clube/section-one-bg-mobile-new.webp"
+         alt="" aria-hidden="true" width="686" height="1160" loading="lazy" decoding="async"
+         class="block sm:hidden w-full h-[clamp(520px,130vw,640px)] object-cover object-[center_bottom]" />
+    <img src="/clube/section-one-bg-desktop-new.webp"
+         alt="" aria-hidden="true" width="2540" height="1160" loading="lazy" decoding="async"
+         class="hidden sm:block w-full sm:h-[clamp(380px,38vw,520px)] object-cover object-[center_35%]" />
+
+    <!-- Conteúdo (esquerda) -->
+    <div class="absolute inset-0 flex flex-col justify-start sm:justify-center px-6 sm:px-10 lg:px-12 pt-8 sm:pt-0">
+      <div class="max-w-[62%] sm:max-w-[46%] lg:max-w-[50%] relative">
+        {logoGif && (
+          <img src={logoGif} alt="Clube Condor" width="960" height="540"
+               class="h-30 sm:h-30 md:h-60 w-auto sm:mb-4 drop-shadow-md" loading="lazy" decoding="async" />
+        )}
+        <h2 class="font-display font-extrabold leading-[1.05] text-2xl sm:text-4xl lg:text-4xl [text-shadow:0_2px_10px_rgba(4,62,130,.35)]">
+          Baixou, Ativou e Ganhou!
+        </h2>
+        <p class="mt-3 text-white/85 text-sm sm:text-base max-w-[80ch] [text-shadow:0_1px_8px_rgba(4,62,130,.3)]">
+          Tenha acesso a promoções especiais feitas sob medida para você. Ative suas ofertas no aplicativo, economize nas compras do dia a dia e concorra a prêmios.
+        </p>
+        <div class="mt-4 sm:mt-6 flex flex-col-reverse sm:flex-row items-start sm:items-center gap-3">
+          <a href={HREF} target="_blank" rel="noopener"
+             data-track="clube_condor" data-track-acao="baixar_app"
+             class="inline-flex items-center font-display font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-red text-white shadow-lg shadow-black/10 transition-transform hover:-translate-y-0.5">
+            Baixar aplicativo
+          </a>
+          <a href={`${HREF}#vantagens`} target="_blank" rel="noopener"
+             class="inline-flex items-center font-display font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border-2 border-white/70 text-white hover:border-white hover:bg-white/10 transition-colors">
+            Ver vantagens
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- imgSecundary: SVG "Baixou Ativou Ganhou" — canto superior direito, pequeno -->
+    {tituloSvg && (
+      <img src={tituloSvg} alt="Clube Condor — Baixou, Ativou e Ganhou" width="150" height="108"
+           class="absolute top-10 right-6 w-[80px] sm:w-[110px] lg:w-[130px] h-auto drop-shadow-md pointer-events-none"
+           loading="lazy" decoding="async" />
+    )}
+
+    <!-- downloadContainer: badges + QR — canto inferior (direita no desktop, esquerda no mobile) -->
+    <div class="absolute bottom-4 left-4 sm:left-auto sm:bottom-6 sm:right-6 flex flex-col items-center gap-1.5 w-[120px] lg:w-[150px]">
+      {appleSvg && (
+        <a href={APPLE} target="_blank" rel="noopener" aria-label="Baixar na App Store" class="block w-full transition-transform hover:-translate-y-0.5">
+          <img src={appleSvg} alt="Baixe na App Store" width="150" height="44" class="w-full h-auto" loading="lazy" decoding="async" />
+        </a>
+      )}
+      {playSvg && (
+        <a href={PLAY} target="_blank" rel="noopener" aria-label="Baixar no Google Play" class="block w-full transition-transform hover:-translate-y-0.5">
+          <img src={playSvg} alt="Baixe no Google Play" width="150" height="44" class="w-full h-auto" loading="lazy" decoding="async" />
+        </a>
+      )}
+      {qrWebp && (
+        <a href={HREF} target="_blank" rel="noopener" class="hidden lg:block w-full mt-1">
+          <img src={qrWebp} alt="QR Code para baixar o app Clube Condor" width="150" height="196"
+               class="w-full h-auto rounded-lg" loading="lazy" decoding="async" />
+        </a>
+      )}
+    </div>
+  </div>
+</section>
