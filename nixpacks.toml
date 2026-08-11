@@ -1,4 +1,3 @@
-# SSG: build gera dist/, servido estaticamente pelo próprio Astro (sirv).
-# ponytail: astro preview serve dist/ sem dep nova. Para prod pesada, trocar por Static/nginx.
+# SSG: build gera dist/, servido por `serve` (static server puro, sem checagem de host).
 [start]
-cmd = "pnpm preview --host 0.0.0.0 --port 4321"
+cmd = "pnpm exec serve dist -l 4321"
