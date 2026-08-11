@@ -132,7 +132,8 @@
     const destroyFlip = () => { try { flip?.destroy(); } catch {} flip = null; bookEl.innerHTML = ''; };
 
     // Calcula dimensiones del libro que entran en .tv-scroll manteniendo aspect ratio.
-    // Evita desbordes verticales (PDFs A4 en pantallas chicas) sin distorsionar páginas.
+    // Con showCover:true, page-flip renderiza 2 páginas lado a lado → ancho del libro = 2 * ancho de página.
+    // Ajustamos el ancho de página para que el SPREAD completo entre en el viewport.
     const computeBookSize = (baseW: number, baseH: number) => {
       const r = scrollEl.getBoundingClientRect();
       const cs = getComputedStyle(scrollEl);
@@ -140,11 +141,11 @@
       const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
       const availW = Math.max(120, r.width - padX);
       const availH = Math.max(120, r.height - padY);
-      const aspect = baseW / baseH;
-      let w: number, h: number;
-      if (availW / availH > aspect) { h = availH; w = h * aspect; }
-      else { w = availW; h = w / aspect; }
-      return { w: Math.round(w), h: Math.round(h) };
+      const spreadAspect = (2 * baseW) / baseH;
+      let spreadW: number, spreadH: number;
+      if (availW / availH > spreadAspect) { spreadH = availH; spreadW = spreadH * spreadAspect; }
+      else { spreadW = availW; spreadH = spreadW / spreadAspect; }
+      return { w: Math.round(spreadW / 2), h: Math.round(spreadH) };
     };
 
     const close = () => {
