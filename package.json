@@ -11,6 +11,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^9",
     "@astrojs/sitemap": "^3.2.1",
     "@directus/sdk": "^19.1.0",
     "@fontsource/montserrat": "^5.1.1",

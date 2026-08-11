@@ -1,20 +1,20 @@
 ---
-import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import NoticiaCard from '../../../components/NoticiaCard.astro';
 import Pagination from '../../../components/Pagination.astro';
 import { getAllNoticias } from '../../../lib/directus';
-import type { Noticia } from '../../../lib/types';
 
-export const getStaticPaths = (async ({ paginate }) => {
-  const all = await getAllNoticias();
-  // Página 1 vive em /noticias (index) — geramos só 2..N aqui.
-  return paginate(all, { pageSize: 12 }).filter((p: any) => p.props.page.currentPage > 1);
-}) satisfies GetStaticPaths;
-
-const { page } = Astro.props as { page: { data: Noticia[]; currentPage: number; lastPage: number; total: number } };
+// Página 1 vive em /noticias (index); aqui só 2..N.
+const currentPage = Number(Astro.params.page);
+if (!Number.isInteger(currentPage) || currentPage < 2) return new Response(null, { status: 404 });
+const all = await getAllNoticias();
+const pageSize = 12;
+const lastPage = Math.max(1, Math.ceil(all.length / pageSize));
+if (currentPage > lastPage) return new Response(null, { status: 404 });
+const start = (currentPage - 1) * pageSize;
+const page = { data: all.slice(start, start + pageSize), currentPage, lastPage, total: all.length };
 ---
 
 <BaseLayout title={`Notícias — página ${page.currentPage} — Condor`} description="Fique por dentro das novidades da Rede Condor.">

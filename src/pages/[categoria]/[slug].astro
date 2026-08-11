@@ -1,20 +1,12 @@
 ---
-import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { getAllPagesFull, assetUrl } from '../../lib/directus';
+import { getPage, assetUrl } from '../../lib/directus';
 import { labelCategoria } from '../../lib/format';
-import type { Page } from '../../lib/types';
 
-export const getStaticPaths = (async () => {
-  const pages = await getAllPagesFull();
-  return pages
-    .filter((p) => p.categoria)
-    .map((page) => ({ params: { categoria: page.categoria!, slug: page.slug }, props: { page } }));
-}) satisfies GetStaticPaths;
-
-const { page } = Astro.props as { page: Page };
+const page = await getPage(Astro.params.slug!);
+if (!page || page.categoria !== Astro.params.categoria) return new Response(null, { status: 404 });
 const catLabel = labelCategoria(page.categoria);
 const img = assetUrl(page.image, 'width=1600&height=800&fit=cover');
 const ogImg = assetUrl(page.image, 'width=1200&height=630&fit=cover');

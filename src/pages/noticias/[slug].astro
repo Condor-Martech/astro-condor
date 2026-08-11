@@ -1,18 +1,12 @@
 ---
-import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { getAllNoticiasFull, assetUrl } from '../../lib/directus';
+import { getNoticia, assetUrl } from '../../lib/directus';
 import { formatDate } from '../../lib/format';
-import type { Noticia } from '../../lib/types';
 
-export const getStaticPaths = (async () => {
-  const noticias = await getAllNoticiasFull();
-  return noticias.map((noticia) => ({ params: { slug: noticia.slug }, props: { noticia } }));
-}) satisfies GetStaticPaths;
-
-const { noticia } = Astro.props as { noticia: Noticia };
+const noticia = await getNoticia(Astro.params.slug!);
+if (!noticia) return new Response(null, { status: 404 });
 const img = assetUrl(noticia.image, 'width=1600&height=800&fit=cover');
 const ogImg = assetUrl(noticia.image, 'width=1200&height=630&fit=cover');
 const data = formatDate(noticia.data_publicacao);

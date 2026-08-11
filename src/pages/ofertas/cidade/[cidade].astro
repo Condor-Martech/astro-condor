@@ -1,5 +1,4 @@
 ---
-import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
@@ -8,30 +7,21 @@ import TabloideCard from '../../../components/TabloideCard.astro';
 import VideoRegiao from '../../../components/VideoRegiao.astro';
 import OfertasGrid from '../../../components/OfertasGrid.astro';
 import { getCidadesFull, getTabloides, getBanners, getCarroselOfertas, getGlobal, assetUrl } from '../../../lib/directus';
-import type { Cidade, Tabloide, Banner } from '../../../lib/types';
 
-export const getStaticPaths = (async () => {
-  const [cidades, tabloides, banners, carrossel] = await Promise.all([
-    getCidadesFull(), getTabloides(), getBanners('ofertas-cidade'), getCarroselOfertas(),
-  ]);
-  const banner = banners[0] ?? null; // mesmo banner p/ todas as cidades (1 fetch, sem N+1)
-  // 1 fetch de cada → filtra em memória por região da cidade (sem N+1).
-  return cidades.map((cidade) => ({
-    params: { cidade: cidade.slug },
-    props: {
-      cidade,
-      tabloides: tabloides.filter((t) => t.regiao && t.regiao === cidade.regiao?.id),
-      banner,
-      // aplaina imagens das campanhas vigentes da região (ordem = ordem no editor)
-      ofertasImgs: carrossel
-        .filter((c) => c.regiao && c.regiao === cidade.regiao?.id)
-        .flatMap((c) => (c.imagens ?? []).map((i) => i.directus_files_id))
-        .filter(Boolean),
-    },
-  }));
-}) satisfies GetStaticPaths;
+// 1 fetch de cada → filtra em memória por região da cidade (sem N+1).
+const [cidades, allTabloides, banners, carrossel] = await Promise.all([
+  getCidadesFull(), getTabloides(), getBanners('ofertas-cidade'), getCarroselOfertas(),
+]);
+const cidade = cidades.find((c) => c.slug === Astro.params.cidade);
+if (!cidade) return new Response(null, { status: 404 });
 
-const { cidade, tabloides, banner, ofertasImgs } = Astro.props as { cidade: Cidade; tabloides: Tabloide[]; banner: Banner | null; ofertasImgs: string[] };
+const banner = banners[0] ?? null; // mesmo banner p/ todas as cidades
+const tabloides = allTabloides.filter((t) => t.regiao && t.regiao === cidade.regiao?.id);
+// aplaina imagens das campanhas vigentes da região (ordem = ordem no editor)
+const ofertasImgs = carrossel
+  .filter((c) => c.regiao && c.regiao === cidade.regiao?.id)
+  .flatMap((c) => (c.imagens ?? []).map((i) => i.directus_files_id))
+  .filter(Boolean);
 const regiao = cidade.regiao;
 const BannerTag = banner?.url ? 'a' : 'div'; // vira link só se tiver url
 

@@ -1,12 +1,16 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 // ponytail: site URL provisório — trocar pelo domínio real no corte de DNS.
 export default defineConfig({
   site: 'https://institucional.condor.com.br',
-  output: 'static',
+  // SSR: dados do Directus são lidos por request (token via env de runtime).
+  // Motivo: a imagem SSG (945 páginas) não passava no unpacking do Docker no deploy.
+  output: 'server',
+  adapter: node({ mode: 'standalone' }),
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
