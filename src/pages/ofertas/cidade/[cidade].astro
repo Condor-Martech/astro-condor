@@ -15,6 +15,11 @@ const [cidades, allTabloides, banners, carrossel] = await Promise.all([
 const cidade = cidades.find((c) => c.slug === Astro.params.cidade);
 if (!cidade) return new Response(null, { status: 404 });
 
+// lembra a cidade escolhida (server-side → sem flash no /ofertas)
+Astro.cookies.set('condor_cidade', cidade.slug, {
+  path: '/', maxAge: 60 * 60 * 24 * 365, sameSite: 'lax',
+});
+
 const banner = banners[0] ?? null; // mesmo banner p/ todas as cidades
 const tabloides = allTabloides.filter((t) => t.regiao && t.regiao === cidade.regiao?.id);
 // aplaina imagens das campanhas vigentes da região (ordem = ordem no editor)

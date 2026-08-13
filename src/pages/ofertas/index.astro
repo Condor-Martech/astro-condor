@@ -15,21 +15,18 @@ for (const c of [...cidades].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'
 }
 const regioesOrdenadas = [...grupos.keys()].sort((a, b) => a.localeCompare(b, 'pt-BR'));
 const slugs = cidades.map((c) => c.slug);
+
+// Retorno rápido SSR: cidade em cookie e não veio de "trocar" → redirect antes de pintar (zero flash).
+const saved = Astro.cookies.get('condor_cidade')?.value;
+if (saved && !Astro.url.searchParams.has('trocar') && slugs.includes(saved)) {
+  return Astro.redirect('/ofertas/cidade/' + saved, 302);
+}
 ---
 
 <BaseLayout
   title="Ofertas Condor — Selecione sua cidade"
   description="Escolha sua cidade e confira os tabloides e ofertas da semana da Rede Condor."
 >
-  {/* Retorno rápido: se já tem cidade salva (e não veio de "trocar"), vai direto — antes de pintar. */}
-  <script is:inline define:vars={{ slugs }}>
-    try {
-      const saved = localStorage.getItem('condor_cidade');
-      const trocar = new URLSearchParams(location.search).has('trocar');
-      if (saved && !trocar && slugs.includes(saved)) location.replace('/ofertas/cidade/' + saved);
-    } catch (e) { /* storage indisponível → mostra o gate */ }
-  </script>
-
   <Header />
 
   <!-- GATE: backdrop escuro imersivo + seletor de cidade -->
@@ -111,19 +108,6 @@ const slugs = cidades.map((c) => c.slug);
   }
 
   const setupGate = () => {
-    // Redireção no client-side nav (View Transitions): se já tem cidade salva, vai direto.
-    if (location.pathname.replace(/\/$/, '') === '/ofertas') {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        const trocar = new URLSearchParams(location.search).has('trocar');
-        if (saved && !trocar) {
-          const opts = document.querySelectorAll<HTMLOptionElement>('#cidade-select option');
-          const valid = Array.from(opts).some((o) => o.value === saved);
-          if (valid) { location.assign('/ofertas/cidade/' + saved); return; }
-        }
-      } catch {}
-    }
-
     document.querySelectorAll<HTMLFormElement>('[data-cidade-form]').forEach((form) => {
       if (form.dataset.bound) return;
       form.dataset.bound = '1';
