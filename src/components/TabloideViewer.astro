@@ -1,7 +1,9 @@
 ---
-// Visor de tabloide estilo revista (page-flip). Modal único; os cards da página
-// disparam via [data-folhear] com data-pdf/data-titulo/data-download.
-// pdf.js + page-flip carregam sob demanda (dynamic import) só ao abrir — zero peso no load.
+// Visor de tabloide simples e robusto: pdf.js renderiza cada página a canvas,
+// exibidas num carrossel scroll-snap horizontal (swipe nativo). O fit é 100% CSS
+// (max-width/height) → nunca desborda, aspect do PDF é irrelevante. Zoom faz pan.
+// Modal único; os cards disparam via [data-folhear] com data-pdf/data-titulo/data-download.
+// pdf.js carrega sob demanda (dynamic import) só ao abrir → zero peso no load.
 ---
 
 <div id="tv-modal" class="tv" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Visualizador de tabloide">
@@ -20,9 +22,7 @@
 
     <div class="tv-stage">
       <button type="button" class="tv-nav tv-prev" data-tv-prev aria-label="Página anterior">‹</button>
-      <div class="tv-scroll" data-tv-scroll>
-        <div id="tv-book" class="tv-book"></div>
-      </div>
+      <div class="tv-track" data-tv-track></div>
       <button type="button" class="tv-nav tv-next" data-tv-next aria-label="Próxima página">›</button>
 
       <div class="tv-status" data-tv-status>
@@ -33,7 +33,7 @@
 
     <footer class="tv-foot font-display">
       <span data-tv-counter>—</span>
-      <span class="tv-hint">use ‹ › ou arraste a página</span>
+      <span class="tv-hint">use ‹ › ou arraste</span>
     </footer>
   </div>
 </div>
@@ -63,13 +63,26 @@
   .tv-dl { font-size: 1.2rem; }
 
   .tv-stage { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; min-height: 0; padding: 0 .4rem; }
-  .tv-scroll { height: 100%; min-height: 0; overflow: hidden; display: grid; place-items: center; padding: 1rem clamp(.25rem, 3vw, 3rem) 1.6rem; }
-  .tv-book { transform: scale(var(--tv-zoom, 1)); transform-origin: center center; transition: transform .22s ease; }
-  /* páginas: papel com sombra profunda de encarte */
-  .tv-book :global(.tv-page) { background: #fff; box-shadow: 0 24px 60px -18px rgba(0,0,0,.65); overflow: hidden; }
-  .tv-book :global(.tv-page canvas) { display: block; width: 100%; height: 100%; }
-  .tv-book :global(.--right) { box-shadow: inset 6px 0 18px -10px rgba(0,0,0,.35), 0 24px 60px -18px rgba(0,0,0,.65); }
-  .tv-book :global(.--left) { box-shadow: inset -6px 0 18px -10px rgba(0,0,0,.35), 0 24px 60px -18px rgba(0,0,0,.65); }
+
+  /* Carrossel: 1 página por slide, snap horizontal, swipe nativo. */
+  .tv-track {
+    height: 100%; min-height: 0; display: flex; overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .tv-track::-webkit-scrollbar { display: none; }
+  /* Cada slide ocupa o viewport do track; a página entra INTEIRA (contain) e faz pan com zoom. */
+  .tv-track :global(.tv-frame) {
+    flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: center;
+    display: flex; align-items: safe center; justify-content: safe center;
+    overflow: auto; padding: 1rem clamp(.25rem, 2.5vw, 2.5rem);
+  }
+  /* Fit contain: página inteira visível (z=1); zoom multiplica ambos os eixos → cresce e faz pan. */
+  .tv-track :global(.tv-frame canvas) {
+    display: block; width: auto; height: auto;
+    max-width: calc(var(--tv-zoom, 1) * 100%); max-height: calc(var(--tv-zoom, 1) * 100%);
+    background: #fff; box-shadow: 0 24px 60px -18px rgba(0,0,0,.65);
+  }
 
   .tv-nav {
     z-index: 2; display: grid; place-items: center; width: 3rem; height: 3rem; margin: 0 .2rem; flex: none;
@@ -94,15 +107,15 @@
 
   @media (prefers-reduced-motion: reduce) {
     .tv-shell { animation: none; }
-    .tv-book { transition: none; }
+    .tv-track { scroll-behavior: auto; }
     .tv-spinner { animation-duration: 1.6s; }
   }
 </style>
 
 <script>
-  const RENDER_SCALE = 2; // hi-dpi das páginas
-  const MAX_PAGES = 40; // trava de segurança
-  const ZOOM_STEP = 0.2, ZOOM_MIN = 0.6, ZOOM_MAX = 2.4;
+  const RENDER_SCALE = 2;  // hi-dpi das páginas
+  const MAX_PAGES = 40;    // trava de segurança
+  const ZOOM_STEP = 0.25, ZOOM_MIN = 1, ZOOM_MAX = 3;
 
   const setupTabloideViewer = () => {
     const modal = document.getElementById('tv-modal');
@@ -110,8 +123,7 @@
     modal.dataset.bound = '1';
 
     const $ = (s: string) => modal.querySelector(s) as HTMLElement | null;
-    const bookEl = $('#tv-book') as HTMLElement;
-    const scrollEl = $('[data-tv-scroll]') as HTMLElement;
+    const trackEl = $('[data-tv-track]') as HTMLElement;
     const statusEl = $('[data-tv-status]') as HTMLElement;
     const statusText = $('[data-tv-status-text]') as HTMLElement;
     const titleEl = $('[data-tv-title]') as HTMLElement;
@@ -120,47 +132,30 @@
     const prevBtn = $('[data-tv-prev]') as HTMLButtonElement;
     const nextBtn = $('[data-tv-next]') as HTMLButtonElement;
 
-    let flip: any = null;
     let zoom = 1;
+    let total = 0;
     let token = 0; // invalida renders de aberturas anteriores
 
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const setZoom = (z: number) => { zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z)); bookEl.style.setProperty('--tv-zoom', String(zoom)); };
-
+    const setZoom = (z: number) => { zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z)); trackEl.style.setProperty('--tv-zoom', String(zoom)); };
     const lockScroll = (on: boolean) => { document.documentElement.style.overflow = on ? 'hidden' : ''; };
 
-    const destroyFlip = () => { try { flip?.destroy(); } catch {} flip = null; bookEl.innerHTML = ''; };
-
-    // Calcula dimensiones del libro que entran en .tv-scroll manteniendo aspect ratio.
-    // Con showCover:true, page-flip renderiza 2 páginas lado a lado → ancho del libro = 2 * ancho de página.
-    // Ajustamos el ancho de página para que el SPREAD completo entre en el viewport.
-    const computeBookSize = (baseW: number, baseH: number) => {
-      const r = scrollEl.getBoundingClientRect();
-      const cs = getComputedStyle(scrollEl);
-      const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-      const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
-      const availW = Math.max(120, r.width - padX);
-      const availH = Math.max(120, r.height - padY);
-      const spreadAspect = (2 * baseW) / baseH;
-      let spreadW: number, spreadH: number;
-      if (availW / availH > spreadAspect) { spreadH = availH; spreadW = spreadH * spreadAspect; }
-      else { spreadW = availW; spreadH = spreadW / spreadAspect; }
-      return { w: Math.round(spreadW / 2), h: Math.round(spreadH) };
+    const curIdx = () => Math.round(trackEl.scrollLeft / Math.max(1, trackEl.clientWidth));
+    const update = () => {
+      const i = curIdx();
+      counterEl.textContent = total ? `${Math.min(i + 1, total)} / ${total}` : '—';
+      prevBtn.disabled = i <= 0;
+      nextBtn.disabled = i >= total - 1;
     };
+    const goto = (dir: number) => { setZoom(1); trackEl.scrollBy({ left: dir * trackEl.clientWidth }); };
 
     const close = () => {
       modal.setAttribute('hidden', '');
       modal.setAttribute('aria-hidden', 'true');
-      token++; // cancela qualquer render em andamento
-      destroyFlip();
+      token++;            // cancela render em andamento
+      trackEl.innerHTML = '';
+      total = 0;
       lockScroll(false);
-    };
-
-    const setCounter = () => {
-      if (!flip) { counterEl.textContent = '—'; return; }
-      const total = flip.getPageCount();
-      const cur = flip.getCurrentPageIndex() + 1;
-      counterEl.textContent = `${cur} / ${total}`;
     };
 
     async function open(pdfUrl: string, titulo: string, downloadUrl: string) {
@@ -168,7 +163,9 @@
       titleEl.textContent = titulo;
       dlEl.href = downloadUrl || pdfUrl;
       setZoom(1);
-      destroyFlip();
+      trackEl.innerHTML = '';
+      total = 0;
+      update();
       statusText.textContent = 'Carregando encarte…';
       statusEl.removeAttribute('hidden');
       modal.removeAttribute('hidden');
@@ -176,49 +173,35 @@
       lockScroll(true);
 
       try {
-        const [pdfjs, workerMod, flipMod] = await Promise.all([
+        const [pdfjs, workerMod] = await Promise.all([
           import('pdfjs-dist'),
           import('pdfjs-dist/build/pdf.worker.min.mjs?url'),
-          import('page-flip'),
         ]);
-        if (my !== token) return; // fechou/reabriu enquanto carregava
+        if (my !== token) return;
         pdfjs.GlobalWorkerOptions.workerSrc = (workerMod as any).default;
 
         const doc = await pdfjs.getDocument({ url: pdfUrl }).promise;
         if (my !== token) return;
 
-        const total = Math.min(doc.numPages, MAX_PAGES);
-        let baseW = 0, baseH = 0;
-
+        total = Math.min(doc.numPages, MAX_PAGES);
         for (let i = 1; i <= total; i++) {
           const page = await doc.getPage(i);
           if (my !== token) return;
           const vp = page.getViewport({ scale: RENDER_SCALE });
-          if (!baseW) { baseW = Math.round(vp.width / RENDER_SCALE); baseH = Math.round(vp.height / RENDER_SCALE); }
           const canvas = document.createElement('canvas');
           canvas.width = vp.width; canvas.height = vp.height;
           await page.render({ canvasContext: canvas.getContext('2d')!, viewport: vp }).promise;
           if (my !== token) return;
-          const pageDiv = document.createElement('div');
-          pageDiv.className = 'tv-page';
-          pageDiv.appendChild(canvas);
-          bookEl.appendChild(pageDiv);
+          const frame = document.createElement('div');
+          frame.className = 'tv-frame';
+          frame.appendChild(canvas);
+          trackEl.appendChild(frame);
           statusText.textContent = `Renderizando página ${i} de ${total}…`;
         }
 
-        const { PageFlip } = flipMod as any;
-        const { w: bookW, h: bookH } = computeBookSize(baseW || 420, baseH || 560);
-        flip = new PageFlip(bookEl, {
-          width: bookW, height: bookH,
-          size: 'fixed',
-          maxShadowOpacity: 0.5, showCover: true, mobileScrollSupport: false,
-          useMouseEvents: true, flippingTime: reduce ? 0 : 700, drawShadow: !reduce,
-        });
-        flip.loadFromHTML(bookEl.querySelectorAll('.tv-page'));
-        flip.on('flip', setCounter);
-        flip.on('changeState', setCounter);
         statusEl.setAttribute('hidden', '');
-        setCounter();
+        trackEl.scrollLeft = 0;
+        update();
       } catch (err) {
         if (my !== token) return;
         console.error('[tabloide] falha ao abrir PDF:', err);
@@ -235,16 +218,20 @@
     });
 
     modal.querySelectorAll('[data-tv-close]').forEach((el) => el.addEventListener('click', close));
-    prevBtn.addEventListener('click', () => flip?.flipPrev());
-    nextBtn.addEventListener('click', () => flip?.flipNext());
+    prevBtn.addEventListener('click', () => goto(-1));
+    nextBtn.addEventListener('click', () => goto(1));
     modal.querySelectorAll('[data-tv-zoom]').forEach((el) =>
       el.addEventListener('click', () => setZoom(zoom + ZOOM_STEP * Number((el as HTMLElement).dataset.tvZoom))));
+
+    // ponytail: rAF por scroll é barato; só lê scrollLeft/clientWidth.
+    let raf = 0;
+    trackEl.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); });
 
     document.addEventListener('keydown', (e) => {
       if (modal.hasAttribute('hidden')) return;
       if (e.key === 'Escape') close();
-      else if (e.key === 'ArrowLeft') flip?.flipPrev();
-      else if (e.key === 'ArrowRight') flip?.flipNext();
+      else if (e.key === 'ArrowLeft') goto(-1);
+      else if (e.key === 'ArrowRight') goto(1);
     });
   };
 
